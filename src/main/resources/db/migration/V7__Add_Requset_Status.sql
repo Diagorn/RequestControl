@@ -1,0 +1,1 @@
+alter table request add column status varchar(255);
