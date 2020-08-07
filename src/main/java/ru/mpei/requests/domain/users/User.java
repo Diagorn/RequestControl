@@ -1,7 +1,9 @@
-package ru.mpei.requests.domain;
+package ru.mpei.requests.domain.users;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.mpei.requests.domain.requests.OrganisationRequest;
+import ru.mpei.requests.domain.requests.PhysicalRequest;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -26,17 +28,19 @@ public class User implements UserDetails, Serializable {
     @NotBlank(message = "Пароль не может быть пустым")
     private String password; //Password
 
-    @NotBlank(message = "Пожалуйста, введите ваше имя")
-    private String firstName; //Name
-    private String secondName; //Patronymic
-    @NotBlank(message = "Пожалуйста, введите вашу фамилию")
-    private String lastName; //Surname
-
     private String fileName; //Name of the avatar file
 
     private String activationCode; //For activating the email
 
     private boolean active; //Active state
+
+    private boolean isPhysical; //True if user is not an organisation
+
+    @OneToOne
+    private Human person; //If it is a person
+
+    @OneToOne
+    private Organisation organisation; //If it is an organisation
 
     @ElementCollection(fetch = FetchType.EAGER, targetClass = Role.class)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
@@ -44,16 +48,20 @@ public class User implements UserDetails, Serializable {
     private Set<Role> roles; //Roles for the particular user
 
     @OneToMany(mappedBy = "executer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Request> executerRequests;
+    private Set<OrganisationRequest> executerOrganisationRequests;
+
+    @OneToMany(mappedBy = "executer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<PhysicalRequest> executerPhysicalRequests;
 
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Request> clientRequests;
+    private Set<OrganisationRequest> clientOrganisationRequests;
 
-    public User(String username, String password, String firstName, String lastName) {
+    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<PhysicalRequest> clientPhysicalRequests;
+
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
     }
 
     public String getUsername() {
@@ -82,30 +90,6 @@ public class User implements UserDetails, Serializable {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getSecondName() {
-        return secondName;
-    }
-
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public User() {
@@ -166,10 +150,13 @@ public class User implements UserDetails, Serializable {
     }
 
     public String getUsernameWithInitials() {
-        if(secondName != null && !secondName.equals(""))
-            return lastName + " " + firstName.substring(0, 1) + ". " + secondName.substring(0, 1) + ".";
-        else
-            return lastName + " " + firstName.substring(0, 1) + ".";
+        if (person.getSecondName() != null && !person.getSecondName().equals(""))
+            return person.getLastName() + " " + person.getFirstName().substring(0, 1) + ". " +
+                    person.getSecondName().substring(0, 1) + ".";
+        else {
+            return person.getLastName() + " " + person.getFirstName().substring(0, 1) + ".";
+        }
+
     }
 
     public boolean isAdmin() {
@@ -182,28 +169,18 @@ public class User implements UserDetails, Serializable {
 
     public boolean isClient() {return roles.contains(Role.CLIENT);}
 
-    public Set<Request> getExecuterRequests() {
-        return executerRequests;
-    }
-
-    public void setExecuterRequests(Set<Request> executerRequests) {
-        this.executerRequests = executerRequests;
-    }
-
-    public Set<Request> getClientRequests() {
-        return clientRequests;
-    }
-
-    public void setClientRequests(Set<Request> clientRequests) {
-        this.clientRequests = clientRequests;
-    }
-
     @PreRemove
     private void removeUserFromRequests() {
-        for(Request r : executerRequests) {
+        for(PhysicalRequest r : executerPhysicalRequests) {
             r.setExecuter(null);
         }
-        for(Request r : clientRequests) {
+        for(OrganisationRequest r : executerOrganisationRequests) {
+            r.setExecuter(null);
+        }
+        for(OrganisationRequest r : clientOrganisationRequests) {
+            r.setClient(null);
+        }
+        for(PhysicalRequest r : clientPhysicalRequests) {
             r.setClient(null);
         }
     }
@@ -219,5 +196,13 @@ public class User implements UserDetails, Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(Id);
+    }
+
+    public boolean isPhysical() {
+        return isPhysical;
+    }
+
+    public void setPhysical(boolean physical) {
+        isPhysical = physical;
     }
 }

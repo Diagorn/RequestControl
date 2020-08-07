@@ -1,29 +1,29 @@
-package ru.mpei.requests.domain;
+package ru.mpei.requests.domain.requests;
+
+import ru.mpei.requests.domain.chats.Chat;
+import ru.mpei.requests.domain.users.User;
 
 import javax.persistence.*;
 
-@Entity
 public class Request {
-    @Id
-    @GeneratedValue
     private Long id; //Identifyer
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "chat_id")
-    private Chat chat; //Chat associated with the request
+    protected Chat chat; //Chat associated with the request
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id")
-    private User client; //User that has prompted the request
+    protected User client; //User that has prompted the request
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "executer_id")
-    private User executer; //Executer that is handling the request
+    protected User executer; //Executer that is handling the request
 
-    private String theme;
+    protected String theme;
 
     @Enumerated(EnumType.STRING)
-    private RequestState status;
+    protected RequestState status;
 
     public Request() {
     }
