@@ -1,11 +1,10 @@
 package ru.mpei.requests.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
-import ru.mpei.requests.domain.Request;
-import ru.mpei.requests.domain.RequestState;
-import ru.mpei.requests.domain.User;
+import ru.mpei.requests.domain.requests.Request;
+import ru.mpei.requests.domain.requests.RequestState;
+import ru.mpei.requests.domain.users.User;
 import ru.mpei.requests.repos.RequestRepo;
 import ru.mpei.requests.repos.UserRepo;
 

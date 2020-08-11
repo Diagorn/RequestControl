@@ -2,9 +2,9 @@ package ru.mpei.requests.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.mpei.requests.domain.Chat;
-import ru.mpei.requests.domain.Request;
-import ru.mpei.requests.domain.User;
+import ru.mpei.requests.domain.chats.Chat;
+import ru.mpei.requests.domain.requests.Request;
+import ru.mpei.requests.domain.users.User;
 import ru.mpei.requests.repos.ChatRepo;
 
 import java.util.Collections;

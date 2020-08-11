@@ -1,4 +1,4 @@
-package ru.mpei.requests.domain;
+package ru.mpei.requests.domain.users;
 
 import org.springframework.security.core.GrantedAuthority;
 

@@ -1,7 +1,6 @@
 package ru.mpei.requests.service;
 
 import org.springframework.stereotype.Service;
-import ru.mpei.requests.domain.User;
 
 import java.util.List;
 

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.mpei.requests.domain.Role;
-import ru.mpei.requests.domain.User;
+import ru.mpei.requests.domain.users.Role;
+import ru.mpei.requests.domain.users.User;
 import ru.mpei.requests.service.UserService;
 
 import java.io.IOException;

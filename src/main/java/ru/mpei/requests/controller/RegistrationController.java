@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import ru.mpei.requests.domain.DTO.CaptchaResponseDTO;
-import ru.mpei.requests.domain.User;
+import ru.mpei.requests.domain.users.User;
 import ru.mpei.requests.service.UserService;
 
 import javax.validation.Valid;

@@ -1,8 +1,8 @@
 package ru.mpei.requests.repos;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.mpei.requests.domain.Chat;
-import ru.mpei.requests.domain.Message;
+import ru.mpei.requests.domain.chats.Chat;
+import ru.mpei.requests.domain.chats.Message;
 
 import java.util.List;
 

@@ -9,9 +9,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import ru.mpei.requests.domain.Chat;
-import ru.mpei.requests.domain.Role;
-import ru.mpei.requests.domain.User;
+import ru.mpei.requests.domain.chats.Chat;
+import ru.mpei.requests.domain.users.Role;
+import ru.mpei.requests.domain.users.User;
 import ru.mpei.requests.repos.ChatRepo;
 import ru.mpei.requests.repos.UserRepo;
 

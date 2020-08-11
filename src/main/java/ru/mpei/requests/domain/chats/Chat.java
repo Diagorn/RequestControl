@@ -1,4 +1,7 @@
-package ru.mpei.requests.domain;
+package ru.mpei.requests.domain.chats;
+
+import ru.mpei.requests.domain.requests.Request;
+import ru.mpei.requests.domain.users.User;
 
 import javax.persistence.*;
 import java.util.Set;

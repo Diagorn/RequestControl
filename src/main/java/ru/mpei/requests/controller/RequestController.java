@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.mpei.requests.domain.Request;
-import ru.mpei.requests.domain.RequestState;
-import ru.mpei.requests.domain.User;
+import ru.mpei.requests.domain.requests.Request;
+import ru.mpei.requests.domain.requests.RequestState;
+import ru.mpei.requests.domain.users.User;
 import ru.mpei.requests.service.RequestService;
 import ru.mpei.requests.service.UserService;
 

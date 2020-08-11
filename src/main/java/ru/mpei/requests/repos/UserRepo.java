@@ -1,8 +1,8 @@
 package ru.mpei.requests.repos;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.mpei.requests.domain.Role;
-import ru.mpei.requests.domain.User;
+import ru.mpei.requests.domain.users.Role;
+import ru.mpei.requests.domain.users.User;
 
 import java.util.List;
 
