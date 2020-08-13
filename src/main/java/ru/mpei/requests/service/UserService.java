@@ -76,16 +76,16 @@ public class UserService implements UserDetailsService {
                                          String secondName,
                                          String lastName) throws IOException {
         user.setUsername(email);
-        user.setLastName(lastName);
-        user.setSecondName(secondName);
-        user.setFirstName(firstName);
+//        user.setLastName(lastName);
+//        user.setSecondName(secondName);
+//        user.setFirstName(firstName);
         setUserAvatar(user, null);
         user.setRoles(Collections.singleton(Role.USER));
         user.setActive(true);
         user.setPassword(passwordEncoder.encode("123"));
-        Chat chat = chatRepo.findByRequestIsNull();
+//        Chat chat = chatRepo.findByRequestIsNull();
         if (user.getRoles().contains(Role.ADMIN) || user.getRoles().contains(Role.MODER)) {
-            chat.getMembers().add(user);
+//            chat.getMembers().add(user);
         }
         userRepo.save(user);
     }
@@ -102,10 +102,10 @@ public class UserService implements UserDetailsService {
     public void saveUser(User user, String username, Map<String, String> form) { //Saving the user from admin panel
         user.setUsername(username);
         setUserRolesFromRegForm(user, form);
-        Chat chat = chatRepo.findByRequestIsNull();
+//        Chat chat = chatRepo.findByRequestIsNull();
         if (user.getRoles().contains(Role.ADMIN) || user.getRoles().contains(Role.MODER)) {
-            chat.getMembers().add(user);
-            chatRepo.save(chat);
+//            chat.getMembers().add(user);
+//            chatRepo.save(chat);
         }
         userRepo.save(user);
     }
@@ -134,41 +134,41 @@ public class UserService implements UserDetailsService {
                               String firstName,
                               String secondName,
                               String lastName) { //updating the user profile
-        if (!StringUtils.isEmpty(firstName) && !firstName.equals(user.getFirstName()))
-            user.setFirstName(firstName);
-        if (!StringUtils.isEmpty(secondName) && !secondName.equals(user.getSecondName()))
-            user.setSecondName(secondName);
-        if (!StringUtils.isEmpty(lastName) && !lastName.equals(user.getLastName()))
-            user.setLastName(lastName);
-        if (!StringUtils.isEmpty(password))
-            user.setPassword(passwordEncoder.encode(password));
+//        if (!StringUtils.isEmpty(firstName) && !firstName.equals(user.getFirstName()))
+//            user.setFirstName(firstName);
+//        if (!StringUtils.isEmpty(secondName) && !secondName.equals(user.getSecondName()))
+//            user.setSecondName(secondName);
+//        if (!StringUtils.isEmpty(lastName) && !lastName.equals(user.getLastName()))
+//            user.setLastName(lastName);
+//        if (!StringUtils.isEmpty(password))
+//            user.setPassword(passwordEncoder.encode(password));
         userRepo.save(user);
     }
 
     public User findUserByQuery(String name) { //Getting one particular user by a string
         User user;
         user = userRepo.findByUsername(name);
-        if (user == null) {
-            user = userRepo.findByUsernameLike(name);
-        }
-        if (user == null) {
-            user = userRepo.findByFirstName(name);
-        }
-        if (user == null) {
-            user = userRepo.findBySecondName(name);
-        }
-        if (user == null) {
-            user = userRepo.findByLastName(name);
-        }
-        if (user == null) {
-            user = userRepo.findByFirstNameLike(name);
-        }
-        if (user == null) {
-            user = userRepo.findBySecondNameLike(name);
-        }
-        if (user == null) {
-            user = userRepo.findByLastNameLike(name);
-        }
+//        if (user == null) {
+//            user = userRepo.findByUsernameLike(name);
+//        }
+//        if (user == null) {
+//            user = userRepo.findByFirstName(name);
+//        }
+//        if (user == null) {
+//            user = userRepo.findBySecondName(name);
+//        }
+//        if (user == null) {
+//            user = userRepo.findByLastName(name);
+//        }
+//        if (user == null) {
+//            user = userRepo.findByFirstNameLike(name);
+//        }
+//        if (user == null) {
+//            user = userRepo.findBySecondNameLike(name);
+//        }
+//        if (user == null) {
+//            user = userRepo.findByLastNameLike(name);
+//        }
         return user;
     }
 
@@ -189,14 +189,14 @@ public class UserService implements UserDetailsService {
 
 
     public List<User> getAllUsersByQuery(String query) { //Get all users by a string
-        List<User> firstNameList = userRepo.findAllByFirstNameContaining(query);
-        List<User> secondNameList = userRepo.findAllBySecondNameContaining(query);
-        List<User> lastNameList = userRepo.findAllByLastNameContaining(query);
+//        List<User> firstNameList = userRepo.findAllByFirstNameContaining(query);
+//        List<User> secondNameList = userRepo.findAllBySecondNameContaining(query);
+//        List<User> lastNameList = userRepo.findAllByLastNameContaining(query);
         List<User> usernameList = userRepo.findAllByUsernameContaining(query);
-        List<User> resultList = ServiceUtils.collideLists(firstNameList, secondNameList);
-        ServiceUtils.collideLists(resultList, lastNameList);
-        ServiceUtils.collideLists(resultList, usernameList);
-        return resultList;
+//        List<User> resultList = ServiceUtils.collideLists(firstNameList, secondNameList);
+//        ServiceUtils.collideLists(resultList, lastNameList);
+//        ServiceUtils.collideLists(resultList, usernameList);
+        return null;
     }
 
     public List<User> getAllModersAndAdmins() {

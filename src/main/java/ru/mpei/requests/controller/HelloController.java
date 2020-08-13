@@ -8,8 +8,6 @@ import ru.mpei.requests.service.RequestService;
 //Used only for the beginning of the development
 @Controller
 public class HelloController {
-    @Autowired
-    private RequestService requestService;
 
     @GetMapping("/")
     public String sayHelloToUser() {

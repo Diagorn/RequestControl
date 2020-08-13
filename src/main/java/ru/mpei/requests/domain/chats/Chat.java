@@ -1,6 +1,7 @@
 package ru.mpei.requests.domain.chats;
 
-import ru.mpei.requests.domain.requests.Request;
+import ru.mpei.requests.domain.requests.OrganisationRequest;
+import ru.mpei.requests.domain.requests.PhysicalRequest;
 import ru.mpei.requests.domain.users.User;
 
 import javax.persistence.*;
@@ -24,8 +25,12 @@ public class Chat { //Entity that contains the messages for requests or admin ch
     Set<Message> messages; //Messages written in the chat
 
     @OneToOne
-        @JoinColumn(name = "request_id")
-    Request request; //Chat may be devoted to request
+    @JoinColumn(name = "organisation_request_id")
+    OrganisationRequest organisationRequest; //Chat may be devoted to organisation request
+
+    @OneToOne
+    @JoinColumn(name = "physical_request_id")
+    PhysicalRequest physicalRequest; //Chat may be devoted to physical request
 
     public Chat() {
     }
@@ -54,11 +59,19 @@ public class Chat { //Entity that contains the messages for requests or admin ch
         this.messages = messages;
     }
 
-    public Request getRequest() {
-        return request;
+    public OrganisationRequest getOrganisationRequest() {
+        return organisationRequest;
     }
 
-    public void setRequest(Request request) {
-        this.request = request;
+    public void setOrganisationRequest(OrganisationRequest organisationRequest) {
+        this.organisationRequest = organisationRequest;
+    }
+
+    public PhysicalRequest getPhysicalRequest() {
+        return physicalRequest;
+    }
+
+    public void setPhysicalRequest(PhysicalRequest physicalRequest) {
+        this.physicalRequest = physicalRequest;
     }
 }

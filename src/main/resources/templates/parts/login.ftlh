@@ -38,6 +38,8 @@
                             </div>
                         </#if>
                     </div>
+                    <label for="isOrganisationCheckbox">Я являюсь юридическим лицом</label>
+                    <input type="checkbox" name="isOrganisation" id="isOrganisationCheckbox">
                 </#if>
 
                 <input type="hidden" name="_csrf" value="${_csrf.token}">

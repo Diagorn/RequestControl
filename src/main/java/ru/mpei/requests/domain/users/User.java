@@ -205,4 +205,52 @@ public class User implements UserDetails, Serializable {
     public void setPhysical(boolean physical) {
         isPhysical = physical;
     }
+
+    public Human getPerson() {
+        return person;
+    }
+
+    public void setPerson(Human person) {
+        this.person = person;
+    }
+
+    public Organisation getOrganisation() {
+        return organisation;
+    }
+
+    public void setOrganisation(Organisation organisation) {
+        this.organisation = organisation;
+    }
+
+    public Set<OrganisationRequest> getExecuterOrganisationRequests() {
+        return executerOrganisationRequests;
+    }
+
+    public void setExecuterOrganisationRequests(Set<OrganisationRequest> executerOrganisationRequests) {
+        this.executerOrganisationRequests = executerOrganisationRequests;
+    }
+
+    public Set<PhysicalRequest> getExecuterPhysicalRequests() {
+        return executerPhysicalRequests;
+    }
+
+    public void setExecuterPhysicalRequests(Set<PhysicalRequest> executerPhysicalRequests) {
+        this.executerPhysicalRequests = executerPhysicalRequests;
+    }
+
+    public Set<OrganisationRequest> getClientOrganisationRequests() {
+        return clientOrganisationRequests;
+    }
+
+    public void setClientOrganisationRequests(Set<OrganisationRequest> clientOrganisationRequests) {
+        this.clientOrganisationRequests = clientOrganisationRequests;
+    }
+
+    public Set<PhysicalRequest> getClientPhysicalRequests() {
+        return clientPhysicalRequests;
+    }
+
+    public void setClientPhysicalRequests(Set<PhysicalRequest> clientPhysicalRequests) {
+        this.clientPhysicalRequests = clientPhysicalRequests;
+    }
 }

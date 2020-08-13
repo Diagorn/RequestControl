@@ -1,5 +1,6 @@
 package ru.mpei.requests.domain.requests;
 
+import ru.mpei.requests.domain.chats.Chat;
 import ru.mpei.requests.domain.users.User;
 
 import javax.persistence.*;
@@ -15,6 +16,15 @@ public class PhysicalRequest {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private User client;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "chat_id")
+    private Chat chat; //Chat associated with the request
+
+    private String theme;
+
+    @Enumerated(EnumType.STRING)
+    protected RequestState status;
 
     public PhysicalRequest() {
     }
@@ -42,4 +52,30 @@ public class PhysicalRequest {
     public void setClient(User client) {
         this.client = client;
     }
+
+    public Chat getChat() {
+        return chat;
+    }
+
+    public void setChat(Chat chat) {
+        this.chat = chat;
+    }
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
+
+    public RequestState getStatus() {
+        return status;
+    }
+
+    public void setStatus(RequestState status) {
+        this.status = status;
+    }
+
+
 }

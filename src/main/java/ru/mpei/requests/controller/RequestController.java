@@ -9,19 +9,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.mpei.requests.domain.requests.Request;
-import ru.mpei.requests.domain.requests.RequestState;
 import ru.mpei.requests.domain.users.User;
-import ru.mpei.requests.service.RequestService;
 import ru.mpei.requests.service.UserService;
 
+import java.util.Collections;
 import java.util.List;
 
 @Controller
 public class RequestController { //Handling the page containing requests
 
-    @Autowired
-    private RequestService requestService; //For doing anything with requests
+//    @Autowired
+//    private RequestService requestService; //For doing anything with requests
 
     @Autowired
     private UserService userService; //For doing anything with users
@@ -32,8 +30,8 @@ public class RequestController { //Handling the page containing requests
             @RequestParam(required = false, defaultValue = "") String status,
             Model model
     ) {
-        List<Request> requests = requestService.getRequestsByStatus(status, user);
-        model.addAttribute("requests", requests);
+//        List<Request> requests = null; //requestService.getRequestsByStatus(status, user);
+        model.addAttribute("requests", Collections.EMPTY_LIST); //requests);
         return "requests_list";
     }
 
@@ -75,9 +73,9 @@ public class RequestController { //Handling the page containing requests
             @AuthenticationPrincipal User user,
             Model model) {
         User client = userService.findUserByQuery(username);
-        requestService.createRequest(client, theme);
-        List<Request> requests = requestService.getRequestsByStatus("", user);
-        model.addAttribute("requests", requests);
+        //requestService.createRequest(client, theme);
+//        List<Request> requests = null; //requestService.getRequestsByStatus("", user);
+        model.addAttribute("requests", Collections.emptySet());
         return "requests_list";
     }
 
@@ -96,8 +94,8 @@ public class RequestController { //Handling the page containing requests
         }
         model.addAttribute("users", users);
         model.addAttribute("userService", userService);
-        if (requestService.getRequestByID(id) != null)
-            model.addAttribute("request", requestService.getRequestByID(id));
+//        if (requestService.getRequestByID(id) != null)
+//            model.addAttribute("request", requestService.getRequestByID(id));
         return "set-executer";
     }
 
@@ -107,8 +105,8 @@ public class RequestController { //Handling the page containing requests
             @PathVariable("id") Long requestId,
             @RequestParam Long userId
     ) {
-        if (requestService.canSetExecuter(requestId, userId))
-            requestService.setExecuter(requestId, userId);
+//        if (requestService.canSetExecuter(requestId, userId))
+//            requestService.setExecuter(requestId, userId);
         return "redirect:/request";
     }
 
@@ -116,9 +114,9 @@ public class RequestController { //Handling the page containing requests
     public String completeRequest( //Setting the complete status for the request
             @PathVariable("id") Long requestId
     ) {
-        if (requestService.getRequestByID(requestId) != null) {
-            requestService.setStatus(requestService.getRequestByID(requestId), RequestState.COMPLETE);
-        }
+//        if (requestService.getRequestByID(requestId) != null) {
+//            requestService.setStatus(requestService.getRequestByID(requestId), RequestState.COMPLETE);
+//        }
         return "redirect:/request";
     }
 
@@ -126,9 +124,9 @@ public class RequestController { //Handling the page containing requests
     public String freezeRequest( //Setting the freeze status for request
             @PathVariable("id") Long requestId
     ) {
-        if (requestService.getRequestByID(requestId) != null) {
-            requestService.setStatus(requestService.getRequestByID(requestId), RequestState.FROZEN);
-        }
+//        if (requestService.getRequestByID(requestId) != null) {
+//            requestService.setStatus(requestService.getRequestByID(requestId), RequestState.FROZEN);
+//        }
         return "redirect:/request";
     }
 
@@ -136,9 +134,9 @@ public class RequestController { //Handling the page containing requests
     public String deleteRequest( //Deleting the request
             @PathVariable("id") Long requestId
     ) {
-        if (requestService.getRequestByID(requestId) != null) {
-            requestService.setStatus(requestService.getRequestByID(requestId), RequestState.DELETED);
-        }
+//        if (requestService.getRequestByID(requestId) != null) {
+//            requestService.setStatus(requestService.getRequestByID(requestId), RequestState.DELETED);
+//        }
         return "redirect:/request";
     }
 
@@ -146,9 +144,9 @@ public class RequestController { //Handling the page containing requests
     public String unfreezeRequest( //Refreshing the request and setting status "in process"
             @PathVariable("id") Long requestId
     ) {
-        if (requestService.getRequestByID(requestId) != null) {
-            requestService.setStatus(requestService.getRequestByID(requestId), RequestState.IN_PROCESS);
-        }
+//        if (requestService.getRequestByID(requestId) != null) {
+//            requestService.setStatus(requestService.getRequestByID(requestId), RequestState.IN_PROCESS);
+//        }
         return "redirect:/request";
     }
 }

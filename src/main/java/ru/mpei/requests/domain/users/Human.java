@@ -1,6 +1,7 @@
 package ru.mpei.requests.domain.users;
 
-import ru.mpei.requests.domain.requests.Request;
+import ru.mpei.requests.domain.requests.OrganisationRequest;
+import ru.mpei.requests.domain.requests.PhysicalRequest;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -36,7 +37,10 @@ public class Human {
     private User user;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Request request;
+    private PhysicalRequest physicalRequest;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private OrganisationRequest organisationRequest;
 
     public Human() {
     }
@@ -129,11 +133,19 @@ public class Human {
         this.email = email;
     }
 
-    public Request getRequest() {
-        return request;
+    public PhysicalRequest getPhysicalRequest() {
+        return physicalRequest;
     }
 
-    public void setRequest(Request request) {
-        this.request = request;
+    public void setPhysicalRequest(PhysicalRequest physicalRequest) {
+        this.physicalRequest = physicalRequest;
+    }
+
+    public OrganisationRequest getOrganisationRequest() {
+        return organisationRequest;
+    }
+
+    public void setOrganisationRequest(OrganisationRequest organisationRequest) {
+        this.organisationRequest = organisationRequest;
     }
 }

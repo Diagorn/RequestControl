@@ -65,9 +65,9 @@ public class UserController { //Admin panel controller
 
     @GetMapping("profile") //Getting the profile page that can change the user's data
     public String getProfilePage(Model model, @AuthenticationPrincipal User user) {
-        model.addAttribute("firstName", user.getFirstName());
-        model.addAttribute("secondName", user.getSecondName());
-        model.addAttribute("lastName", user.getLastName());
+//        model.addAttribute("firstName", user.getFirstName());
+//        model.addAttribute("secondName", user.getSecondName());
+//        model.addAttribute("lastName", user.getLastName());
         return "profile";
     }
 
