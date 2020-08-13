@@ -40,9 +40,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter { //Configur
                     .permitAll()//All can use it
                 .and()
                     .logout() //Logout can be used by anyone
-                    .permitAll()
-                .and()
-                    .rememberMe(); //For not to enter the login and password
+                    .permitAll();
+//                .and()
+//                    .rememberMe(); //For not to enter the login and password
     }
 
     @Override

@@ -29,7 +29,7 @@ public class Human {
 
     private String education; //Education
 
-    private int phoneNumber;
+    private String phoneNumber;
 
     private String email;
 
@@ -117,11 +117,11 @@ public class Human {
         this.user = user;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 

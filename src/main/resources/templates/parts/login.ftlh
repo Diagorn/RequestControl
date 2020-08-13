@@ -25,6 +25,17 @@
                         </div>
                     </#if>
                 </div>
+                <#if isRegisterForm><div class="form-group">
+                    <label for="exampleInputPassword2">Подтверждение пароля</label>
+                    <input name="password2" type="password" class="form-control ${(password2Error??)?string('is-invalid', '')}"
+                           id="exampleInputPassword2" placeholder="Введите пароль">
+                    <#if password2Error??>
+                        <div class="invalid-feedback">
+                            ${password2Error}
+                        </div>
+                    </#if>
+                </div>
+                </#if>
                 <#if isRegisterForm>
                     <div class="form-group">
                         <label for="avatar-input">Картинка профиля</label>

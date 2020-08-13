@@ -7,9 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import ru.mpei.requests.domain.chats.Chat;
 import ru.mpei.requests.domain.users.Role;
 import ru.mpei.requests.domain.users.User;
 import ru.mpei.requests.repos.ChatRepo;
@@ -35,6 +33,15 @@ public class UserService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder; //Used to encode passwords
 
+    public void updateUser(User user) {
+        userRepo.save(user);
+    }
+
+    public User findUserByID(Long Id) {
+        Optional<User> user = userRepo.findById(Id);
+        return user.orElse(null);
+    }
+
     public void setUserAvatar(User user, MultipartFile file) throws IOException { //Setting the profile image for the user
         File uploadDir = new File(uploadPath + File.separator + "img" + File.separator);
 
@@ -59,8 +66,9 @@ public class UserService implements UserDetailsService {
         return userFromDB == null;
     }
 
-    public void createUser(User user) throws IOException {
+    public void createUser(User user, boolean isOrganisation) throws IOException {
         user.setActive(true);
+        user.setPhysical(!isOrganisation);
         user.setRoles(Collections.singleton(Role.USER));
         user.setActivationCode(UUID.randomUUID().toString());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
