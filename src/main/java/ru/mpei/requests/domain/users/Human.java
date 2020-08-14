@@ -33,7 +33,12 @@ public class Human {
 
     private String email;
 
-    @ManyToOne
+    private String position; //Doljnost'
+
+    @OneToOne(mappedBy = "director")
+    private Organisation organisation;
+
+    @OneToOne
     private User user;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -147,5 +152,13 @@ public class Human {
 
     public void setOrganisationRequest(OrganisationRequest organisationRequest) {
         this.organisationRequest = organisationRequest;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
     }
 }

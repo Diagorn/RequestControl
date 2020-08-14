@@ -12,6 +12,9 @@ public class Organisation {
     private Long id;
 
     @OneToOne
+    private User user;
+
+    @OneToOne
     private Human director;
 
     private String name;
@@ -21,8 +24,6 @@ public class Organisation {
 
     @OneToMany
     private List<OrganisationRequest> organisationRequests;
-
-    private String position; //Doljnost'
 
     private String legalAdress; //Yuridicheskiy adres
 
@@ -73,14 +74,6 @@ public class Organisation {
         this.organisationRequests = organisationRequests;
     }
 
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
     public String getLegalAdress() {
         return legalAdress;
     }
@@ -103,5 +96,13 @@ public class Organisation {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -7,6 +7,9 @@ import ru.mpei.requests.domain.users.Organisation;
 import ru.mpei.requests.domain.users.User;
 import ru.mpei.requests.repos.HumanRepo;
 import ru.mpei.requests.repos.OrganisationRepo;
+import ru.mpei.requests.repos.UserRepo;
+
+import java.io.IOException;
 
 @Service
 public class OrganisationService {
@@ -14,36 +17,32 @@ public class OrganisationService {
     private OrganisationRepo organisationRepo;
 
     @Autowired
-    private UserService userService;
+    private UserRepo userRepo;
 
     @Autowired
-    private HumanRepo humanRepo;
+    private UserService userService;
 
-    public void saveOrganisation(Long id, String name, String position, String physicalAdress, String legalAdress, String phone) {
-        User user = userService.findUserByID(id);
-        if (user != null) {
-            Organisation organisation = new Organisation();
-            organisation.setPosition(position);
-            organisation.setName(name);
-            organisation.setPhysicalAdress(physicalAdress);
-            organisation.setLegalAdress(legalAdress);
-            organisation.setPhoneNumber(phone);
-            organisationRepo.save(organisation);
-            userService.updateUser(user);
-        }
+    public Organisation saveOrganisation(String username, String password, String name, String physicalAdress, String legalAdress, String phone) throws IOException {
+        if (!userService.isPossibleToCreateAUser(username))
+            return null;
+
+        User user = userService.createUser(username, password, true);
+
+        Organisation organisation = new Organisation();
+        organisation.setName(name);
+        organisation.setPhysicalAdress(physicalAdress);
+        organisation.setLegalAdress(legalAdress);
+        organisation.setPhoneNumber(phone);
+        organisation.setUser(user);
+        organisationRepo.save(organisation);
+
+        user.setOrganisation(organisation);
+        userRepo.save(user);
+
+        return organisation;
     }
 
-    public void saveDirector(Long id, String lastName, String firstName, String secondName, String phone) {
-        User user = userService.findUserByID(id);
-        if (user != null) {
-            Human human = new Human();
-            human.setLastName(lastName);
-            human.setFirstName(firstName);
-            human.setSecondName(secondName);
-            human.setPhoneNumber(phone);
-            humanRepo.save(human);
-            user.getOrganisation().setDirector(human);
-            userService.updateUser(user);
-        }
+    public void updateOrganisation(Organisation organisation) {
+        organisationRepo.save(organisation);
     }
 }

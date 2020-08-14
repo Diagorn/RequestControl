@@ -1,4 +1,6 @@
 <#import "parts/common.ftlh" as c>
+    <#import "parts/human_essential.ftlh" as h>
+    <#import "parts/login.ftlh" as l>
 <#include "parts/security.ftlh">
 
 <@c.page>
@@ -6,7 +8,8 @@
         <div class="col-md-4"></div>
         <div class="col-md-4">
             <form action="/registration/physical" class="mt-5" method="post">
-                <#include "parts/human_essential.ftlh">
+                <@l.user_inputs/>
+                <@h.human/>
                 <div class="form-group">
                     <label for="passport-input">Паспорт</label>
                     <input type="number" id="passport-input" name="passport"
@@ -35,7 +38,7 @@
                     <label for="dob-input">Дата рождения</label>
                     <input type="date" id="dob-input" class="form-control" name="dob">
                 </div>
-                <input type="hidden" name="_csrf" value="${csrf_token}">
+                <input type="hidden" name="_csrf" value="${_csrf.token}">
                 <button type="submit" class="btn btn-primary">Отправить</button>
             </form>
         </div>

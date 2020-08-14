@@ -32,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter { //Configur
     protected void configure(HttpSecurity http) throws Exception { //Setting up the security
         http
                 .authorizeRequests() //Authorising all server requests
-                    .antMatchers("/", "/registration", "/static/**").permitAll() //except these
+                    .antMatchers("/", "/registration/**", "/static/**").permitAll() //except these
                     .anyRequest().authenticated() //All others must be authorised
                 .and()
                     .formLogin()//Showing that we have our own login form

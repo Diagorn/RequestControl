@@ -1,4 +1,6 @@
 <#import "parts/common.ftlh" as c>
+    <#import "parts/login.ftlh" as l>
+    <#import "parts/human_essential.ftlh" as h>
 <#include "parts/security.ftlh">
 
 <@c.page>
@@ -6,15 +8,12 @@
         <div class="col-md-4"></div>
         <div class="col-md-4">
             <form action="/registration/organisation" method="post" class="mt-5">
+                <h4>Организация</h4>
+                <@l.user_inputs/>
                 <div class="form-group">
                     <label for="name-input">Наименование организации</label>
                     <input name="name" type="text" class="form-control"
                            id="name-input" aria-describedby="emailHelp" placeholder="Введите название организации">
-                </div>
-                <div class="form-group">
-                    <label for="position-input">Должность</label>
-                    <input name="position" type="text" class="form-control"
-                           id="position-input" aria-describedby="emailHelp" placeholder="Должность">
                 </div>
                 <div class="form-group">
                     <label for="physical-adress-input">Физический адрес</label>
@@ -30,8 +29,16 @@
                     <label for="telephone-input">Номер телефона организации</label>
                     <input type="tel" id="telephone-input" class="form-control" name="telephone">
                 </div>
-                <input type="hidden" name="user" value="${id}">
                 <input type="hidden" name="_csrf" value="${_csrf.token}">
+                <hr>
+                <h4>Лицо компании</h4>
+                <@h.human/>
+                <div class="form-group">
+                    <label for="position-input">Должность</label>
+                    <input name="position" type="text" class="form-control"
+                           id="position-input" aria-describedby="emailHelp"
+                           placeholder="Введите вашу должность">
+                </div>
                 <button type="submit" class="btn btn-primary">Отправить</button>
             </form>
         </div>

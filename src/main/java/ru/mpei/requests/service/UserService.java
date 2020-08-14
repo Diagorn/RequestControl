@@ -33,9 +33,6 @@ public class UserService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder; //Used to encode passwords
 
-    public void updateUser(User user) {
-        userRepo.save(user);
-    }
 
     public User findUserByID(Long Id) {
         Optional<User> user = userRepo.findById(Id);
@@ -66,16 +63,28 @@ public class UserService implements UserDetailsService {
         return userFromDB == null;
     }
 
-    public void createUser(User user, boolean isOrganisation) throws IOException {
+    public User createUser(String username, String password, boolean isOrganisation) throws IOException {
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
         user.setActive(true);
         user.setPhysical(!isOrganisation);
-        user.setRoles(Collections.singleton(Role.USER));
+        user.setRoles(new HashSet<Role>());
+        user.getRoles().add(Role.USER);
         user.setActivationCode(UUID.randomUUID().toString());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setOrganisation(null);
+        user.setPerson(null);
 
         userRepo.save(user);
 
+        return user;
+
         //Gotta send the letter to the user with the activation code
+    }
+
+    public User findUserByUsername(String username) {
+        return userRepo.findByUsername(username);
     }
 
     public void createUserFromAdminPanel(User user,

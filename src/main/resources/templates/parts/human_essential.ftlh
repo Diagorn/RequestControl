@@ -27,6 +27,6 @@
     </div>
     <div class="form-group">
         <label for="telephone-input">Номер телефона</label>
-        <input type="tel" id="telephone-input" class="form-control" name="telephone">
+        <input type="tel" id="telephone-input" class="form-control" name="phone">
     </div>
 </#macro>
