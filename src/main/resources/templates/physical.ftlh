@@ -38,6 +38,10 @@
                     <label for="dob-input">Дата рождения</label>
                     <input type="date" id="dob-input" class="form-control" name="dob">
                 </div>
+                <div class="form-group">
+                    <label for="avatar-input">Картинка профиля</label>
+                    <input type="file" name="avatar">
+                </div>
                 <input type="hidden" name="_csrf" value="${_csrf.token}">
                 <button type="submit" class="btn btn-primary">Отправить</button>
             </form>

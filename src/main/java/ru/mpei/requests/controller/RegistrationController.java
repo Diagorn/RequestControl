@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 import ru.mpei.requests.domain.users.Organisation;
 import ru.mpei.requests.service.HumanService;
 import ru.mpei.requests.service.OrganisationService;
@@ -46,16 +47,17 @@ public class RegistrationController { //Used to register new users
             @RequestParam("name") String name,
             @RequestParam("physicalAdress") String physicalAdress,
             @RequestParam("legalAdress") String legalAdress,
-            @RequestParam("telephone") String phone,
+            @RequestParam("phone") String phone,
             @RequestParam("firstName") String firstName,
             @RequestParam("secondName") String secondName,
             @RequestParam("lastName") String lastName,
             @RequestParam("position") String position,
-            @RequestParam("phone") String directorPhone
+            @RequestParam("telephone") String directorPhone,
+            @RequestParam("avatar") MultipartFile avatar
     ) throws IOException {
-        Organisation organisation = organisationService.saveOrganisation(username, password, name, physicalAdress, legalAdress, phone);
+        Organisation organisation = organisationService.saveOrganisation(username, password, name, physicalAdress, legalAdress, phone, avatar);
         humanService.saveDirectorOfOrganisation(organisation, firstName, secondName, lastName, position, directorPhone);
-        return "organisation_director";
+        return "redirect:/login";
     }
 
     @GetMapping("/registration/physical")
@@ -71,12 +73,13 @@ public class RegistrationController { //Used to register new users
             @RequestParam String firstName,
             @RequestParam String secondName,
             @RequestParam String telephone,
-            @RequestParam int passport,
+            @RequestParam String passport,
             @RequestParam String adress,
             @RequestParam String education,
-            @RequestParam Date dob
-    ) throws IOException {
-        humanService.saveHumanFromForm(username, password, lastName, firstName, secondName, telephone, passport, adress, education, dob);
+            @RequestParam String dob,
+            @RequestParam MultipartFile avatar
+            ) throws IOException {
+        humanService.saveHumanFromForm(username, password, lastName, firstName, secondName, telephone, passport, adress, education, dob, avatar);
         return "redirect:/login";
     }
 }

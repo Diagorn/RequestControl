@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-md-4"></div>
         <div class="col-md-4">
-            <form action="/registration/organisation" method="post" class="mt-5">
+            <form action="/registration/organisation" method="post" class="mt-5" enctype="multipart/form-data">
                 <h4>Организация</h4>
                 <@l.user_inputs/>
                 <div class="form-group">
@@ -26,8 +26,8 @@
                            placeholder="Юридический адрес">
                 </div>
                 <div class="form-group">
-                    <label for="telephone-input">Номер телефона организации</label>
-                    <input type="tel" id="telephone-input" class="form-control" name="telephone">
+                    <label for="company-telephone-input">Номер телефона организации</label>
+                    <input type="tel" id="company-telephone-input" class="form-control" name="phone">
                 </div>
                 <input type="hidden" name="_csrf" value="${_csrf.token}">
                 <hr>
@@ -38,6 +38,10 @@
                     <input name="position" type="text" class="form-control"
                            id="position-input" aria-describedby="emailHelp"
                            placeholder="Введите вашу должность">
+                </div>
+                <div class="form-group">
+                    <label for="avatar-input">Картинка профиля</label>
+                    <input type="file" name="avatar">
                 </div>
                 <button type="submit" class="btn btn-primary">Отправить</button>
             </form>

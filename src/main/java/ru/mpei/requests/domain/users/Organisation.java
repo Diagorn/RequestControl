@@ -3,10 +3,14 @@ package ru.mpei.requests.domain.users;
 import ru.mpei.requests.domain.requests.OrganisationRequest;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Organisation {
+public class Organisation implements Serializable {
+
+    private static final long serialVersionUID = -9003779202226434808L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

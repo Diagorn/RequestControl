@@ -39,11 +39,7 @@
                         </div>
                     </#if>
                 </div>
-                <div class="form-group">
-                    <label for="avatar-input">Картинка профиля</label>
-                    <input type="file" name="avatar">
-                </div>
-                <div id="registration-div" onclick="setRegistrationForm()">
+                <div id="registration-div">
                     <div class="form-group">
                         <label for="lastName-input">Фамилия</label>
                         <input name="lastName" type="text" class="form-control ${(lastNameError??)?string('is-invalid', '')}"
@@ -117,12 +113,13 @@
                 <form action="/login" method="post">
                     <@user_inputs/>
                     <input type="hidden" name="_csrf" value="${_csrf.token}">
+                    <button type="submit" class="btn btn-primary"><#if isRegisterForm>Зарегистрироваться<#else>Войти</#if></button>
                 </form>
             </#if>
 
 
             <input type="hidden" name="_csrf" value="${_csrf.token}">
-            <button type="submit" class="btn btn-primary"><#if isRegisterForm>Зарегистрироваться<#else>Войти</#if></button>
+
             <#if !isRegisterForm>
                 <br>
                 <a href="/registration/physical">Зарегистрироваться как физическое лицо...</a><br>

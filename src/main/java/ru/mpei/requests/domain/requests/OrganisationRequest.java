@@ -14,7 +14,12 @@ public class OrganisationRequest {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany(mappedBy = "organisationRequest", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany
+    @JoinTable(
+            name = "organisation_requests_humans",
+            inverseJoinColumns = @JoinColumn(name = "employee_id"),
+            joinColumns = @JoinColumn(name = "request_id")
+    )
     private List<Human> employees;
 
     @ManyToOne

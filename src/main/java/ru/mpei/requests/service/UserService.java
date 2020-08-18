@@ -63,7 +63,7 @@ public class UserService implements UserDetailsService {
         return userFromDB == null;
     }
 
-    public User createUser(String username, String password, boolean isOrganisation) throws IOException {
+    public User createUser(String username, String password, boolean isOrganisation) {
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);

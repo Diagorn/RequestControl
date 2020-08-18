@@ -1,14 +1,17 @@
 package ru.mpei.requests.domain.users;
 
 import ru.mpei.requests.domain.requests.OrganisationRequest;
-import ru.mpei.requests.domain.requests.PhysicalRequest;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Set;
 
 @Entity
-public class Human {
+public class Human implements Serializable {
+    private static final long serialVersionUID = 2991582847736919397L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -23,7 +26,7 @@ public class Human {
 
     private Calendar DOB; //Date of birth
 
-    private int passport; //Passport series and number
+    private String passport; //Passport series and number
 
     private String registrationAdress; //Adress of registration
 
@@ -41,11 +44,13 @@ public class Human {
     @OneToOne
     private User user;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private PhysicalRequest physicalRequest;
-
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private OrganisationRequest organisationRequest;
+    @ManyToMany
+    @JoinTable(
+            name = "organisation_requests_humans",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "request_id")
+    )
+    private Set<OrganisationRequest> organisationRequests;
 
     public Human() {
     }
@@ -90,11 +95,11 @@ public class Human {
         this.DOB = DOB;
     }
 
-    public int getPassport() {
+    public String getPassport() {
         return passport;
     }
 
-    public void setPassport(int passport) {
+    public void setPassport(String passport) {
         this.passport = passport;
     }
 
@@ -138,27 +143,31 @@ public class Human {
         this.email = email;
     }
 
-    public PhysicalRequest getPhysicalRequest() {
-        return physicalRequest;
-    }
-
-    public void setPhysicalRequest(PhysicalRequest physicalRequest) {
-        this.physicalRequest = physicalRequest;
-    }
-
-    public OrganisationRequest getOrganisationRequest() {
-        return organisationRequest;
-    }
-
-    public void setOrganisationRequest(OrganisationRequest organisationRequest) {
-        this.organisationRequest = organisationRequest;
-    }
-
     public String getPosition() {
         return position;
     }
 
     public void setPosition(String position) {
         this.position = position;
+    }
+
+    public Organisation getOrganisation() {
+        return organisation;
+    }
+
+    public void setOrganisation(Organisation organisation) {
+        this.organisation = organisation;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Set<OrganisationRequest> getOrganisationRequests() {
+        return organisationRequests;
+    }
+
+    public void setOrganisationRequests(Set<OrganisationRequest> organisationRequests) {
+        this.organisationRequests = organisationRequests;
     }
 }

@@ -156,7 +156,6 @@ public class User implements UserDetails, Serializable {
         else {
             return person.getLastName() + " " + person.getFirstName().substring(0, 1) + ".";
         }
-
     }
 
     public boolean isAdmin() {

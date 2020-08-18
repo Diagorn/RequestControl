@@ -2,6 +2,7 @@ package ru.mpei.requests.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import ru.mpei.requests.domain.users.Human;
 import ru.mpei.requests.domain.users.Organisation;
 import ru.mpei.requests.domain.users.User;
@@ -22,7 +23,7 @@ public class OrganisationService {
     @Autowired
     private UserService userService;
 
-    public Organisation saveOrganisation(String username, String password, String name, String physicalAdress, String legalAdress, String phone) throws IOException {
+    public Organisation saveOrganisation(String username, String password, String name, String physicalAdress, String legalAdress, String phone, MultipartFile avatar) throws IOException {
         if (!userService.isPossibleToCreateAUser(username))
             return null;
 
@@ -37,6 +38,7 @@ public class OrganisationService {
         organisationRepo.save(organisation);
 
         user.setOrganisation(organisation);
+        userService.setUserAvatar(user, avatar);
         userRepo.save(user);
 
         return organisation;

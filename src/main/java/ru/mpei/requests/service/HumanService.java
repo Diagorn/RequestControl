@@ -2,6 +2,7 @@ package ru.mpei.requests.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import ru.mpei.requests.domain.users.Human;
 import ru.mpei.requests.domain.users.Organisation;
 import ru.mpei.requests.domain.users.User;
@@ -27,13 +28,23 @@ public class HumanService {
     @Autowired
     private OrganisationService organisationService;
 
-    public void saveHumanFromForm(String username, String password, String lastName, String firstName, String secondName, String telephone, int passport, String adress, String education, Date dob) throws IOException {
+    public void saveHumanFromForm(String username,
+                                  String password,
+                                  String lastName,
+                                  String firstName,
+                                  String secondName,
+                                  String telephone,
+                                  String passport,
+                                  String adress,
+                                  String education,
+                                  String dob,
+                                  MultipartFile avatar) throws IOException {
         if (!userService.isPossibleToCreateAUser(username))
             return;
 
         User user = userService.createUser(username, password, false);
 
-        Calendar DOB = new GregorianCalendar(dob.getYear(), dob.getMonth(), dob.getDay());
+        Calendar DOB = ServiceUtils.parseStringToCalendar(dob);
 
         Human human = new Human();
         human.setLastName(lastName);
@@ -44,10 +55,13 @@ public class HumanService {
         human.setRegistrationAdress(adress);
         human.setEducation(education);
         human.setDOB(DOB);
+        human.setUser(user);
+        human.setEmail(user.getUsername());
 
         humanRepo.save(human);
 
         user.setPerson(human);
+        userService.setUserAvatar(user, avatar);
         userRepo.save(user);
     }
 
@@ -61,6 +75,7 @@ public class HumanService {
         human.setPosition(position);
         human.setPhoneNumber(phone);
         human.setUser(user);
+        human.setOrganisation(organisation);
 
         humanRepo.save(human);
         userRepo.save(user);
