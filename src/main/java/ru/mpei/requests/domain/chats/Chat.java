@@ -24,11 +24,11 @@ public class Chat { //Entity that contains the messages for requests or admin ch
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "chat")
     Set<Message> messages; //Messages written in the chat
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organisation_request_id")
     OrganisationRequest organisationRequest; //Chat may be devoted to organisation request
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "physical_request_id")
     PhysicalRequest physicalRequest; //Chat may be devoted to physical request
 

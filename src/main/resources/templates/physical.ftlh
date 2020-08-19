@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-md-4"></div>
         <div class="col-md-4">
-            <form action="/registration/physical" class="mt-5" method="post">
+            <form action="/registration/physical" class="mt-5" method="post" enctype="multipart/form-data">
                 <@l.user_inputs/>
                 <@h.human/>
                 <div class="form-group">
