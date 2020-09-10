@@ -7,6 +7,9 @@ import javax.persistence.*;
 
 @MappedSuperclass
 public class Request {
+    @Id
+    private Long id;
+
     public Request() {
     }
 
