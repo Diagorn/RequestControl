@@ -35,8 +35,8 @@
             <form method="post" action="/user/new">
                 <input type="text" class="form-control mb-2" name="email" placeholder="E-mail" required>
                 <input type="text" class="form-control mb-2" name="firstName" placeholder="Имя" required>
-                <input type="text" class="form-control mb-2" name="lastName" placeholder="Фамилия">
-                <input type="text" class="form-control mb-2" name="secondName" placeholder="Отчество" required>
+                <input type="text" class="form-control mb-2" name="lastName" placeholder="Фамилия" required>
+                <input type="text" class="form-control mb-2" name="secondName" placeholder="Отчество">
                 <#list roles as role>
                     <label class="form-check-label ml-4"><input
                                 type="checkbox"

@@ -9,12 +9,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import ru.mpei.requests.domain.chats.Chat;
 import ru.mpei.requests.domain.chats.Message;
 import ru.mpei.requests.domain.users.User;
 import ru.mpei.requests.repos.ChatRepo;
 import ru.mpei.requests.repos.MessageRepo;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -76,9 +78,9 @@ public class ChatController {
     @GetMapping("/chat")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODER')")
     public String getAdminModerChat (Model model) { //Get-mapping for admins and moders chat
-        //Chat chat = chatRepo.findByRequestIsNull();
-        //List<Message> messages = messageRepo.findAllByChat(chat);
-        //model.addAttribute("messages", messages);
+        Chat chat = chatRepo.findByOrganisationRequestIsNullAndPhysicalRequestIsNull();
+        List<Message> messages = messageRepo.findAllByChat(chat);
+        model.addAttribute("messages", messages);
         model.addAttribute("isAdminChat", true);
         return "chat";
     }
@@ -100,8 +102,8 @@ public class ChatController {
             messageRepo.save(message);
             model.addAttribute("message", null);
         }
-        //List<Message> messages = messageRepo.findAllByChat(chatRepo.findByRequestIsNull()); //Showing all the messages
-        //model.addAttribute("messages", messages);
+        List<Message> messages = messageRepo.findAllByChat(chatRepo.findByOrganisationRequestIsNullAndPhysicalRequestIsNull()); //Showing all the messages
+        model.addAttribute("messages", messages);
         model.addAttribute("isAdminChat", true);
         return "chat";
     }

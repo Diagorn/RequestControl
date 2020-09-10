@@ -21,7 +21,7 @@
                            placeholder="Физический адрес">
                 </div>
                 <div class="form-group">
-                    <label for="legal-adress-input">Адрес регистрации</label>
+                    <label for="legal-adress-input">Юридический адрес</label>
                     <input type="text" id="legal-adress-input" class="form-control" name="legalAdress"
                            placeholder="Юридический адрес">
                 </div>

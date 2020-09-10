@@ -8,9 +8,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import ru.mpei.requests.domain.chats.Chat;
+import ru.mpei.requests.domain.users.Human;
 import ru.mpei.requests.domain.users.Role;
 import ru.mpei.requests.domain.users.User;
 import ru.mpei.requests.repos.ChatRepo;
+import ru.mpei.requests.repos.HumanRepo;
 import ru.mpei.requests.repos.UserRepo;
 
 import javax.transaction.Transactional;
@@ -26,6 +29,12 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private ChatRepo chatRepo; //Used to work with chats
+
+    @Autowired
+    private HumanRepo humanRepo;
+
+    @Autowired
+    private HumanService humanService; //Used to work with persons
 
     @Value("${upload.path}")
     private String uploadPath; //Path for uploading files
@@ -93,18 +102,22 @@ public class UserService implements UserDetailsService {
                                          String secondName,
                                          String lastName) throws IOException {
         user.setUsername(email);
-//        user.setLastName(lastName);
-//        user.setSecondName(secondName);
-//        user.setFirstName(firstName);
+        user.getPerson().setLastName(lastName);
+        user.getPerson().setSecondName(secondName);
+        user.getPerson().setFirstName(firstName);
+
+        humanService.updateHuman(user.getPerson());
+
         setUserAvatar(user, null);
         user.setRoles(Collections.singleton(Role.USER));
         user.setActive(true);
-        user.setPassword(passwordEncoder.encode("123"));
-//        Chat chat = chatRepo.findByRequestIsNull();
+        user.setPassword(passwordEncoder.encode("123")); //For the first login
+        Chat chat = chatRepo.findByOrganisationRequestIsNullAndPhysicalRequestIsNull();
         if (user.getRoles().contains(Role.ADMIN) || user.getRoles().contains(Role.MODER)) {
-//            chat.getMembers().add(user);
+            chat.getMembers().add(user);
         }
         userRepo.save(user);
+        chatRepo.save(chat);
     }
 
     @Override
@@ -119,10 +132,10 @@ public class UserService implements UserDetailsService {
     public void saveUser(User user, String username, Map<String, String> form) { //Saving the user from admin panel
         user.setUsername(username);
         setUserRolesFromRegForm(user, form);
-//        Chat chat = chatRepo.findByRequestIsNull();
+        Chat chat = chatRepo.findByOrganisationRequestIsNullAndPhysicalRequestIsNull();
         if (user.getRoles().contains(Role.ADMIN) || user.getRoles().contains(Role.MODER)) {
-//            chat.getMembers().add(user);
-//            chatRepo.save(chat);
+            chat.getMembers().add(user);
+            chatRepo.save(chat);
         }
         userRepo.save(user);
     }
@@ -165,27 +178,21 @@ public class UserService implements UserDetailsService {
     public User findUserByQuery(String name) { //Getting one particular user by a string
         User user;
         user = userRepo.findByUsername(name);
-//        if (user == null) {
-//            user = userRepo.findByUsernameLike(name);
-//        }
-//        if (user == null) {
-//            user = userRepo.findByFirstName(name);
-//        }
-//        if (user == null) {
-//            user = userRepo.findBySecondName(name);
-//        }
-//        if (user == null) {
-//            user = userRepo.findByLastName(name);
-//        }
-//        if (user == null) {
-//            user = userRepo.findByFirstNameLike(name);
-//        }
-//        if (user == null) {
-//            user = userRepo.findBySecondNameLike(name);
-//        }
-//        if (user == null) {
-//            user = userRepo.findByLastNameLike(name);
-//        }
+        if (user == null) {
+            user = userRepo.findByUsernameContaining(name);
+        }
+        if (user == null) {
+            Human human = humanRepo.findByFirstNameContaining(name);
+            user = userRepo.findByPerson(human);
+        }
+        if (user == null) {
+            Human human = humanRepo.findBySecondNameContaining(name);
+            user = userRepo.findByPerson(human);
+        }
+        if (user == null) {
+            Human human = humanRepo.findByLastNameContaining(name);
+            user = userRepo.findByPerson(human);
+        }
         return user;
     }
 
@@ -206,14 +213,34 @@ public class UserService implements UserDetailsService {
 
 
     public List<User> getAllUsersByQuery(String query) { //Get all users by a string
-//        List<User> firstNameList = userRepo.findAllByFirstNameContaining(query);
-//        List<User> secondNameList = userRepo.findAllBySecondNameContaining(query);
-//        List<User> lastNameList = userRepo.findAllByLastNameContaining(query);
+        List<Human> firstNameList = humanRepo.findAllByFirstNameContaining(query);
+        List<Human> secondNameList = humanRepo.findAllBySecondNameContaining(query);
+        List<Human> lastNameList = humanRepo.findAllByLastNameContaining(query);
+
+        List<User> firstNameUserList = new ArrayList<User>();
+        List<User> secondNameUserList = new ArrayList<User>();
+        List<User> lastNameUserList = new ArrayList<User>();
+
+        for (Human human : firstNameList) {
+            User user = userRepo.findByPerson(human);
+            firstNameUserList.add(user);
+        }
+
+        for (Human human : secondNameList) {
+            User user = userRepo.findByPerson(human);
+            secondNameUserList.add(user);
+        }
+
+        for (Human human : lastNameList) {
+            User user = userRepo.findByPerson(human);
+            lastNameUserList.add(user);
+        }
+
         List<User> usernameList = userRepo.findAllByUsernameContaining(query);
-//        List<User> resultList = ServiceUtils.collideLists(firstNameList, secondNameList);
-//        ServiceUtils.collideLists(resultList, lastNameList);
-//        ServiceUtils.collideLists(resultList, usernameList);
-        return null;
+        List<User> resultList = ServiceUtils.collideLists(firstNameUserList, secondNameUserList);
+        ServiceUtils.collideLists(resultList, lastNameUserList);
+        ServiceUtils.collideLists(resultList, usernameList);
+        return resultList;
     }
 
     public List<User> getAllModersAndAdmins() {

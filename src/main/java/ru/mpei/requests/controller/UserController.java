@@ -100,11 +100,7 @@ public class UserController { //Admin panel controller
             userService.createUserFromAdminPanel(user, email, firstName, secondName, lastName);
             userService.setUserRolesFromRegForm(user, form);
         }
-        model.addAttribute("users", userService.findAll());
-        model.addAttribute("deleteUsers", Collections.emptyList());
-        model.addAttribute("roles", Role.values());
-        model.addAttribute("userService", userService);
-        return "userList";
+        return "redirect:/userList";
     }
 
     @GetMapping("search")

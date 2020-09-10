@@ -83,4 +83,8 @@ public class HumanService {
         organisation.setDirector(human);
         organisationService.updateOrganisation(organisation);
     }
+
+    public void updateHuman(Human person) {
+        humanRepo.save(person);
+    }
 }

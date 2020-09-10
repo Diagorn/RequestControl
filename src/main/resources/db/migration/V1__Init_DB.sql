@@ -73,7 +73,7 @@ create table organisation_request (
 
 create table physical_request (
     id int8 not null,
-    status varchar(255),
+    state varchar(255),
     theme varchar(255),
     chat_id int8,
     client_id int8,

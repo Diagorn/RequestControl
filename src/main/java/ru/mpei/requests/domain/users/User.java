@@ -4,6 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.mpei.requests.domain.requests.OrganisationRequest;
 import ru.mpei.requests.domain.requests.PhysicalRequest;
+import ru.mpei.requests.domain.requests.Request;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -173,14 +174,14 @@ public class User implements UserDetails, Serializable {
         for(PhysicalRequest r : executerPhysicalRequests) {
             r.setExecuter(null);
         }
-        for(OrganisationRequest r : executerOrganisationRequests) {
-            r.setExecuter(null);
-        }
-        for(OrganisationRequest r : clientOrganisationRequests) {
+        for (Request r: executerPhysicalRequests) {
             r.setClient(null);
         }
         for(PhysicalRequest r : clientPhysicalRequests) {
             r.setClient(null);
+        }
+        for (Request r: clientOrganisationRequests) {
+            r.setExecuter(null);
         }
     }
 

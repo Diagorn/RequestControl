@@ -26,9 +26,9 @@
                 <tbody>
                 <#list users as us>
                     <tr>
-                        <th scope="row">${us.lastName}</th>
-                        <td>${us.firstName}</td>
-                        <td>${us.secondName}</td>
+                        <th scope="row">${us.getPerson().lastName}</th>
+                        <td>${us.getPerson().firstName}</td>
+                        <td>${us.getPerson().secondName}</td>
                         <td>${us.username}</td>
                         <td>
                             <#list us.roles as role>${userService.getStringRoleName(role)}<#sep>, </#list>

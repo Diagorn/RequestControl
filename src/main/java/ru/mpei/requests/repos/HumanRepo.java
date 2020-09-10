@@ -9,9 +9,9 @@ public interface HumanRepo extends JpaRepository<Human, Long> {
     Human findByFirstName(String firstName);
     Human findBySecondName(String secondName);
     Human findByLastName(String lastName);
-    Human findByFirstNameLike(String firstName);
-    Human findBySecondNameLike(String secondName);
-    Human findByLastNameLike(String lastName);
+    Human findByFirstNameContaining(String firstName);
+    Human findBySecondNameContaining(String secondName);
+    Human findByLastNameContaining(String lastName);
     List<Human> findAllByFirstNameContaining(String firstName);
     List<Human> findAllBySecondNameContaining(String secondName);
     List<Human> findAllByLastNameContaining(String lastName);
