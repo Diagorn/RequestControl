@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.mpei.requests.domain.users.User;
+import ru.mpei.requests.service.RequestService;
 import ru.mpei.requests.service.UserService;
 
 import java.util.Collections;
@@ -18,8 +19,8 @@ import java.util.List;
 @Controller
 public class RequestController { //Handling the page containing requests
 
-//    @Autowired
-//    private RequestService requestService; //For doing anything with requests
+    @Autowired
+    private RequestService requestService; //For doing anything with requests
 
     @Autowired
     private UserService userService; //For doing anything with users
@@ -72,8 +73,16 @@ public class RequestController { //Handling the page containing requests
             @RequestParam String theme,
             @AuthenticationPrincipal User user,
             Model model) {
-        User client = userService.findUserByQuery(username);
-        //requestService.createRequest(client, theme);
+        User client;
+        if (username.equals("") || username.isEmpty())
+            client = user;
+        else
+            client = userService.findUserByQuery(username);
+        if (client.isPhysical()) {
+            requestService.createPhysicalRequest(client, theme);
+        } else {
+            requestService.createOrganisationRequest(client, theme);
+        }
 //        List<Request> requests = null; //requestService.getRequestsByStatus("", user);
         model.addAttribute("requests", Collections.emptySet());
         return "requests_list";

@@ -12,8 +12,8 @@
                 <button class="btn btn-primary mt-3" type="submit">Найти</button>
                 <#if message??>${message}</#if>
             </form>
-
             </#if>
+
             <#if client??>
                 ${client.getUsernameWithInitials()}
                 <img src="img/${client.fileName}" alt="" class="navbar-custom-avatar"><br>

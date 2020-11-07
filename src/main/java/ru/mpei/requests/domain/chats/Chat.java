@@ -21,14 +21,14 @@ public class Chat { //Entity that contains the messages for requests or admin ch
     )
     Set<User> members; //Users involved in the chat
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "chat")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "chat", cascade = CascadeType.ALL)
     Set<Message> messages; //Messages written in the chat
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "organisation_request_id")
     OrganisationRequest organisationRequest; //Chat may be devoted to organisation request
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "physical_request_id")
     PhysicalRequest physicalRequest; //Chat may be devoted to physical request
 
