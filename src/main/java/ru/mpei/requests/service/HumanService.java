@@ -3,6 +3,7 @@ package ru.mpei.requests.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import ru.mpei.requests.domain.requests.OrganisationRequest;
 import ru.mpei.requests.domain.users.Human;
 import ru.mpei.requests.domain.users.Organisation;
 import ru.mpei.requests.domain.users.User;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 @Service
 public class HumanService {
@@ -84,7 +86,28 @@ public class HumanService {
         organisationService.updateOrganisation(organisation);
     }
 
+
+
     public void updateHuman(Human person) {
         humanRepo.save(person);
+    }
+
+    public Human createEmployee(String lastName, String firstName, String secondName, String telephone, String email, String passport, String adress, String education, String dob) {
+        Calendar DOB = ServiceUtils.parseStringToCalendar(dob);
+
+        Human human = new Human();
+
+        human.setLastName(lastName);
+        human.setFirstName(firstName);
+        human.setSecondName(secondName);
+        human.setPhoneNumber(telephone);
+        human.setEmail(email);
+        human.setPassport(passport);
+        human.setRegistrationAdress(adress);
+        human.setEducation(education);
+        human.setDOB(DOB);
+        humanRepo.save(human);
+
+        return human;
     }
 }

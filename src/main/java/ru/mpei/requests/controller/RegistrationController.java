@@ -14,7 +14,6 @@ import ru.mpei.requests.service.OrganisationService;
 import ru.mpei.requests.service.UserService;
 
 import java.io.IOException;
-import java.util.Date;
 
 @Controller
 public class RegistrationController { //Used to register new users

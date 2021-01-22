@@ -20,6 +20,7 @@ create table human (
     registration_adress varchar(255),
     second_name varchar(255),
     user_id int8,
+    organisation_request_id int8,
     primary key (id)
 );
 

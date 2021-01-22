@@ -3,12 +3,16 @@ package ru.mpei.requests.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import ru.mpei.requests.domain.requests.OrganisationRequest;
+import ru.mpei.requests.domain.users.Human;
 import ru.mpei.requests.domain.users.Organisation;
 import ru.mpei.requests.domain.users.User;
+import ru.mpei.requests.repos.HumanRepo;
 import ru.mpei.requests.repos.OrganisationRepo;
 import ru.mpei.requests.repos.UserRepo;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class OrganisationService {
@@ -17,6 +21,9 @@ public class OrganisationService {
 
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private HumanRepo humanRepo;
 
     @Autowired
     private UserService userService;

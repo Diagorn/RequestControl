@@ -20,7 +20,7 @@ public class ChatService {
 
     public Chat createChatForClient(User client) {
         Chat chat = new Chat();
-        Set<User> members = new HashSet<User>();
+        Set<User> members = new HashSet<>();
         members.add(client);
         chat.setMembers(members);
         return chat;

@@ -22,6 +22,10 @@ alter table if exists human
     add constraint human_user_FK foreign key (user_id)
     references usr;
 
+alter table if exists human
+    add constraint human_organisation_request_FK foreign key (organisation_request_id)
+        references organisation_request;
+
 alter table if exists message
     add constraint message_user_FK foreign key (user_id)
     references usr;

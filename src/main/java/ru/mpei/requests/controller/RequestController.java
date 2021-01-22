@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.mpei.requests.domain.requests.OrganisationRequest;
+import ru.mpei.requests.domain.users.Human;
 import ru.mpei.requests.domain.users.User;
-import ru.mpei.requests.service.RequestService;
-import ru.mpei.requests.service.UserService;
+import ru.mpei.requests.service.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +25,12 @@ public class RequestController { //Handling the page containing requests
 
     @Autowired
     private UserService userService; //For doing anything with users
+
+    @Autowired
+    private HumanService humanService;
+
+    @Autowired
+    private ru.mpei.requests.service.ServiceUtils serviceUtils;
 
     @GetMapping("/request")
     public String getRequestsForUser( //Get-mapping to show just the requests for the authentificated user
@@ -79,13 +86,76 @@ public class RequestController { //Handling the page containing requests
         else
             client = userService.findUserByQuery(username);
         if (client.isPhysical()) {
-            requestService.createPhysicalRequest(client, theme);
+            Long id = requestService.createPhysicalRequest(client, theme);
+            //TODO: add logic
         } else {
-            requestService.createOrganisationRequest(client, theme);
+            Long id = requestService.createOrganisationRequest(client, theme);
+            return "redirect:/request-create/organisation/" + id.toString();
         }
 //        List<Request> requests = null; //requestService.getRequestsByStatus("", user);
         model.addAttribute("requests", Collections.emptySet());
         return "requests_list";
+    }
+
+    @GetMapping("/request-create/organisation/{id}")
+    public String getOrganisationRequestCreateAddPeoplePage(@PathVariable Long id,
+                                                            @AuthenticationPrincipal User user,
+                                                            Model model) {
+        OrganisationRequest request = requestService.getOrganisationRequestByID(id);
+        if (!user.getId().equals(request.getOrganisation().getUser().getId()))
+            return "redirect:/request";
+        model.addAttribute("request", request);
+        model.addAttribute("employees", request.getEmployees());
+        model.addAttribute("utils", serviceUtils);
+        return "organisation_request_create";
+    }
+
+    @GetMapping("/request-create/organisation/{id}/add")
+    public String getPeopleAddPage(
+            @PathVariable Long id,
+            @AuthenticationPrincipal User user,
+            Model model
+    ) {
+        OrganisationRequest request = requestService.getOrganisationRequestByID(id);
+        if (!user.getId().equals(request.getOrganisation().getUser().getId()))
+            return "redirect:/request";
+        List<Human> employees = requestService.getAllEmployeesForRequest(request);
+        model.addAttribute("request", request);
+        model.addAttribute("employees", request.getEmployees());
+        return "add_employees";
+    }
+
+    @PostMapping("/request-create/organisation/{id}/add")
+    public String addEmployeeToRequest(
+            @PathVariable Long id,
+            @AuthenticationPrincipal User user,
+            @RequestParam String lastName,
+            @RequestParam String firstName,
+            @RequestParam String secondName,
+            @RequestParam String telephone,
+            @RequestParam String email,
+            @RequestParam String passport,
+            @RequestParam String adress,
+            @RequestParam String education,
+            @RequestParam String dob
+    ) {
+        OrganisationRequest request = requestService.getOrganisationRequestByID(id);
+        if (!user.getId().equals(request.getOrganisation().getUser().getId()))
+            return "redirect:/request";
+        Human human = humanService.createEmployee(lastName, firstName, secondName, telephone, email, passport, adress, education, dob);
+        requestService.addEmployeeToOrganisationRequest(human, request);
+        return "redirect:/request-create/organisation/{id}/add";
+    }
+
+    @PostMapping("/request-create/organisation/{id}/delete")
+    public String deleteEmployee(
+            @PathVariable Long id,
+            @RequestParam Long employeeID,
+            @AuthenticationPrincipal User user
+    ) {
+        OrganisationRequest request = requestService.getOrganisationRequestByID(id);
+        requestService.deleteEmployeeByID(request, employeeID);
+        return "redirect:/request-create/organisation/{id}";
     }
 
     @GetMapping("/request/{id}/set-executer") //Showing all the executers that can be set

@@ -132,7 +132,7 @@ public class UserService implements UserDetailsService {
     public void saveUser(User user, String username, Map<String, String> form) { //Saving the user from admin panel
         user.setUsername(username);
         setUserRolesFromRegForm(user, form);
-        Chat chat = chatRepo.findByOrganisationRequestIsNullAndPhysicalRequestIsNull();
+        Chat chat = chatRepo.findById(0L).get();
         if (user.getRoles().contains(Role.ADMIN) || user.getRoles().contains(Role.MODER)) {
             chat.getMembers().add(user);
             chatRepo.save(chat);

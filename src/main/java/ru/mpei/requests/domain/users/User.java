@@ -151,11 +151,21 @@ public class User implements UserDetails, Serializable {
     }
 
     public String getUsernameWithInitials() {
-        if (person.getSecondName() != null && !person.getSecondName().equals(""))
-            return person.getLastName() + " " + person.getFirstName().substring(0, 1) + ". " +
-                    person.getSecondName().substring(0, 1) + ".";
-        else {
-            return person.getLastName() + " " + person.getFirstName().substring(0, 1) + ".";
+        if (isPhysical) {
+            if (person.getSecondName() != null && !person.getSecondName().equals(""))
+                return person.getLastName() + " " + person.getFirstName().substring(0, 1) + ". " +
+                        person.getSecondName().substring(0, 1) + ".";
+            else {
+                return person.getLastName() + " " + person.getFirstName().substring(0, 1) + ".";
+            }
+        } else {
+            Human director = organisation.getDirector();
+            if (director.getSecondName() != null && !director.getSecondName().equals(""))
+                return director.getLastName() + " " + director.getFirstName().substring(0, 1) + ". " +
+                        director.getSecondName().substring(0, 1) + ".";
+            else {
+                return director.getLastName() + " " + director.getFirstName().substring(0, 1) + ".";
+            }
         }
     }
 

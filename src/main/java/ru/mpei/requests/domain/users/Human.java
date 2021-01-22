@@ -6,7 +6,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.Set;
 
 @Entity
 public class Human implements Serializable {
@@ -44,13 +43,8 @@ public class Human implements Serializable {
     @OneToOne
     private User user;
 
-    @ManyToMany
-    @JoinTable(
-            name = "organisation_requests_humans",
-            joinColumns = @JoinColumn(name = "employee_id"),
-            inverseJoinColumns = @JoinColumn(name = "request_id")
-    )
-    private Set<OrganisationRequest> organisationRequests;
+    @ManyToOne
+    private OrganisationRequest organisationRequest;
 
     public Human() {
     }
@@ -163,11 +157,11 @@ public class Human implements Serializable {
         return serialVersionUID;
     }
 
-    public Set<OrganisationRequest> getOrganisationRequests() {
-        return organisationRequests;
+    public OrganisationRequest getOrganisationRequest() {
+        return organisationRequest;
     }
 
-    public void setOrganisationRequests(Set<OrganisationRequest> organisationRequests) {
-        this.organisationRequests = organisationRequests;
+    public void setOrganisationRequest(OrganisationRequest organisationRequest) {
+        this.organisationRequest = organisationRequest;
     }
 }

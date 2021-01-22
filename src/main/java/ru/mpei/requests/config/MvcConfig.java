@@ -35,5 +35,7 @@ public class MvcConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:///" + uploadPath + File.separator + "img" + File.separator);
         registry.addResourceHandler("/request/img/**") //Images for request pages
                 .addResourceLocations("file:///" + uploadPath + File.separator + "img" + File.separator);
+        registry.addResourceHandler("/request-create/organisation/img/**")
+                .addResourceLocations("file:///" + uploadPath + File.separator + "img" + File.separator);
     }
 }

@@ -7,13 +7,13 @@ import ru.mpei.requests.domain.requests.OrganisationRequest;
 import ru.mpei.requests.domain.requests.PhysicalRequest;
 import ru.mpei.requests.domain.requests.Request;
 import ru.mpei.requests.domain.requests.RequestState;
+import ru.mpei.requests.domain.users.Human;
+import ru.mpei.requests.domain.users.Organisation;
 import ru.mpei.requests.domain.users.User;
-import ru.mpei.requests.repos.ChatRepo;
-import ru.mpei.requests.repos.OrganisationRequestRepo;
-import ru.mpei.requests.repos.PhysicalRequestRepo;
-import ru.mpei.requests.repos.UserRepo;
+import ru.mpei.requests.repos.*;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,6 +30,9 @@ public class RequestService {
 
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    private HumanRepo humanRepo;
 
     @Autowired
     private UserService userService;
@@ -144,7 +147,7 @@ public class RequestService {
             physicalRequestRepo.save((PhysicalRequest) request);
     }
 
-    public void createPhysicalRequest(User client, String theme) {
+    public long createPhysicalRequest(User client, String theme) {
         PhysicalRequest request = new PhysicalRequest();
         request.setClient(client);
         request.setStatus(RequestState.NO_EXECUTER);
@@ -154,11 +157,13 @@ public class RequestService {
         request.setTheme(theme);
         physicalRequestRepo.save(request);
         chatService.setPhysicalRequest(chat, request);
+        return request.getId();
     }
 
-    public void createOrganisationRequest(User client, String theme) {
+    public Long createOrganisationRequest(User client, String theme) {
         OrganisationRequest request = new OrganisationRequest();
         request.setEmployees(Collections.emptyList());
+        request.setClient(client);
         request.setStatus(RequestState.NO_EXECUTER);
         request.setOrganisation(client.getOrganisation());
         request.setTheme(theme);
@@ -167,5 +172,22 @@ public class RequestService {
         request.setChat(chat);
         organisationRequestRepo.save(request);
         chatService.setOrganisationRequest(chat, request);
+        return request.getId();
+    }
+
+    public List<Human> getAllEmployeesForRequest(OrganisationRequest request) {
+        return humanRepo.findAllByOrganisationRequest(request);
+    }
+
+    public void addEmployeeToOrganisationRequest(Human human, OrganisationRequest request) {
+        List<Human> employees = request.getEmployees();
+        employees.add(human);
+        organisationRequestRepo.save(request);
+    }
+
+    public void deleteEmployeeByID(OrganisationRequest request, Long ID) {
+        Human employee = humanRepo.findById(ID).get();
+        request.getEmployees().remove(employee);
+        organisationRequestRepo.save(request);
     }
 }

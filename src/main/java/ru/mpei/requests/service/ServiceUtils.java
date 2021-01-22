@@ -5,6 +5,7 @@ import ru.mpei.requests.domain.requests.OrganisationRequest;
 import ru.mpei.requests.domain.requests.PhysicalRequest;
 import ru.mpei.requests.domain.requests.Request;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -28,6 +29,11 @@ public class ServiceUtils {
         return result;
     }
 
+    public static String getCalendarAsString(GregorianCalendar calendar) {
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        return format.format(calendar.getTime());
+    }
+
     public static List<Request> getCollidedRequestList(List<OrganisationRequest> organisationRequests,
                                                  List<PhysicalRequest> physicalRequests) {
         List<Request> resultList = new ArrayList<Request>();
@@ -38,7 +44,5 @@ public class ServiceUtils {
             resultList.add((Request)r);
         }
         return resultList;
-
-
     }
 }
