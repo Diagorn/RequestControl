@@ -11,6 +11,7 @@ import ru.mpei.requests.repos.HumanRepo;
 import ru.mpei.requests.repos.UserRepo;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -40,7 +41,7 @@ public class HumanService {
                                   String adress,
                                   String education,
                                   String dob,
-                                  MultipartFile avatar) throws IOException {
+                                  MultipartFile avatar) throws IOException, ParseException {
         if (!userService.isPossibleToCreateAUser(username))
             return;
 
@@ -92,7 +93,7 @@ public class HumanService {
         humanRepo.save(person);
     }
 
-    public Human createEmployee(String lastName, String firstName, String secondName, String telephone, String email, String passport, String adress, String education, String dob) {
+    public Human createEmployee(String lastName, String firstName, String secondName, String telephone, String email, String passport, String adress, String education, String dob) throws ParseException {
         Calendar DOB = ServiceUtils.parseStringToCalendar(dob);
 
         Human human = new Human();

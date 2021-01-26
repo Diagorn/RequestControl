@@ -14,6 +14,7 @@ import ru.mpei.requests.service.OrganisationService;
 import ru.mpei.requests.service.UserService;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 @Controller
 public class RegistrationController { //Used to register new users
@@ -77,7 +78,7 @@ public class RegistrationController { //Used to register new users
             @RequestParam String education,
             @RequestParam String dob,
             @RequestParam MultipartFile avatar
-            ) throws IOException {
+            ) throws IOException, ParseException {
         humanService.saveHumanFromForm(username, password, lastName, firstName, secondName, telephone, passport, adress, education, dob, avatar);
         return "redirect:/login";
     }

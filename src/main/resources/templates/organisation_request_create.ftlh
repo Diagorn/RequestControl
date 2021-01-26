@@ -6,9 +6,9 @@
     <div class="row mb-2">
         <div class="col-md-4">
             <form action="/request-create/organisation/${request.getId()}" method="post">
-                <input type="text" name="theme" value="${request.getTheme()}">
+                <input type="text" class="form-control" name="theme" value="${request.getTheme()}">
                 <input type="hidden" name="_csrf" value="${_csrf.token}">
-                <button class="btn btn-primary">Сохранить</button>
+                <button class="btn btn-primary mt-2">Сохранить</button>
             </form>
         </div>
         <div class="col-md-3">
@@ -46,7 +46,7 @@
                         <td>${employee.email}</td>
                         <td>${employee.passport}</td>
                         <td>${employee.registrationAdress}</td>
-                        <td>${employee.education}</td>
+                        <td>${utils.getEducationFormat(employee.education)}</td>
                         <td>${utils.getCalendarAsString(employee.getDOB())}</td>
                     </tr>
                 </#list>

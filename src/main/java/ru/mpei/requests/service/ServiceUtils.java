@@ -5,6 +5,7 @@ import ru.mpei.requests.domain.requests.OrganisationRequest;
 import ru.mpei.requests.domain.requests.PhysicalRequest;
 import ru.mpei.requests.domain.requests.Request;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,11 +22,12 @@ public class ServiceUtils {
         return a;
     }
 
-    public static Calendar parseStringToCalendar(String date) {
+    public static Calendar parseStringToCalendar(String date) throws ParseException {
         Calendar result = new GregorianCalendar();
-        result.set(Calendar.YEAR, Integer.parseInt(date.substring(0, 3)));
-        result.set(Calendar.MONTH, Integer.parseInt(date.substring(5, 6)));
-        result.set(Calendar.DAY_OF_MONTH, Integer.parseInt(date.substring(8, 9)));
+        String[] resultStrings = date.split("-");
+        result.set(Calendar.YEAR, Integer.parseInt(resultStrings[0]));
+        result.set(Calendar.MONTH, Integer.parseInt(resultStrings[1])-1);
+        result.set(Calendar.DAY_OF_MONTH, Integer.parseInt(resultStrings[2]));
         return result;
     }
 
@@ -37,12 +39,33 @@ public class ServiceUtils {
     public static List<Request> getCollidedRequestList(List<OrganisationRequest> organisationRequests,
                                                  List<PhysicalRequest> physicalRequests) {
         List<Request> resultList = new ArrayList<Request>();
-        for (OrganisationRequest r: organisationRequests) {
-            resultList.add((Request)r);
-        }
-        for (PhysicalRequest r: physicalRequests) {
-            resultList.add((Request)r);
-        }
+        resultList.addAll(organisationRequests);
+        resultList.addAll(physicalRequests);
         return resultList;
+    }
+
+    public static String getEducationFormat(String education) {
+        switch(education) {
+            case "school-not-finished" :
+                return "Неоконченное среднее";
+            case "school-finished":
+                return "Среднее";
+            case "college-not-finished":
+                return "Среднее профессиональное неоконченное";
+            case "college-finished":
+                return "Среднее профессиональное оконченное";
+            case "university-not-finished":
+                return "Высшее неоконченное";
+            case "university-bachelor":
+                return "Высшее (бакалавр)";
+            case "university-master":
+                return "Высшее (магистр)";
+            case "university-candidate":
+                return "Высшее (кандидат наук)";
+            case "university-doctor":
+                return "Высшее (доктор наук)";
+            default:
+                return education;
+        }
     }
 }

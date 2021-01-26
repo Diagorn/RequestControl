@@ -14,6 +14,7 @@ import ru.mpei.requests.domain.users.Human;
 import ru.mpei.requests.domain.users.User;
 import ru.mpei.requests.service.*;
 
+import java.text.ParseException;
 import java.util.Collections;
 import java.util.List;
 
@@ -138,7 +139,7 @@ public class RequestController { //Handling the page containing requests
             @RequestParam String adress,
             @RequestParam String education,
             @RequestParam String dob
-    ) {
+    ) throws ParseException {
         OrganisationRequest request = requestService.getOrganisationRequestByID(id);
         if (!user.getId().equals(request.getOrganisation().getUser().getId()))
             return "redirect:/request";
