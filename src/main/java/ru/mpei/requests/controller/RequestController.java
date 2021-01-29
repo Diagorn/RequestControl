@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.mpei.requests.domain.requests.OrganisationRequest;
+import ru.mpei.requests.domain.requests.RequestState;
 import ru.mpei.requests.domain.users.Human;
 import ru.mpei.requests.domain.users.User;
 import ru.mpei.requests.service.*;
@@ -157,6 +158,15 @@ public class RequestController { //Handling the page containing requests
         OrganisationRequest request = requestService.getOrganisationRequestByID(id);
         requestService.deleteEmployeeByID(request, employeeID);
         return "redirect:/request-create/organisation/{id}";
+    }
+
+    @PostMapping("/request-create/organisation/{id}/save")
+    public String saveOrganisationRequest(
+            @PathVariable Long id
+    ) {
+        OrganisationRequest request = requestService.getOrganisationRequestByID(id);
+        requestService.setStatus(request, RequestState.NO_EXECUTER);
+        return "redirect:/request";
     }
 
     @GetMapping("/request/{id}/set-executer") //Showing all the executers that can be set

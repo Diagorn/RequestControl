@@ -14,11 +14,14 @@
         <div class="col-md-3">
             <a href="/request-create/organisation/${request.getId()}/add" class="btn btn-info">Управление сотрудниками</a>
         </div>
-        <div class="col-md-3">
+        <!--<div class="col-md-3">
             <button class="btn btn-danger">Удалить заявку</button>
-        </div>
+        </div>-->
         <div class="col-md-2">
-            <button class="btn btn-success">Сохранить заявку</button>
+            <form action="/request-create/organisation/${request.id}/save" method="post">
+                <input type="hidden" name="_csrf" value="${_csrf.token}">
+                <button class="btn btn-success" type="submit">Сохранить заявку</button>
+            </form>
         </div>
     </div>
     <div class="row">
