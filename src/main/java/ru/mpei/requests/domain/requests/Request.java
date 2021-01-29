@@ -10,10 +10,10 @@ public class Request {
     public Request() {
     }
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     protected User executer;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     protected User client;
 
     @OneToOne(fetch = FetchType.EAGER)
@@ -23,6 +23,8 @@ public class Request {
     @Enumerated(EnumType.STRING)
     @Column(name = "state")
     protected RequestState status;
+
+    protected boolean isPhysical;
 
     protected String theme;
 
@@ -64,5 +66,13 @@ public class Request {
 
     public void setTheme(String theme) {
         this.theme = theme;
+    }
+
+    public boolean isPhysical() {
+        return isPhysical;
+    }
+
+    public void setPhysical(boolean physical) {
+        isPhysical = physical;
     }
 }

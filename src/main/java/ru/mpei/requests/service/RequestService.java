@@ -55,46 +55,68 @@ public class RequestService {
 //        return requests;
 //    }
 
-//    public List<Request> getRequestsByStatus(String status, User user) {
-//        List<Request> requests;
-//        switch (status) {
-//            case "no_executer":
-//                requests = requestRepo.findAllByStatus(RequestState.NO_EXECUTER);
-//                break;
-//            case "in_process":
-//                requests = requestRepo.findAllByStatus(RequestState.IN_PROCESS);
-//                break;
-//            case "frozen":
-//                requests = requestRepo.findAllByStatus(RequestState.FROZEN);
-//                break;
-//            case "complete":
-//                requests = requestRepo.findAllByStatus(RequestState.COMPLETE);
-//                break;
-//            case "deleted":
-//                requests = requestRepo.findAllByStatus(RequestState.DELETED);
-//                break;
-//            default:
-//                requests = requestRepo.findAll();
-//                break;
-//        }
-//        if (!user.isAdmin() && !user.isModer() && !requests.isEmpty()) {
-//            requests.removeIf(r -> r.getClient() != user && r.getExecuter() != user);
-//        }
-//        if (user.isAdmin() || user.isModer()) {
-//            requests = requestRepo.findAll();
-//        } else if (user.isExecuter() && user.isClient()) {
-//            requests = requestRepo.findAllByExecuterAndClient(user, user);
-//        } else if (user.isExecuter()) {
-//            requests = requestRepo.findAllByExecuter(user);
-//        } else {
-//            requests = requestRepo.findAllByClient(user);
-//        }
-//        if (status != null && !status.equals(""))
-//        for (RequestState s: RequestState.values()) {
-//            requests.removeIf(r -> !r.getStatus().name().toLowerCase().equals(status));
-//        }
-//        return requests;
-//    }
+    public List<Request> getRequestsByStatus(String status, User user) {
+        List<Request> requests;
+        List<OrganisationRequest> organisationRequests;
+        List<PhysicalRequest> physicalRequests;
+        switch (status) {
+            case "no_executer":
+                organisationRequests = organisationRequestRepo.findAllByStatus(RequestState.NO_EXECUTER);
+                physicalRequests = physicalRequestRepo.findAllByStatus(RequestState.NO_EXECUTER);
+                requests = ServiceUtils.getCollidedRequestList(organisationRequests, physicalRequests);
+                break;
+            case "in_process":
+                organisationRequests = organisationRequestRepo.findAllByStatus(RequestState.IN_PROCESS);
+                physicalRequests = physicalRequestRepo.findAllByStatus(RequestState.IN_PROCESS);
+                requests = ServiceUtils.getCollidedRequestList(organisationRequests, physicalRequests);
+                break;
+            case "frozen":
+                organisationRequests = organisationRequestRepo.findAllByStatus(RequestState.FROZEN);
+                physicalRequests = physicalRequestRepo.findAllByStatus(RequestState.FROZEN);
+                requests = ServiceUtils.getCollidedRequestList(organisationRequests, physicalRequests);
+                break;
+            case "complete":
+                organisationRequests = organisationRequestRepo.findAllByStatus(RequestState.COMPLETE);
+                physicalRequests = physicalRequestRepo.findAllByStatus(RequestState.COMPLETE);
+                requests = ServiceUtils.getCollidedRequestList(organisationRequests, physicalRequests);
+                break;
+            case "deleted":
+                organisationRequests = organisationRequestRepo.findAllByStatus(RequestState.DELETED);
+                physicalRequests = physicalRequestRepo.findAllByStatus(RequestState.DELETED);
+                requests = ServiceUtils.getCollidedRequestList(organisationRequests, physicalRequests);
+                break;
+            default:
+                organisationRequests = organisationRequestRepo.findAll();
+                physicalRequests = physicalRequestRepo.findAll();
+                requests = ServiceUtils.getCollidedRequestList(organisationRequests, physicalRequests);
+                break;
+        }
+        if (!user.isAdmin() && !user.isModer() && !requests.isEmpty()) {
+            requests.removeIf(r -> r.getClient() != user && r.getExecuter() != user);
+        }
+        if (user.isAdmin() || user.isModer()) {
+            organisationRequests = organisationRequestRepo.findAll();
+            physicalRequests = physicalRequestRepo.findAll();
+            requests = ServiceUtils.getCollidedRequestList(organisationRequests, physicalRequests);
+        } else if (user.isExecuter() && user.isClient()) {
+            organisationRequests = organisationRequestRepo.findAllByExecuterAndClient(user, user);
+            physicalRequests = physicalRequestRepo.findAllByExecuterAndClient(user, user);
+            requests = ServiceUtils.getCollidedRequestList(organisationRequests, physicalRequests);
+        } else if (user.isExecuter()) {
+            organisationRequests = organisationRequestRepo.findAllByExecuter(user);
+            physicalRequests = physicalRequestRepo.findAllByExecuter(user);
+            requests = ServiceUtils.getCollidedRequestList(organisationRequests, physicalRequests);
+        } else {
+            organisationRequests = organisationRequestRepo.findAllByClient(user);
+            physicalRequests = physicalRequestRepo.findAllByClient(user);
+            requests = ServiceUtils.getCollidedRequestList(organisationRequests, physicalRequests);
+        }
+        if (!status.equals(""))
+        for (RequestState s: RequestState.values()) {
+            requests.removeIf(r -> !r.getStatus().name().toLowerCase().equals(status));
+        }
+        return requests;
+    }
 
     public void createRequest(User client, String theme) {
 //        Request request = new Request();
@@ -151,6 +173,7 @@ public class RequestService {
         PhysicalRequest request = new PhysicalRequest();
         request.setClient(client);
         request.setStatus(RequestState.NO_EXECUTER);
+        request.setPhysical(true);
         Chat chat = chatService.createChatForClient(client);
         chatRepo.save(chat);
         request.setChat(chat);
@@ -165,6 +188,7 @@ public class RequestService {
         request.setEmployees(Collections.emptyList());
         request.setClient(client);
         request.setStatus(RequestState.NO_EXECUTER);
+        request.setPhysical(false);
         request.setOrganisation(client.getOrganisation());
         request.setTheme(theme);
         Chat chat = chatService.createChatForClient(client);

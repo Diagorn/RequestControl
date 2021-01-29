@@ -69,6 +69,7 @@ create table organisation_request (
     client_id int8,
     executer_id int8,
     organisation_id int8,
+    is_physical boolean not null,
     primary key (id)
 );
 
@@ -79,5 +80,6 @@ create table physical_request (
     chat_id int8,
     client_id int8,
     executer_id int8,
+    is_physical boolean not null,
     primary key (id)
 );

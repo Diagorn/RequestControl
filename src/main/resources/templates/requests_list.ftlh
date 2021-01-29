@@ -18,9 +18,15 @@
             <ul class="list-group">
                 <#list requests as request>
                     <li class="list-group-item">
-                        <a href="/request/${request.id}">
-                            ${request.theme}
-                        </a>
+                        <#if request.isPhysical()>
+                            <a href="/request/physical/${request.id}">
+                                ${request.theme}
+                            </a>
+                        <#else>
+                            <a href="/request/organisational/${request.id}">
+                                ${request.theme}
+                            </a>
+                        </#if>
                         <#if request.executer??><p>${request.executer.getUsernameWithInitials()}</p></#if>
                         <#if isAdmin || isModer><a href="/request/${request.id}/set-executer" class="btn btn-light float-right">Назначить исполнителя</a></#if>
                     </li>

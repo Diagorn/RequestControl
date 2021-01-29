@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.mpei.requests.domain.requests.OrganisationRequest;
+import ru.mpei.requests.domain.requests.Request;
 import ru.mpei.requests.domain.requests.RequestState;
 import ru.mpei.requests.domain.users.Human;
 import ru.mpei.requests.domain.users.User;
@@ -40,8 +41,8 @@ public class RequestController { //Handling the page containing requests
             @RequestParam(required = false, defaultValue = "") String status,
             Model model
     ) {
-//        List<Request> requests = null; //requestService.getRequestsByStatus(status, user);
-        model.addAttribute("requests", Collections.EMPTY_LIST); //requests);
+        List<Request> requests = requestService.getRequestsByStatus(status, user);; //requestService.getRequestsByStatus(status, user);
+        model.addAttribute("requests", requests); //requests);
         return "requests_list";
     }
 
@@ -89,13 +90,12 @@ public class RequestController { //Handling the page containing requests
             client = userService.findUserByQuery(username);
         if (client.isPhysical()) {
             Long id = requestService.createPhysicalRequest(client, theme);
-            //TODO: add logic
         } else {
             Long id = requestService.createOrganisationRequest(client, theme);
             return "redirect:/request-create/organisation/" + id.toString();
         }
-//        List<Request> requests = null; //requestService.getRequestsByStatus("", user);
-        model.addAttribute("requests", Collections.emptySet());
+        List<Request> requests = requestService.getRequestsByStatus("", user);; //
+        model.addAttribute("requests", requests);
         return "requests_list";
     }
 
