@@ -29,7 +29,7 @@
                             </a>
                         </#if>
                         <#if request.executer??><p>${request.executer.getUsernameWithInitials()}</p>
-                            <#else><#if (isAdmin || isModer) && (request.status != "PROTOTYPE")><a href="/request/${request.id}/set-executer" class="btn btn-light float-right">Назначить исполнителя</a></#if>
+                            <#else><#if (isAdmin || isModer) && (request.status != "PROTOTYPE")><a href="/<#if request.isPhysical()>physical/<#else>organisation/</#if>request/${request.id}/set-executer" class="btn btn-light float-right">Назначить исполнителя</a></#if>
                         </#if>
                     </li>
                 <#else>Заявок нет

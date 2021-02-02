@@ -133,17 +133,25 @@ public class RequestService {
 ////        requestRepo.save(request);
     }
 
-//    public boolean canSetExecuter(Long requestID, Long userID) {
-//        Request request = requestRepo.findById(requestID).orElse(null);
-//        User user = userRepo.findById(userID).orElse(null);
-//        return (user != null && request != null);
-//    }
-
-    public void setExecuter(Request request, Long userID) {
+    public boolean canSetExecuter(Long requestID, Long userID, boolean isPhysicalRequest) {
+        Request request;
+        if (isPhysicalRequest)
+            request = getPhysicalRequestByID(requestID);
+        else
+            request = getOrganisationRequestByID(requestID);
         User user = userRepo.findById(userID).orElse(null);
+        return (user != null && request != null);
+    }
+
+    public void setExecuter(Long requestID, Long userID, boolean isPhysicalRequest) {
+        User user = userRepo.findById(userID).orElse(null);
+        Request request;
+        if (isPhysicalRequest)
+            request = getPhysicalRequestByID(requestID);
+        else
+            request = getOrganisationRequestByID(requestID);
         request.setExecuter(user);
         request.setStatus(RequestState.IN_PROCESS);
-
         if (user != null) {
             if (request.getClass().equals(OrganisationRequest.class)) {
                 user.getExecuterOrganisationRequests().add((OrganisationRequest) request);

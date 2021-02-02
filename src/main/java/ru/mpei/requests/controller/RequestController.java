@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.mpei.requests.domain.requests.OrganisationRequest;
+import ru.mpei.requests.domain.requests.PhysicalRequest;
 import ru.mpei.requests.domain.requests.Request;
 import ru.mpei.requests.domain.requests.RequestState;
 import ru.mpei.requests.domain.users.Human;
@@ -170,9 +171,9 @@ public class RequestController { //Handling the page containing requests
         return "redirect:/request";
     }
 
-    @GetMapping("/request/{id}/set-executer") //Showing all the executers that can be set
+    @GetMapping("/physical/request/{id}/set-executer") //Showing all the executers that can be set
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODER')")
-    public String getExecuterSetPage(
+    public String getPhysicalRequestExecuterSetPage(
             @RequestParam(required = false, defaultValue = "") String search,
             @PathVariable Long id,
             Model model
@@ -185,19 +186,52 @@ public class RequestController { //Handling the page containing requests
         }
         model.addAttribute("users", users);
         model.addAttribute("userService", userService);
-//        if (requestService.getRequestByID(id) != null)
-//            model.addAttribute("request", requestService.getRequestByID(id));
+        if (requestService.getPhysicalRequestByID(id) != null) {
+            PhysicalRequest request = requestService.getPhysicalRequestByID(id);
+            model.addAttribute("request", request);
+        }
         return "set-executer";
     }
 
-    @PostMapping("/request/{id}/set-executer") //Setting executer for the request
+    @GetMapping("/organisation/request/{id}/set-executer") //Showing all the executers that can be set
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODER')")
+    public String getOrganisationRequestExecuterSetPage(
+            @RequestParam(required = false, defaultValue = "") String search,
+            @PathVariable Long id,
+            Model model
+    ) {
+        List<User> users;
+        if (search != null && !search.isEmpty()) {
+            users = userService.getExecutersByQuery(search);
+        } else {
+            users = userService.getAllExecuters();
+        }
+        model.addAttribute("users", users);
+        model.addAttribute("userService", userService);
+        if (requestService.getOrganisationRequestByID(id) != null)
+            model.addAttribute("request", requestService.getOrganisationRequestByID(id));
+        return "set-executer";
+    }
+
+    @PostMapping("/organisation/request/{id}/set-executer") //Setting executer for the request
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODER')")
+    public String setOrganisationRequestExecuter(
+            @PathVariable("id") Long requestId,
+            @RequestParam Long userId
+    ) {
+        if (requestService.canSetExecuter(requestId, userId, false))
+            requestService.setExecuter(requestId, userId, false);
+        return "redirect:/request";
+    }
+
+    @PostMapping("/physical/request/{id}/set-executer") //Setting executer for the request
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODER')")
     public String setExecuter(
             @PathVariable("id") Long requestId,
             @RequestParam Long userId
     ) {
-//        if (requestService.canSetExecuter(requestId, userId))
-//            requestService.setExecuter(requestId, userId);
+        if (requestService.canSetExecuter(requestId, userId, true))
+            requestService.setExecuter(requestId, userId, true);
         return "redirect:/request";
     }
 
