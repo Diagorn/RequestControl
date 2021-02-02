@@ -192,7 +192,7 @@ public class RequestService {
         OrganisationRequest request = new OrganisationRequest();
         request.setEmployees(Collections.emptyList());
         request.setClient(client);
-        request.setStatus(RequestState.NO_EXECUTER);
+        request.setStatus(RequestState.PROTOTYPE);
         request.setPhysical(false);
         request.setOrganisation(client.getOrganisation());
         request.setTheme(theme);

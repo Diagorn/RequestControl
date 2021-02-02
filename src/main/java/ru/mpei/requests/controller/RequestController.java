@@ -42,7 +42,8 @@ public class RequestController { //Handling the page containing requests
             Model model
     ) {
         List<Request> requests = requestService.getRequestsByStatus(status, user);; //requestService.getRequestsByStatus(status, user);
-        model.addAttribute("requests", requests); //requests);
+        model.addAttribute("requests", requests);
+        model.addAttribute("statuses", RequestState.values());
         return "requests_list";
     }
 

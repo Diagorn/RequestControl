@@ -12,7 +12,7 @@
                 <a href="/request?status=frozen" class="list-group-item list-group-item-action">Замороженные</a>
                 <a href="/request?status=complete" class="list-group-item list-group-item-action">Закрытые</a>
                 <a href="/request?status=deleted" class="list-group-item list-group-item-action">Удалённые</a>
-                <#if !isPhysical><a href="/request?status=prototype" class="list-group-item list-group-item-action">Прототипы</a></#if>
+                <#if !isPhysical || isAdmin || isModer><a href="/request?status=prototype" class="list-group-item list-group-item-action">Прототипы</a></#if>
             </div>
         </div>
         <div class="col-md-9">
@@ -28,8 +28,9 @@
                                 ${request.theme}
                             </a>
                         </#if>
-                        <#if request.executer??><p>${request.executer.getUsernameWithInitials()}</p></#if>
-                        <#if isAdmin || isModer><a href="/request/${request.id}/set-executer" class="btn btn-light float-right">Назначить исполнителя</a></#if>
+                        <#if request.executer??><p>${request.executer.getUsernameWithInitials()}</p>
+                            <#else><#if (isAdmin || isModer) && (request.status != "PROTOTYPE")><a href="/request/${request.id}/set-executer" class="btn btn-light float-right">Назначить исполнителя</a></#if>
+                        </#if>
                     </li>
                 <#else>Заявок нет
                 </#list>
