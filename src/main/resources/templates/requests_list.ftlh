@@ -12,6 +12,7 @@
                 <a href="/request?status=frozen" class="list-group-item list-group-item-action">Замороженные</a>
                 <a href="/request?status=complete" class="list-group-item list-group-item-action">Закрытые</a>
                 <a href="/request?status=deleted" class="list-group-item list-group-item-action">Удалённые</a>
+                <#if !isPhysical><a href="/request?status=prototype" class="list-group-item list-group-item-action">Прототипы</a></#if>
             </div>
         </div>
         <div class="col-md-9">
@@ -23,7 +24,7 @@
                                 ${request.theme}
                             </a>
                         <#else>
-                            <a href="/request/organisational/${request.id}">
+                            <a href="/request/organisation/${request.id}">
                                 ${request.theme}
                             </a>
                         </#if>

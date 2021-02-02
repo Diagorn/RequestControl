@@ -11,9 +11,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.mpei.requests.domain.chats.Chat;
 import ru.mpei.requests.domain.chats.Message;
+import ru.mpei.requests.domain.requests.OrganisationRequest;
+import ru.mpei.requests.domain.requests.PhysicalRequest;
 import ru.mpei.requests.domain.users.User;
 import ru.mpei.requests.repos.ChatRepo;
 import ru.mpei.requests.repos.MessageRepo;
+import ru.mpei.requests.service.ChatService;
+import ru.mpei.requests.service.RequestService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -27,34 +31,54 @@ public class ChatController {
     @Autowired
     private ChatRepo chatRepo; //For doing anything with chats
 
-//    @Autowired
-//    private RequestRepo requestRepo;
+    @Autowired
+    private ChatService chatService;
 
-    @GetMapping("/request/{id}") //Showing the chat page for the particular request
-    public String getRequestChat (
+    @Autowired
+    private RequestService requestService;
+
+    @GetMapping("/request/physical/{id}") //Showing the chat page for the particular request
+    public String getPhysicalRequestChat (
             @PathVariable Long id,
             @AuthenticationPrincipal User user,
             Model model
     ) {
-//        Request request = requestRepo.findRequestById(id);
-        //Chat chat = chatRepo.findChatByRequest(request);
-        //List<Message> messages = messageRepo.findAllByChat(chat);
-//        model.addAttribute("status", request.getStatus().name());
+        PhysicalRequest request = requestService.getPhysicalRequestByID(id);
+        Chat chat = chatRepo.findChatByPhysicalRequest(request);
+        List<Message> messages = messageRepo.findAllByChat(chat);
+        model.addAttribute("status", request.getStatus().name());
         model.addAttribute("user", user);
-//        model.addAttribute("request", request);
-        //model.addAttribute("messages", messages);
+        model.addAttribute("request", request);
+        model.addAttribute("messages", messages);
         model.addAttribute("isAdminChat", false);
         return "chat";
     }
 
-    @PostMapping("/request/{id}") //Posting a message
-    public String addMessage(
+    @GetMapping("/request/organisation/{id}") //Showing the chat page for the particular request
+    public String getOrganisationRequestChat (
+            @PathVariable Long id,
+            @AuthenticationPrincipal User user,
+            Model model
+    ) {
+        OrganisationRequest request = requestService.getOrganisationRequestByID(id);
+        Chat chat = chatRepo.findChatByOrganisationRequest(request);
+        List<Message> messages = messageRepo.findAllByChat(chat);
+        model.addAttribute("status", request.getStatus().name());
+        model.addAttribute("user", user);
+        model.addAttribute("request", request);
+        model.addAttribute("messages", messages);
+        model.addAttribute("isAdminChat", false);
+        return "chat";
+    }
+
+    @PostMapping("/request/physical/{id}") //Posting a message
+    public String addMessageToPhysicalRequest(
             @AuthenticationPrincipal User user,
             @Valid Message message,
             @PathVariable Long id,
             BindingResult bindingResult, //Validation error container
             Model model) {
-//        Request request = requestRepo.findRequestById(id);
+        PhysicalRequest request = requestService.getPhysicalRequestByID(id);
         if(bindingResult.hasErrors()) { //If we have errors
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
             model.mergeAttributes(errorsMap);
@@ -62,15 +86,43 @@ public class ChatController {
         }
         else {
             message.setAuthor(user);
-            //message.setChat(chatRepo.findChatByRequest(request));
+            message.setChat(chatRepo.findChatByPhysicalRequest(request));
             messageRepo.save(message);
             model.addAttribute("message", null);
         }
-        //List<Message> messages = messageRepo.findAllByChat(chatRepo.findChatByRequest(request));
-//        model.addAttribute("request", request);
+        List<Message> messages = messageRepo.findAllByChat(chatRepo.findChatByPhysicalRequest(request));
+        model.addAttribute("request", request);
         model.addAttribute("user", user);
-//        model.addAttribute("status", request.getStatus().name());
-        //model.addAttribute("messages", messages);
+        model.addAttribute("status", request.getStatus().name());
+        model.addAttribute("messages", messages);
+        model.addAttribute("isAdminChat", false);
+        return "chat";
+    }
+
+    @PostMapping("/request/organisation/{id}") //Posting a message
+    public String addMessageToOrganisationRequest(
+            @AuthenticationPrincipal User user,
+            @Valid Message message,
+            @PathVariable Long id,
+            BindingResult bindingResult, //Validation error container
+            Model model) {
+        OrganisationRequest request = requestService.getOrganisationRequestByID(id);
+        if(bindingResult.hasErrors()) { //If we have errors
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+            model.mergeAttributes(errorsMap);
+            model.addAttribute("message", message);
+        }
+        else {
+            message.setAuthor(user);
+            message.setChat(chatRepo.findChatByOrganisationRequest(request));
+            messageRepo.save(message);
+            model.addAttribute("message", null);
+        }
+        List<Message> messages = messageRepo.findAllByChat(chatRepo.findChatByOrganisationRequest(request));
+        model.addAttribute("request", request);
+        model.addAttribute("user", user);
+        model.addAttribute("status", request.getStatus().name());
+        model.addAttribute("messages", messages);
         model.addAttribute("isAdminChat", false);
         return "chat";
     }
@@ -98,7 +150,7 @@ public class ChatController {
         }
         else {
             message.setAuthor(user);
-            //message.setChat(chatRepo.findByRequestIsNull());
+            message.setChat(chatService.getChatById(0L));
             messageRepo.save(message);
             model.addAttribute("message", null);
         }

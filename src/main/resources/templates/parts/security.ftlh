@@ -10,6 +10,7 @@ known = Session.SPRING_SECURITY_CONTEXT??
     isModer = user.isModer()
     shortName = user.getUsernameWithInitials()
     avatar = user.getFileName()
+        isPhysical = user.isPhysical()
     >
 <#else>
     <#assign

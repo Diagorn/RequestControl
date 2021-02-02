@@ -35,4 +35,8 @@ public class ChatService {
         chat.setOrganisationRequest(request);
         chatRepo.save(chat);
     }
+
+    public Chat getChatById(Long id) {
+        return chatRepo.findById(id).get();
+    }
 }

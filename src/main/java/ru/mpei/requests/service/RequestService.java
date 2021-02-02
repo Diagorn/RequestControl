@@ -12,6 +12,7 @@ import ru.mpei.requests.domain.users.Organisation;
 import ru.mpei.requests.domain.users.User;
 import ru.mpei.requests.repos.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -84,6 +85,10 @@ public class RequestService {
                 organisationRequests = organisationRequestRepo.findAllByStatus(RequestState.DELETED);
                 physicalRequests = physicalRequestRepo.findAllByStatus(RequestState.DELETED);
                 requests = ServiceUtils.getCollidedRequestList(organisationRequests, physicalRequests);
+                break;
+            case "prototype":
+                organisationRequests = organisationRequestRepo.findAllByStatus(RequestState.PROTOTYPE);
+                requests = ServiceUtils.getCollidedRequestList(organisationRequests, new ArrayList<PhysicalRequest>());
                 break;
             default:
                 organisationRequests = organisationRequestRepo.findAll();
