@@ -11,7 +11,10 @@
                         ${message.getAuthor().getUsernameWithInitials()}
                         <img src="/img/${message.author.getFileName()}" class="navbar-custom-avatar right" alt="">
                     </h5>
-                    <p class="card-text">${message.text}</p>
+                    <p class="card-text">
+                        ${message.text}<br>
+                        <span>${utils.getCalendarForMessage(message.timeOfSending)}</span>
+                    </p>
                 </div>
             </div>
         </div>
@@ -28,35 +31,35 @@
             </#if>
             <#if status??><#if ((status == "IN_PROCESS") || (status == "NO_EXECUTER" && user == request.getClient()))></#if>
                 <button type="submit" class="btn btn-primary mt-2">Отправить</button>
-                <#else><button type="submit" class="btn btn-primary mt-2">Отправить</button>
+            <#else><button type="submit" class="btn btn-primary mt-2">Отправить</button>
             </#if>
             <input type="hidden" name="_csrf" value="${_csrf.token}">
         </form>
         <#if (!isAdminChat)>
             <#if user.equals(request.getExecuter())>
-            <div class="float-right mt-n4">
-                <form action="/request/${request.getId()}/complete" method="post" class="d-inline">
-                    <#if status == "IN_PROCESS" || status == "FROZEN">
-                    <button type="submit" class="btn btn-success d-inline-block">Закрыть</button>
-                    </#if>
-                    <input type="hidden" name="_csrf" value="${_csrf.token}">
-                </form>
-                <form action="/request/${request.getId()}/<#if !(status == "FROZEN")>freeze<#else>unfreeze</#if>" method="post" class="d-inline">
-                    <#if status == "IN_PROCESS">
-                    <button type="submit" class="btn btn-info d-inline-block">Заморозить</button>
-                    </#if>
-                    <#if status == "FROZEN">
-                        <button type="submit" class="btn btn-info d-inline-block">Разморозить</button>
-                    </#if>
-                    <input type="hidden" name="_csrf" value="${_csrf.token}">
-                </form>
-                <form action="/request/${request.getId()}/delete" method="post" class="d-inline">
-                    <#if status != "DELETED">
-                    <button type="submit" class="btn btn-danger d-inline-block">Удалить</button>
-                    </#if>
-                    <input type="hidden" name="_csrf" value="${_csrf.token}">
-                </form>
-            </div>
+                <div class="float-right mt-n4">
+                    <form action="/request/${request.getId()}/complete" method="post" class="d-inline">
+                        <#if status == "IN_PROCESS" || status == "FROZEN">
+                            <button type="submit" class="btn btn-success d-inline-block">Закрыть</button>
+                        </#if>
+                        <input type="hidden" name="_csrf" value="${_csrf.token}">
+                    </form>
+                    <form action="/request/${request.getId()}/<#if !(status == "FROZEN")>freeze<#else>unfreeze</#if>" method="post" class="d-inline">
+                        <#if status == "IN_PROCESS">
+                            <button type="submit" class="btn btn-info d-inline-block">Заморозить</button>
+                        </#if>
+                        <#if status == "FROZEN">
+                            <button type="submit" class="btn btn-info d-inline-block">Разморозить</button>
+                        </#if>
+                        <input type="hidden" name="_csrf" value="${_csrf.token}">
+                    </form>
+                    <form action="/request/${request.getId()}/delete" method="post" class="d-inline">
+                        <#if status != "DELETED">
+                            <button type="submit" class="btn btn-danger d-inline-block">Удалить</button>
+                        </#if>
+                        <input type="hidden" name="_csrf" value="${_csrf.token}">
+                    </form>
+                </div>
             </#if>
         </#if>
     </div>

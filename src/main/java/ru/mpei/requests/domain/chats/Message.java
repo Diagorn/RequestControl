@@ -1,11 +1,14 @@
 package ru.mpei.requests.domain.chats;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
 import ru.mpei.requests.domain.chats.Chat;
 import ru.mpei.requests.domain.users.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.GregorianCalendar;
+import java.util.Set;
 
 @Entity //Message in the chat
 public class Message {
@@ -24,6 +27,9 @@ public class Message {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "chat_id")
     private Chat chat;
+
+    @Column(name = "time")
+    private GregorianCalendar timeOfSending;
 
     public Message() {
     }
@@ -62,5 +68,13 @@ public class Message {
 
     public void setChat(Chat chat) {
         this.chat = chat;
+    }
+
+    public GregorianCalendar getTimeOfSending() {
+        return timeOfSending;
+    }
+
+    public void setTimeOfSending(GregorianCalendar timeOfSending) {
+        this.timeOfSending = timeOfSending;
     }
 }

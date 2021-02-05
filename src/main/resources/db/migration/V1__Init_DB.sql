@@ -29,6 +29,7 @@ create table message (
     text varchar(2048),
     user_id int8,
     chat_id int8,
+    time timestamp,
     primary key (id)
 );
 

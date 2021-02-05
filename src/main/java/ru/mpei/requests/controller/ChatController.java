@@ -18,6 +18,7 @@ import ru.mpei.requests.repos.ChatRepo;
 import ru.mpei.requests.repos.MessageRepo;
 import ru.mpei.requests.service.ChatService;
 import ru.mpei.requests.service.RequestService;
+import ru.mpei.requests.service.ServiceUtils;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -37,6 +38,9 @@ public class ChatController {
     @Autowired
     private RequestService requestService;
 
+    @Autowired
+    private ru.mpei.requests.service.ServiceUtils serviceUtils;
+
     @GetMapping("/request/physical/{id}") //Showing the chat page for the particular request
     public String getPhysicalRequestChat (
             @PathVariable Long id,
@@ -51,6 +55,7 @@ public class ChatController {
         model.addAttribute("request", request);
         model.addAttribute("messages", messages);
         model.addAttribute("isAdminChat", false);
+        model.addAttribute("utils", serviceUtils);
         return "chat";
     }
 
@@ -68,6 +73,7 @@ public class ChatController {
         model.addAttribute("request", request);
         model.addAttribute("messages", messages);
         model.addAttribute("isAdminChat", false);
+        model.addAttribute("utils", serviceUtils);
         return "chat";
     }
 
@@ -85,9 +91,7 @@ public class ChatController {
             model.addAttribute("message", message);
         }
         else {
-            message.setAuthor(user);
-            message.setChat(chatRepo.findChatByPhysicalRequest(request));
-            messageRepo.save(message);
+            chatService.fillMessage(message, user, request, null, true, false);
             model.addAttribute("message", null);
         }
         List<Message> messages = messageRepo.findAllByChat(chatRepo.findChatByPhysicalRequest(request));
@@ -96,6 +100,7 @@ public class ChatController {
         model.addAttribute("status", request.getStatus().name());
         model.addAttribute("messages", messages);
         model.addAttribute("isAdminChat", false);
+        model.addAttribute("utils", serviceUtils);
         return "chat";
     }
 
@@ -113,9 +118,8 @@ public class ChatController {
             model.addAttribute("message", message);
         }
         else {
-            message.setAuthor(user);
-            message.setChat(chatRepo.findChatByOrganisationRequest(request));
-            messageRepo.save(message);
+            chatService.fillMessage(message, user, request,
+                    null, true, false);
             model.addAttribute("message", null);
         }
         List<Message> messages = messageRepo.findAllByChat(chatRepo.findChatByOrganisationRequest(request));
@@ -124,6 +128,7 @@ public class ChatController {
         model.addAttribute("status", request.getStatus().name());
         model.addAttribute("messages", messages);
         model.addAttribute("isAdminChat", false);
+        model.addAttribute("utils", serviceUtils);
         return "chat";
     }
 
@@ -134,6 +139,7 @@ public class ChatController {
         List<Message> messages = messageRepo.findAllByChat(chat);
         model.addAttribute("messages", messages);
         model.addAttribute("isAdminChat", true);
+        model.addAttribute("utils", serviceUtils);
         return "chat";
     }
 
@@ -149,14 +155,14 @@ public class ChatController {
             model.addAttribute("message", message);
         }
         else {
-            message.setAuthor(user);
-            message.setChat(chatService.getChatById(0L));
-            messageRepo.save(message);
+            chatService.fillMessage(message, user, null,
+                    null, false, true);
             model.addAttribute("message", null);
         }
         List<Message> messages = messageRepo.findAllByChat(chatRepo.findByOrganisationRequestIsNullAndPhysicalRequestIsNull()); //Showing all the messages
         model.addAttribute("messages", messages);
         model.addAttribute("isAdminChat", true);
+        model.addAttribute("utils", serviceUtils);
         return "chat";
     }
 }

@@ -123,16 +123,6 @@ public class RequestService {
         return requests;
     }
 
-    public void createRequest(User client, String theme) {
-//        Request request = new Request();
-//        //requestRepo.save(request);
-//        //request.setChat(chatService.createChatForClient(client, request));
-//        request.setClient(client);
-//        request.setTheme(theme);
-//        request.setStatus(RequestState.NO_EXECUTER);
-////        requestRepo.save(request);
-    }
-
     public boolean canSetExecuter(Long requestID, Long userID, boolean isPhysicalRequest) {
         Request request;
         if (isPhysicalRequest)
