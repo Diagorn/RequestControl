@@ -18,20 +18,54 @@
         <div class="col-md-9">
             <ul class="list-group">
                 <#list requests as request>
-                    <li class="list-group-item">
-                        <#if request.isPhysical()>
+                    <#if user.isClient()>
+                        <li class="list-group-item">
                             <a href="/request/physical/${request.id}">
                                 ${request.theme}
-                            </a>
-                        <#else>
-                            <a href="/request/organisation/${request.id}">
-                                ${request.theme}
-                            </a>
-                        </#if>
-                        <#if request.executer??><p>${request.executer.getUsernameWithInitials()}</p>
-                            <#else><#if (isAdmin || isModer) && (request.status != "PROTOTYPE")><a href="/<#if request.isPhysical()>physical/<#else>organisation/</#if>request/${request.id}/set-executer" class="btn btn-light float-right">Назначить исполнителя</a></#if>
-                        </#if>
-                    </li>
+                            </a><br>
+                            <p>Статус: ${utils.getRequestStateAsString(request.status)}</p>
+                            <p>Исполнитель: <#if request.executer??>${request.executer.getUsernameWithInitials()}</#if></p>
+                            <#if utils.getLastMessage(request)??>
+                                <p>Время последнего ответа: ${utils.getCalendarForMessage(utils.getLastMessage(request).timeOfSending)}</p>
+                                <p>Последний ответ от: ${utils.getLastMessage(request).author.getUsernameWithInitials()}</p>
+                            </#if>
+                        </li>
+                    <#elseif user.isExecuter()>
+                        <li class="list-group-item">
+                            <p><#if request.isPhysical()>
+                                    <a href="/request/physical/${request.id}">
+                                        ${request.theme}
+                                    </a>
+                                <#else>
+                                    <a href="/request/organisation/${request.id}">
+                                        ${request.theme}
+                                    </a>
+                                </#if></p>
+                            <p>Заявка от: ${request.getClient().getUsernameWithInitials()}</p>
+                            <#if utils.getLastMessage(request)??>
+                                <p>Время последнего ответа: ${utils.getCalendarForMessage(utils.getLastMessage(request).timeOfSending)}</p>
+                                <p>Последний ответ от: ${utils.getLastMessage(request).author.getUsernameWithInitials()}</p>
+                            </#if>
+                        </li>
+                    <#elseif user.isAdmin() || user.isModer()>
+                        <li class="list-group-item">
+                            <p><#if request.isPhysical()>
+                                    <a href="/request/physical/${request.id}">
+                                        ${request.theme}
+                                    </a>
+                                <#else>
+                                    <a href="/request/organisation/${request.id}">
+                                        ${request.theme}
+                                    </a>
+                                </#if></p>
+                            <p>Исполнитель: <#if request.executer??>${request.executer.getUsernameWithInitials()}</#if></p>
+                            <#if utils.getLastMessage(request)??>
+                                <p>Время последнего ответа: ${utils.getCalendarForMessage(utils.getLastMessage(request).timeOfSending)}</p>
+                                <p>Последний ответ от: ${utils.getLastMessage(request).author.getUsernameWithInitials()}</p>
+                            </#if>
+                            <#if request.status != "PROTOTYPE"><a href="/<#if request.isPhysical()>physical/<#else>organisation/</#if>request/${request.id}/set-executer" class="btn btn-light float-right">Назначить исполнителя</a></#if>
+                        </li>
+                    </#if>
                 <#else>Заявок нет
                 </#list>
             </ul>

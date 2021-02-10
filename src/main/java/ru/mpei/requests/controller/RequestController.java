@@ -45,6 +45,7 @@ public class RequestController { //Handling the page containing requests
         List<Request> requests = requestService.getRequestsByStatus(status, user);; //requestService.getRequestsByStatus(status, user);
         model.addAttribute("requests", requests);
         model.addAttribute("statuses", RequestState.values());
+        model.addAttribute("utils", serviceUtils);
         return "requests_list";
     }
 
@@ -98,6 +99,7 @@ public class RequestController { //Handling the page containing requests
         }
         List<Request> requests = requestService.getRequestsByStatus("", user);; //
         model.addAttribute("requests", requests);
+        model.addAttribute("utils", serviceUtils);
         return "requests_list";
     }
 

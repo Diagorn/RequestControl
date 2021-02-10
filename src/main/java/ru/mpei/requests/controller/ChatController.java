@@ -18,7 +18,6 @@ import ru.mpei.requests.repos.ChatRepo;
 import ru.mpei.requests.repos.MessageRepo;
 import ru.mpei.requests.service.ChatService;
 import ru.mpei.requests.service.RequestService;
-import ru.mpei.requests.service.ServiceUtils;
 
 import javax.validation.Valid;
 import java.util.List;

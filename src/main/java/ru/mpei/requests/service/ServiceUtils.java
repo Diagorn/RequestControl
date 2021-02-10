@@ -1,9 +1,12 @@
 package ru.mpei.requests.service;
 
 import org.springframework.stereotype.Service;
+import ru.mpei.requests.domain.chats.Message;
 import ru.mpei.requests.domain.requests.OrganisationRequest;
 import ru.mpei.requests.domain.requests.PhysicalRequest;
 import ru.mpei.requests.domain.requests.Request;
+import ru.mpei.requests.domain.requests.RequestState;
+import ru.mpei.requests.domain.users.Role;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -146,5 +149,38 @@ public class ServiceUtils {
             result += calendar.get(GregorianCalendar.MINUTE);
         }
         return result;
+    }
+
+    public static String getRequestStateAsString(RequestState state) {
+        if (state == RequestState.NO_EXECUTER)
+            return "Без исполнителя";
+        if (state == RequestState.IN_PROCESS)
+            return "В процессе";
+        if (state == RequestState.COMPLETE)
+            return "Завершённая";
+        if (state == RequestState.DELETED)
+            return "Удалённая";
+        if (state == RequestState.FROZEN)
+            return "Замороженная";
+        if (state == RequestState.PROTOTYPE)
+            return "Прототип";
+        return "";
+    }
+
+    public static Message getLastMessage(Request request) {
+        int size = request.getChat().getMessages().size();
+        Message[] messageArray = new Message[size];
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.set(Calendar.YEAR, 1488);
+        Object[] messages = request.getChat().getMessages().toArray();
+        Message message = null;
+        for (int i = 0; i < size; ++i) {
+            messageArray[i] = (Message) messages[i];
+            if (messageArray[i].getTimeOfSending().after(calendar)) { //Looking for the last message
+                message = messageArray[i];
+                calendar = message.getTimeOfSending();
+            }
+        }
+        return message;
     }
 }
