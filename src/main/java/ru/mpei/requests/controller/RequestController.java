@@ -237,43 +237,83 @@ public class RequestController { //Handling the page containing requests
         return "redirect:/request";
     }
 
-    @PostMapping("/request/{id}/complete")
-    public String completeRequest( //Setting the complete status for the request
+    @PostMapping("/organisation/request/{id}/complete")
+    public String completeOrganisationRequest( //Setting the complete status for the request
             @PathVariable("id") Long requestId
     ) {
-//        if (requestService.getRequestByID(requestId) != null) {
-//            requestService.setStatus(requestService.getRequestByID(requestId), RequestState.COMPLETE);
-//        }
+        if (requestService.getOrganisationRequestByID(requestId) != null) {
+            requestService.setStatus(requestService.getOrganisationRequestByID(requestId), RequestState.COMPLETE);
+        }
         return "redirect:/request";
     }
 
-    @PostMapping("/request/{id}/freeze")
-    public String freezeRequest( //Setting the freeze status for request
-            @PathVariable("id") Long requestId
+    @PostMapping("/physical/request/{id}/complete")
+    public String completePhysicalRequest( //Setting the complete status for the request
+                                   @PathVariable("id") Long requestId
     ) {
-//        if (requestService.getRequestByID(requestId) != null) {
-//            requestService.setStatus(requestService.getRequestByID(requestId), RequestState.FROZEN);
-//        }
+        if (requestService.getPhysicalRequestByID(requestId) != null) {
+            requestService.setStatus(requestService.getPhysicalRequestByID(requestId), RequestState.COMPLETE);
+        }
         return "redirect:/request";
     }
 
-    @PostMapping("/request/{id}/delete")
-    public String deleteRequest( //Deleting the request
+    @PostMapping("/organisation/request/{id}/freeze")
+    public String freezeOrganisationRequest( //Setting the freeze status for request
             @PathVariable("id") Long requestId
     ) {
-//        if (requestService.getRequestByID(requestId) != null) {
-//            requestService.setStatus(requestService.getRequestByID(requestId), RequestState.DELETED);
-//        }
+        if (requestService.getOrganisationRequestByID(requestId) != null) {
+            requestService.setStatus(requestService.getOrganisationRequestByID(requestId), RequestState.FROZEN);
+        }
         return "redirect:/request";
     }
 
-    @PostMapping("/request/{id}/unfreeze")
-    public String unfreezeRequest( //Refreshing the request and setting status "in process"
+    @PostMapping("/physical/request/{id}/freeze")
+    public String freezePhysicalRequest( //Setting the freeze status for request
+                                             @PathVariable("id") Long requestId
+    ) {
+        if (requestService.getPhysicalRequestByID(requestId) != null) {
+            requestService.setStatus(requestService.getPhysicalRequestByID(requestId), RequestState.FROZEN);
+        }
+        return "redirect:/request";
+    }
+
+    @PostMapping("/organisation/request/{id}/delete")
+    public String deleteOrganisationRequest( //Deleting the request
             @PathVariable("id") Long requestId
     ) {
-//        if (requestService.getRequestByID(requestId) != null) {
-//            requestService.setStatus(requestService.getRequestByID(requestId), RequestState.IN_PROCESS);
-//        }
+        if (requestService.getOrganisationRequestByID(requestId) != null) {
+            requestService.setStatus(requestService.getOrganisationRequestByID(requestId), RequestState.DELETED);
+        }
+        return "redirect:/request";
+    }
+
+    @PostMapping("/physical/request/{id}/delete")
+    public String deletePhysicalRequest( //Deleting the request
+                                 @PathVariable("id") Long requestId
+    ) {
+        if (requestService.getPhysicalRequestByID(requestId) != null) {
+            requestService.setStatus(requestService.getPhysicalRequestByID(requestId), RequestState.DELETED);
+        }
+        return "redirect:/request";
+    }
+
+    @PostMapping("/organisation/request/{id}/unfreeze")
+    public String unfreezeOrganisationRequest( //Refreshing the request and setting status "in process"
+            @PathVariable("id") Long requestId
+    ) {
+        if (requestService.getOrganisationRequestByID(requestId) != null) {
+            requestService.setStatus(requestService.getOrganisationRequestByID(requestId), RequestState.IN_PROCESS);
+        }
+        return "redirect:/request";
+    }
+
+    @PostMapping("/physical/request/{id}/unfreeze")
+    public String unfreezePhysicalRequest( //Refreshing the request and setting status "in process"
+                                   @PathVariable("id") Long requestId
+    ) {
+        if (requestService.getPhysicalRequestByID(requestId) != null) {
+            requestService.setStatus(requestService.getPhysicalRequestByID(requestId), RequestState.IN_PROCESS);
+        }
         return "redirect:/request";
     }
 }

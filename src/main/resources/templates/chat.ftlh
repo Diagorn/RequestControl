@@ -38,13 +38,18 @@
         <#if (!isAdminChat)>
             <#if user.equals(request.getExecuter())>
                 <div class="float-right mt-n4">
-                    <form action="/request/${request.getId()}/complete" method="post" class="d-inline">
+                    <#if request.isPhysical()>
+                    <#else><form action="/organisation/request/${request.getId()}/delete" method="post" class="d-inline">
+                        </#if>
                         <#if status == "IN_PROCESS" || status == "FROZEN">
                             <button type="submit" class="btn btn-success d-inline-block">Закрыть</button>
                         </#if>
                         <input type="hidden" name="_csrf" value="${_csrf.token}">
                     </form>
-                    <form action="/request/${request.getId()}/<#if !(status == "FROZEN")>freeze<#else>unfreeze</#if>" method="post" class="d-inline">
+                    <#if request.isPhysical()>
+                    <form action="/physical/request/${request.getId()}/<#if !(status == "FROZEN")>freeze<#else>unfreeze</#if>" method="post" class="d-inline">
+                    <#else><form action="/organisation/request/${request.getId()}/<#if !(status == "FROZEN")>freeze<#else>unfreeze</#if>" method="post" class="d-inline">
+                    </#if>
                         <#if status == "IN_PROCESS">
                             <button type="submit" class="btn btn-info d-inline-block">Заморозить</button>
                         </#if>
@@ -53,7 +58,10 @@
                         </#if>
                         <input type="hidden" name="_csrf" value="${_csrf.token}">
                     </form>
-                    <form action="/request/${request.getId()}/delete" method="post" class="d-inline">
+                    <#if request.isPhysical()>
+                        <form action="/physical/request/${request.getId()}/delete" method="post" class="d-inline">
+                        <#else><form action="/organisation/request/${request.getId()}/delete" method="post" class="d-inline">
+                            </#if>
                         <#if status != "DELETED">
                             <button type="submit" class="btn btn-danger d-inline-block">Удалить</button>
                         </#if>
