@@ -14,3 +14,9 @@ create table organisation_requests_humans (
     request_id int8 not null,
     primary key (employee_id, request_id)
 );
+
+create table message_message_files (
+    message_id int8 not null,
+    message_files_id int8 not null,
+    primary key (message_id, message_files_id)
+)

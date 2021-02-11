@@ -14,6 +14,10 @@
                     <p class="card-text">
                         ${message.text}<br>
                         <span>${utils.getCalendarForMessage(message.timeOfSending)}</span>
+                            <#list message.getMessageFiles() as file>
+                                <a href="/files/${file.newFileName}">${file.originalName}</a><br>
+                                <#else>
+                            </#list>
                     </p>
                 </div>
             </div>
@@ -21,9 +25,13 @@
     <#else>Здесь пока нет сообщений
     </#list>
     <div class="chat-footer">
-        <form method="post" class="mb-n3">
+        <form method="post" class="mb-n3" enctype="multipart/form-data">
             <input type="text" <#if status??><#if status=="FROZEN" || status=="COMPLETE" || status=="DELETED">disabled</#if></#if> name="text" class="form-control ${(textError??)?string('is-invalid', '')} <#if status??><#if !((status == "IN_PROCESS") || (status == "NO_EXECUTER" && user == request.getClient()))>mb-5</#if></#if>"
                    value="<#if message??>${message.text}</#if>">
+            <div class="form-group">
+                <lable for="files">Прикрепить файлы</lable>
+                <input id="files" type="file" name="files" multiple>
+            </div>
             <#if textError??>
                 <div class="invalid-feedback">
                     ${textError}

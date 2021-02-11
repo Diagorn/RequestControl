@@ -9,6 +9,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import ru.mpei.requests.domain.chats.Chat;
 import ru.mpei.requests.domain.chats.Message;
 import ru.mpei.requests.domain.requests.OrganisationRequest;
@@ -20,8 +22,10 @@ import ru.mpei.requests.service.ChatService;
 import ru.mpei.requests.service.RequestService;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Controller
 public class ChatController {
@@ -79,20 +83,14 @@ public class ChatController {
     @PostMapping("/request/physical/{id}") //Posting a message
     public String addMessageToPhysicalRequest(
             @AuthenticationPrincipal User user,
-            @Valid Message message,
+            @RequestParam String text,
             @PathVariable Long id,
-            BindingResult bindingResult, //Validation error container
-            Model model) {
+            @RequestParam MultipartFile[] files,
+            Model model) throws IOException {
         PhysicalRequest request = requestService.getPhysicalRequestByID(id);
-        if(bindingResult.hasErrors()) { //If we have errors
-            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
-            model.mergeAttributes(errorsMap);
-            model.addAttribute("message", message);
-        }
-        else {
-            chatService.fillMessage(message, user, request, null, true, false);
-            model.addAttribute("message", null);
-        }
+        Long messageId = chatService.fillMessage(text, user, request, null, true, false, files);
+        model.addAttribute("message", null);
+        chatService.addFilesToMessage(messageId, files);
         List<Message> messages = messageRepo.findAllByChat(chatRepo.findChatByPhysicalRequest(request));
         model.addAttribute("request", request);
         model.addAttribute("user", user);
@@ -106,21 +104,15 @@ public class ChatController {
     @PostMapping("/request/organisation/{id}") //Posting a message
     public String addMessageToOrganisationRequest(
             @AuthenticationPrincipal User user,
-            @Valid Message message,
+            @RequestParam String text,
             @PathVariable Long id,
-            BindingResult bindingResult, //Validation error container
-            Model model) {
+            @RequestParam MultipartFile[] files,
+            Model model) throws IOException {
         OrganisationRequest request = requestService.getOrganisationRequestByID(id);
-        if(bindingResult.hasErrors()) { //If we have errors
-            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
-            model.mergeAttributes(errorsMap);
-            model.addAttribute("message", message);
-        }
-        else {
-            chatService.fillMessage(message, user, request,
-                    null, true, false);
-            model.addAttribute("message", null);
-        }
+        Long messageId = chatService.fillMessage(text, user, request,
+                null, true, false, files);
+        chatService.addFilesToMessage(messageId, files);
+        model.addAttribute("message", null);
         List<Message> messages = messageRepo.findAllByChat(chatRepo.findChatByOrganisationRequest(request));
         model.addAttribute("request", request);
         model.addAttribute("user", user);
@@ -145,19 +137,13 @@ public class ChatController {
     @PostMapping("/chat")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODER')") //Sending a message to chat
     public String sendMessageToAdminChat(@AuthenticationPrincipal User user,
-                                         @Valid Message message,
-                                         BindingResult bindingResult, //Validation error container
-                                         Model model) {
-        if(bindingResult.hasErrors()) { //If we have errors
-            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
-            model.mergeAttributes(errorsMap);
-            model.addAttribute("message", message);
-        }
-        else {
-            chatService.fillMessage(message, user, null,
-                    null, false, true);
+                                         @RequestParam String text,
+                                         @RequestParam MultipartFile[] files,
+                                         Model model) throws IOException {
+            Long messageId = chatService.fillMessage(text, user, null,
+                    null, false, true, files);
+            chatService.addFilesToMessage(messageId, files);
             model.addAttribute("message", null);
-        }
         List<Message> messages = messageRepo.findAllByChat(chatRepo.findByOrganisationRequestIsNullAndPhysicalRequestIsNull()); //Showing all the messages
         model.addAttribute("messages", messages);
         model.addAttribute("isAdminChat", true);

@@ -31,6 +31,9 @@ public class Message {
     @Column(name = "time")
     private GregorianCalendar timeOfSending;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "message")
+    private Set<MessageFile> messageFiles;
+
     public Message() {
     }
 
@@ -76,5 +79,13 @@ public class Message {
 
     public void setTimeOfSending(GregorianCalendar timeOfSending) {
         this.timeOfSending = timeOfSending;
+    }
+
+    public Set<MessageFile> getMessageFiles() {
+        return messageFiles;
+    }
+
+    public void setMessageFiles(Set<MessageFile> messageFiles) {
+        this.messageFiles = messageFiles;
     }
 }

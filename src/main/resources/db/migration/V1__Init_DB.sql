@@ -84,3 +84,10 @@ create table physical_request (
     is_physical boolean not null,
     primary key (id)
 );
+
+create table message_file (
+    id int8 not null,
+    new_file_name varchar(255),
+    original_name varchar(255),
+    message_id int8, primary key (id)
+);

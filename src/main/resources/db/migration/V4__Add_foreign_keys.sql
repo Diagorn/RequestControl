@@ -97,3 +97,19 @@ alter table if exists usr
 alter table if exists usr
     add constraint user_human_FK foreign key (person_id)
     references human;
+
+alter table if exists message_message_files
+    add constraint message_message_files_id_unique
+    unique (message_files_id);
+
+alter table if exists message_message_files
+    add constraint message_message_files_message_file_FK foreign key (message_files_id)
+    references message_file;
+
+alter table if exists message_message_files
+    add constraint message_message_files_message_FK foreign key (message_id)
+    references message;
+
+alter table if exists message_file
+    add constraint message_file_message_FK foreign key (message_id)
+    references message

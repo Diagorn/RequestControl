@@ -18,7 +18,7 @@
         <div class="col-md-9">
             <ul class="list-group">
                 <#list requests as request>
-                    <#if user.isClient()>
+                    <#if request.client.equals(user)>
                         <li class="list-group-item">
                             <a href="/request/physical/${request.id}">
                                 ${request.theme}
