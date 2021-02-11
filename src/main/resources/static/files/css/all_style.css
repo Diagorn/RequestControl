@@ -34,3 +34,11 @@
 a, a:hover {
     text-decoration: none;
 }
+
+.chat {
+    max-height: 710px;
+}
+
+.chat-input {
+    max-width: 1600px;
+}
