@@ -1,4 +1,4 @@
-package ru.mpei.requests.controller;
+package ru.mpei.requests.controller.requests;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,103 +10,31 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.mpei.requests.domain.requests.OrganisationRequest;
-import ru.mpei.requests.domain.requests.PhysicalRequest;
-import ru.mpei.requests.domain.requests.Request;
 import ru.mpei.requests.domain.requests.RequestState;
 import ru.mpei.requests.domain.users.Human;
 import ru.mpei.requests.domain.users.User;
-import ru.mpei.requests.service.*;
+import ru.mpei.requests.service.HumanService;
+import ru.mpei.requests.service.RequestService;
+import ru.mpei.requests.service.ServiceUtils;
+import ru.mpei.requests.service.UserService;
 
 import java.text.ParseException;
-import java.util.Collections;
 import java.util.List;
 
 @Controller
-public class RequestController { //Handling the page containing requests
-    @Autowired
-    private RequestService requestService; //For doing anything with requests
+public class OrganisationRequestController {
 
     @Autowired
-    private UserService userService; //For doing anything with users
+    private RequestService requestService;
+
+    @Autowired
+    private ServiceUtils serviceUtils;
 
     @Autowired
     private HumanService humanService;
 
     @Autowired
-    private ru.mpei.requests.service.ServiceUtils serviceUtils;
-
-    @GetMapping("/")
-    public String sayHelloToUser() {
-        return "redirect:/request";
-    }
-
-    @GetMapping("/request")
-    public String getRequestsForUser( //Get-mapping to show just the requests for the authentificated user
-            @AuthenticationPrincipal User user,
-            @RequestParam(required = false, defaultValue = "") String status,
-            Model model
-    ) {
-        List<Request> requests = requestService.getRequestsByStatus(status, user);; //requestService.getRequestsByStatus(status, user);
-        model.addAttribute("requests", requests);
-        model.addAttribute("statuses", RequestState.values());
-        model.addAttribute("utils", serviceUtils);
-        return "requests_list";
-    }
-
-    @GetMapping("/request-create") //Just getting the request creating page
-    public String getRequestCreatePage(
-            @AuthenticationPrincipal User currentUser,
-            Model model
-    ) {
-        if (!currentUser.isModer() && !currentUser.isAdmin()) {
-            model.addAttribute("isClientRequest", true);
-            model.addAttribute("client", currentUser);
-        }
-        else {
-            model.addAttribute("isClientRequest", false);
-        }
-        return "request_create";
-    }
-
-    @PostMapping("/request-create") //Finding the user on request creating page
-    public String findClient(
-            @RequestParam String name,
-            Model model) {
-        User client;
-        client = userService.getClientByQuery(name);
-        if (client == null) {
-            model.addAttribute("message", "Пользователь не найден");
-        } else {
-            model.addAttribute("client", client);
-        }
-        model.addAttribute("query", name);
-        model.addAttribute("isClientRequest", false);
-        return "request_create";
-    }
-
-    @PostMapping("/request") //Creating the request
-    public String createRequest (
-            @RequestParam String username,
-            @RequestParam String theme,
-            @AuthenticationPrincipal User user,
-            Model model) {
-        User client;
-        if (username.equals("") || username.isEmpty())
-            client = user;
-        else
-            client = userService.findUserByQuery(username);
-        if (client.isPhysical()) {
-            Long id = requestService.createPhysicalRequest(client, theme);
-        } else {
-            Long id = requestService.createOrganisationRequest(client, theme);
-            return "redirect:/request-create/organisation/" + id.toString();
-        }
-        List<Request> requests = requestService.getRequestsByStatus("", user);
-        model.addAttribute("requests", requests);
-        model.addAttribute("statuses", RequestState.values());
-        model.addAttribute("utils", serviceUtils);
-        return "requests_list";
-    }
+    private UserService userService;
 
     @GetMapping("/request-create/organisation/{id}")
     public String getOrganisationRequestCreateAddPeoplePage(@PathVariable Long id,
@@ -178,28 +106,6 @@ public class RequestController { //Handling the page containing requests
         return "redirect:/request";
     }
 
-    @GetMapping("/physical/request/{id}/set-executer") //Showing all the executers that can be set
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODER')")
-    public String getPhysicalRequestExecuterSetPage(
-            @RequestParam(required = false, defaultValue = "") String search,
-            @PathVariable Long id,
-            Model model
-    ) {
-        List<User> users;
-        if (search != null && !search.isEmpty()) {
-            users = userService.getExecutersByQuery(search);
-        } else {
-            users = userService.getAllExecuters();
-        }
-        model.addAttribute("users", users);
-        model.addAttribute("userService", userService);
-        if (requestService.getPhysicalRequestByID(id) != null) {
-            PhysicalRequest request = requestService.getPhysicalRequestByID(id);
-            model.addAttribute("request", request);
-        }
-        return "set-executer";
-    }
-
     @GetMapping("/organisation/request/{id}/set-executer") //Showing all the executers that can be set
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODER')")
     public String getOrganisationRequestExecuterSetPage(
@@ -231,20 +137,9 @@ public class RequestController { //Handling the page containing requests
         return "redirect:/request";
     }
 
-    @PostMapping("/physical/request/{id}/set-executer") //Setting executer for the request
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODER')")
-    public String setExecuter(
-            @PathVariable("id") Long requestId,
-            @RequestParam Long userId
-    ) {
-        if (requestService.canSetExecuter(requestId, userId, true))
-            requestService.setExecuter(requestId, userId, true);
-        return "redirect:/request";
-    }
-
     @PostMapping("/organisation/request/{id}/complete")
     public String completeOrganisationRequest( //Setting the complete status for the request
-            @PathVariable("id") Long requestId
+                                               @PathVariable("id") Long requestId
     ) {
         if (requestService.getOrganisationRequestByID(requestId) != null) {
             requestService.setStatus(requestService.getOrganisationRequestByID(requestId), RequestState.COMPLETE);
@@ -252,19 +147,9 @@ public class RequestController { //Handling the page containing requests
         return "redirect:/request";
     }
 
-    @PostMapping("/physical/request/{id}/complete")
-    public String completePhysicalRequest( //Setting the complete status for the request
-                                   @PathVariable("id") Long requestId
-    ) {
-        if (requestService.getPhysicalRequestByID(requestId) != null) {
-            requestService.setStatus(requestService.getPhysicalRequestByID(requestId), RequestState.COMPLETE);
-        }
-        return "redirect:/request";
-    }
-
     @PostMapping("/organisation/request/{id}/freeze")
     public String freezeOrganisationRequest( //Setting the freeze status for request
-            @PathVariable("id") Long requestId
+                                             @PathVariable("id") Long requestId
     ) {
         if (requestService.getOrganisationRequestByID(requestId) != null) {
             requestService.setStatus(requestService.getOrganisationRequestByID(requestId), RequestState.FROZEN);
@@ -272,19 +157,9 @@ public class RequestController { //Handling the page containing requests
         return "redirect:/request";
     }
 
-    @PostMapping("/physical/request/{id}/freeze")
-    public String freezePhysicalRequest( //Setting the freeze status for request
-                                             @PathVariable("id") Long requestId
-    ) {
-        if (requestService.getPhysicalRequestByID(requestId) != null) {
-            requestService.setStatus(requestService.getPhysicalRequestByID(requestId), RequestState.FROZEN);
-        }
-        return "redirect:/request";
-    }
-
     @PostMapping("/organisation/request/{id}/delete")
     public String deleteOrganisationRequest( //Deleting the request
-            @PathVariable("id") Long requestId
+                                             @PathVariable("id") Long requestId
     ) {
         if (requestService.getOrganisationRequestByID(requestId) != null) {
             requestService.setStatus(requestService.getOrganisationRequestByID(requestId), RequestState.DELETED);
@@ -292,32 +167,12 @@ public class RequestController { //Handling the page containing requests
         return "redirect:/request";
     }
 
-    @PostMapping("/physical/request/{id}/delete")
-    public String deletePhysicalRequest( //Deleting the request
-                                 @PathVariable("id") Long requestId
-    ) {
-        if (requestService.getPhysicalRequestByID(requestId) != null) {
-            requestService.setStatus(requestService.getPhysicalRequestByID(requestId), RequestState.DELETED);
-        }
-        return "redirect:/request";
-    }
-
     @PostMapping("/organisation/request/{id}/unfreeze")
     public String unfreezeOrganisationRequest( //Refreshing the request and setting status "in process"
-            @PathVariable("id") Long requestId
+                                               @PathVariable("id") Long requestId
     ) {
         if (requestService.getOrganisationRequestByID(requestId) != null) {
             requestService.setStatus(requestService.getOrganisationRequestByID(requestId), RequestState.IN_PROCESS);
-        }
-        return "redirect:/request";
-    }
-
-    @PostMapping("/physical/request/{id}/unfreeze")
-    public String unfreezePhysicalRequest( //Refreshing the request and setting status "in process"
-                                   @PathVariable("id") Long requestId
-    ) {
-        if (requestService.getPhysicalRequestByID(requestId) != null) {
-            requestService.setStatus(requestService.getPhysicalRequestByID(requestId), RequestState.IN_PROCESS);
         }
         return "redirect:/request";
     }
