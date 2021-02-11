@@ -23,7 +23,6 @@ import java.util.List;
 
 @Controller
 public class RequestController { //Handling the page containing requests
-
     @Autowired
     private RequestService requestService; //For doing anything with requests
 
@@ -35,6 +34,11 @@ public class RequestController { //Handling the page containing requests
 
     @Autowired
     private ru.mpei.requests.service.ServiceUtils serviceUtils;
+
+    @GetMapping("/")
+    public String sayHelloToUser() {
+        return "redirect:/request";
+    }
 
     @GetMapping("/request")
     public String getRequestsForUser( //Get-mapping to show just the requests for the authentificated user
