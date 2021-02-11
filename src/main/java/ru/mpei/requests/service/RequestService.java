@@ -8,7 +8,6 @@ import ru.mpei.requests.domain.requests.PhysicalRequest;
 import ru.mpei.requests.domain.requests.Request;
 import ru.mpei.requests.domain.requests.RequestState;
 import ru.mpei.requests.domain.users.Human;
-import ru.mpei.requests.domain.users.Organisation;
 import ru.mpei.requests.domain.users.User;
 import ru.mpei.requests.repos.*;
 
@@ -40,21 +39,6 @@ public class RequestService {
 
     @Autowired
     private ChatRepo chatRepo;
-
-//    public List<Request> getRequestsForUser(User user) { //Get request page with only those requests which
-//        List<Request> requests; //Contain this particular user
-//        if (user.isAdmin() || user.isModer()) {
-//            requests = requestRepo.findAll();
-//        } else if (user.isExecuter() && user.isClient()) {
-//            requests = requestRepo.findAllByExecuterAndClient(user, user);
-//        } else if (user.isExecuter()) {
-//            requests = requestRepo.findAllByExecuter(user);
-//        } else {
-//            requests = requestRepo.findAllByClient(user);
-//        }
-//        requests.removeIf(r -> r.getStatus() == RequestState.DELETED);
-//        return requests;
-//    }
 
     public List<Request> getRequestsByStatus(String status, User user) {
         List<Request> requests;

@@ -3,7 +3,6 @@ package ru.mpei.requests.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.mpei.requests.domain.requests.OrganisationRequest;
 import ru.mpei.requests.domain.users.Human;
 import ru.mpei.requests.domain.users.Organisation;
 import ru.mpei.requests.domain.users.User;
@@ -13,9 +12,6 @@ import ru.mpei.requests.repos.UserRepo;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
 
 @Service
 public class HumanService {

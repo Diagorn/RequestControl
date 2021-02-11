@@ -1,17 +1,18 @@
 package ru.mpei.requests.service;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import ru.mpei.requests.domain.chats.Message;
 import ru.mpei.requests.domain.requests.OrganisationRequest;
 import ru.mpei.requests.domain.requests.PhysicalRequest;
 import ru.mpei.requests.domain.requests.Request;
 import ru.mpei.requests.domain.requests.RequestState;
-import ru.mpei.requests.domain.users.Role;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 @Service
 public class ServiceUtils {
@@ -180,9 +181,5 @@ public class ServiceUtils {
             }
         }
         return message;
-    }
-
-    public static void createMessageFiles(Set<MultipartFile> files) {
-
     }
 }
