@@ -86,7 +86,7 @@ public class UserController { //Admin panel controller
         return "redirect:/login";
     }
 
-    @PostMapping("new")
+    @PostMapping("profile")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String createNewUserAsAdmin( //Creating a user from admin page
             @RequestParam String email,
