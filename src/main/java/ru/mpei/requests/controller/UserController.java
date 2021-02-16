@@ -18,14 +18,14 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping
 public class UserController { //Admin panel controller
     @Autowired
     private UserService userService; //For doing anything with users
 
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping
+    @GetMapping("/user")
     public String getAllUsers( //Getting the admin panel
             @RequestParam(required = false, defaultValue = "") String search,
             Model model
@@ -41,7 +41,7 @@ public class UserController { //Admin panel controller
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("{user}") //Updating the roles for the user
+    @GetMapping("/user/{user}") //Updating the roles for the user
     public String editUsers(@PathVariable User user, Model model) { //Showing the edit page
         model.addAttribute("users", user);
         model.addAttribute("roles", Role.values());
@@ -50,7 +50,7 @@ public class UserController { //Admin panel controller
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping
+    @PostMapping("/user")
     public String saveEditedUser( //Handling the changes in particular user
             @RequestParam String username,
             @RequestParam Map<String, String> form,
@@ -63,7 +63,7 @@ public class UserController { //Admin panel controller
         return "redirect:/user";
     }
 
-    @GetMapping("profile") //Getting the profile page that can change the user's data
+    @GetMapping("/user/profile") //Getting the profile page that can change the user's data
     public String getProfilePage(Model model, @AuthenticationPrincipal User user) {
 //        model.addAttribute("firstName", user.getFirstName());
 //        model.addAttribute("secondName", user.getSecondName());
@@ -71,7 +71,7 @@ public class UserController { //Admin panel controller
         return "profile";
     }
 
-    @PostMapping("profile")
+    @PostMapping("/user/profile")
     public String updateProfile( //Saving the updated data
             @AuthenticationPrincipal User user,
             @RequestParam String password,
@@ -86,24 +86,7 @@ public class UserController { //Admin panel controller
         return "redirect:/login";
     }
 
-    @PostMapping("profile")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public String createNewUserAsAdmin( //Creating a user from admin page
-            @RequestParam String email,
-            @RequestParam String firstName,
-            @RequestParam String lastName,
-            @RequestParam String secondName,
-            @RequestParam Map<String, String> form,
-            Model model) throws IOException {
-        if (userService.isPossibleToCreateAUser(email)) {
-            User user = new User();
-            userService.createUserFromAdminPanel(user, email, firstName, secondName, lastName);
-            userService.setUserRolesFromRegForm(user, form);
-        }
-        return "redirect:/userList";
-    }
-
-    @GetMapping("search")
+    @GetMapping("/user/search")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String findUsersToDelete( //Finding the users that may be deleted
             @RequestParam String search,
@@ -124,7 +107,7 @@ public class UserController { //Admin panel controller
         return "userList";
     }
 
-    @PostMapping("delete") //Delete selected users from admin page
+    @PostMapping("/user/delete") //Delete selected users from admin page
     @PreAuthorize("hasAuthority('ADMIN')")
     public String deleteUsers(
             @RequestParam Map<String, String> form,
@@ -141,7 +124,7 @@ public class UserController { //Admin panel controller
         return "userList";
     }
 
-    @GetMapping("contacts") //Get all the admins and moders
+    @GetMapping("/user/contacts") //Get all the admins and moders
     public String getSearchContacts(
             @RequestParam(required = false, defaultValue = "") String search,
             Model model

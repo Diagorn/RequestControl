@@ -116,8 +116,6 @@
                     <button type="submit" class="btn btn-primary"><#if isRegisterForm>Зарегистрироваться<#else>Войти</#if></button>
                 </form>
             </#if>
-
-
             <input type="hidden" name="_csrf" value="${_csrf.token}">
 
             <#if !isRegisterForm>

@@ -37,6 +37,11 @@
                 <option value="university-doctor">Высшее (доктор наук)</option>
             </select>
         </div>
+        <div class="form-group">
+            <label for="avatar-input">Картинка профиля</label>
+            <input name="avatar" type="file" class="form-control ${(lastNameError??)?string('is-invalid', '')}"
+                   id="adress-input" aria-describedby="emailHelp" placeholder="Иванов">
+        </div>
     </div>
 </div>
 </#if>
