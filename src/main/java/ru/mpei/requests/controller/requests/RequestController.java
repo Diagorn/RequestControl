@@ -79,8 +79,7 @@ public class RequestController { //Handling the page containing requests
     public String createRequest (
             @RequestParam String username,
             @RequestParam String theme,
-            @AuthenticationPrincipal User user,
-            Model model) {
+            @AuthenticationPrincipal User user) {
         User client;
         if (username.equals("") || username.isEmpty())
             client = user;
@@ -92,10 +91,6 @@ public class RequestController { //Handling the page containing requests
             Long id = requestService.createOrganisationRequest(client, theme);
             return "redirect:/request-create/organisation/" + id.toString();
         }
-        List<Request> requests = requestService.getRequestsByStatus("", user);
-        model.addAttribute("requests", requests);
-        model.addAttribute("statuses", RequestState.values());
-        model.addAttribute("utils", serviceUtils);
-        return "requests_list";
+        return "redirect:/request";
     }
 }

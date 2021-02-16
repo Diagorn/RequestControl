@@ -21,6 +21,13 @@ create table human (
     second_name varchar(255),
     user_id int8,
     organisation_request_id int8,
+    passport_giving_organ varchar(255),
+    passport_date timestamp,
+    citizenship varchar(255),
+    group_name varchar (255),
+    index varchar (255),
+    sex boolean,
+    speciality varchar(255),
     primary key (id)
 );
 

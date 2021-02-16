@@ -17,7 +17,6 @@
                         <span>${utils.getCalendarForMessage(message.timeOfSending)}</span><br>
                         <#list message.getMessageFiles() as file>
                             <a href="/files/${file.newFileName}">${file.originalName}</a><br>
-                        <#else>
                         </#list>
                     </p>
                 </div>

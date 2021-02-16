@@ -92,13 +92,14 @@ public class ChatController {
         model.addAttribute("message", null);
         chatService.addFilesToMessage(messageId, files);
         List<Message> messages = messageRepo.findAllByChat(chatRepo.findChatByPhysicalRequest(request));
-        model.addAttribute("request", request);
-        model.addAttribute("user", user);
-        model.addAttribute("status", request.getStatus().name());
-        model.addAttribute("messages", messages);
-        model.addAttribute("isAdminChat", false);
-        model.addAttribute("utils", serviceUtils);
-        return "chat";
+//        model.addAttribute("request", request);
+//        model.addAttribute("user", user);
+//        model.addAttribute("status", request.getStatus().name());
+//        model.addAttribute("messages", messages);
+//        model.addAttribute("isAdminChat", false);
+//        model.addAttribute("utils", serviceUtils);
+        return "redirect:/request/physical/" + id;
+        //return "chat";
     }
 
     @PostMapping("/request/organisation/{id}") //Posting a message

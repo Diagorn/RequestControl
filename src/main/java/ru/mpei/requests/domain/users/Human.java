@@ -27,7 +27,13 @@ public class Human implements Serializable {
 
     private String passport; //Passport series and number
 
+    private String passportGivingOrgan;
+
+    private Calendar passportDate;
+
     private String registrationAdress; //Adress of registration
+
+    private String index;
 
     private String education; //Education
 
@@ -36,6 +42,14 @@ public class Human implements Serializable {
     private String email;
 
     private String position; //Doljnost'
+
+    private boolean sex;
+
+    private String citizenship;
+
+    private String groupName;
+
+    private String speciality;
 
     @OneToOne(mappedBy = "director")
     private Organisation organisation;
@@ -163,5 +177,61 @@ public class Human implements Serializable {
 
     public void setOrganisationRequest(OrganisationRequest organisationRequest) {
         this.organisationRequest = organisationRequest;
+    }
+
+    public String getPassportGivingOrgan() {
+        return passportGivingOrgan;
+    }
+
+    public void setPassportGivingOrgan(String passportGivingOrgan) {
+        this.passportGivingOrgan = passportGivingOrgan;
+    }
+
+    public Calendar getPassportDate() {
+        return passportDate;
+    }
+
+    public void setPassportDate(Calendar passportDate) {
+        this.passportDate = passportDate;
+    }
+
+    public String getIndex() {
+        return index;
+    }
+
+    public void setIndex(String index) {
+        this.index = index;
+    }
+
+    public boolean getSex() {
+        return sex;
+    }
+
+    public void setSex(boolean sex) {
+        this.sex = sex;
+    }
+
+    public String getCitizenship() {
+        return citizenship;
+    }
+
+    public void setCitizenship(String citizenship) {
+        this.citizenship = citizenship;
+    }
+
+    public String getGroup() {
+        return groupName;
+    }
+
+    public void setGroup(String group) {
+        this.groupName = group;
+    }
+
+    public String getSpeciality() {
+        return speciality;
+    }
+
+    public void setSpeciality(String speciality) {
+        this.speciality = speciality;
     }
 }
