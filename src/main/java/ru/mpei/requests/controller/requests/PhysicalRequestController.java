@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.mpei.requests.domain.requests.PhysicalRequest;
 import ru.mpei.requests.domain.requests.RequestState;
 import ru.mpei.requests.domain.users.User;
+import ru.mpei.requests.service.FileService;
 import ru.mpei.requests.service.RequestService;
 import ru.mpei.requests.service.UserService;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -23,6 +25,9 @@ public class PhysicalRequestController {
 
     @Autowired
     private RequestService requestService;
+
+    @Autowired
+    private FileService fileService;
 
     @GetMapping("/physical/request/{id}/set-executer") //Showing all the executers that can be set
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODER')")
@@ -95,5 +100,17 @@ public class PhysicalRequestController {
             requestService.setStatus(requestService.getPhysicalRequestByID(requestId), RequestState.IN_PROCESS);
         }
         return "redirect:/request";
+    }
+
+    @PostMapping("/physical/request/{id}/generate")
+    public String sendGeneratedFiles(@PathVariable Long id) {
+        PhysicalRequest request = requestService.getPhysicalRequestByID(id);
+        User user = request.getClient();
+        try {
+            fileService.sendMessageWithFile(user, request);
+        } catch (IOException e) {
+            return "redirect:/physical/request/" + id + "/";
+        }
+        return "redirect:/physical/request/" + id + "/";
     }
 }

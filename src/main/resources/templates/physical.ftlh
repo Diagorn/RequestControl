@@ -69,7 +69,7 @@
                     </select>
                 </div>
                 <hr>
-                <h3>Если Вы являетесь студентом:</h3>
+                <h3>Если Вы являетесь студентом(если нет, везде ставьте прочерк):</h3>
                 <div class="form-group">
                     <label for="speciality-input">Специальность</label>
                     <input type="text" id="speciality-input" class="form-control" name="speciality"

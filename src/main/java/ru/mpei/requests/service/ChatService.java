@@ -98,4 +98,16 @@ public class ChatService {
             }
         }
     }
+
+    public void addFilesToMessage(Message message, String resultName) {
+        File uploadDir = new File(uploadPath + File.separator + "files" + File.separator);
+        if(!uploadDir.exists()) { //If the file directory does not exist
+            uploadDir.mkdir(); //We make it
+        }
+        MessageFile messageFile = new MessageFile();
+        messageFile.setOriginalName(resultName.substring(37));
+        messageFile.setNewFileName(resultName);
+        messageFile.setMessage(message);
+        messageFileRepo.save(messageFile);
+    }
 }
