@@ -77,9 +77,16 @@ public class RegistrationController { //Used to register new users
             @RequestParam String adress,
             @RequestParam String education,
             @RequestParam String dob,
-            @RequestParam MultipartFile avatar
+            @RequestParam MultipartFile avatar,
+            @RequestParam String passportDate,
+            @RequestParam String passportOrgan,
+            @RequestParam String index,
+            @RequestParam String citizenship,
+            @RequestParam String speciality,
+            @RequestParam String groupName
             ) throws IOException, ParseException {
-        humanService.saveHumanFromForm(username, password, lastName, firstName, secondName, telephone, passport, adress, education, dob, avatar);
+        humanService.saveHumanFromForm(username, password, lastName, firstName, secondName, telephone, passport, adress, education,
+                dob, avatar, passportDate, passportOrgan, index, citizenship, speciality, groupName);
         return "redirect:/login";
     }
 }

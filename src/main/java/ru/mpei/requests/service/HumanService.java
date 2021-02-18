@@ -27,42 +27,7 @@ public class HumanService {
     @Autowired
     private OrganisationService organisationService;
 
-    public void saveHumanFromForm(String username,
-                                  String password,
-                                  String lastName,
-                                  String firstName,
-                                  String secondName,
-                                  String telephone,
-                                  String passport,
-                                  String adress,
-                                  String education,
-                                  String dob,
-                                  MultipartFile avatar) throws IOException, ParseException {
-        if (!userService.isPossibleToCreateAUser(username))
-            return;
 
-        User user = userService.createUser(username, password, false);
-
-        Calendar DOB = ServiceUtils.parseStringToCalendar(dob);
-
-        Human human = new Human();
-        human.setLastName(lastName);
-        human.setFirstName(firstName);
-        human.setSecondName(secondName);
-        human.setPhoneNumber(telephone);
-        human.setPassport(passport);
-        human.setRegistrationAdress(adress);
-        human.setEducation(education);
-        human.setDOB(DOB);
-        human.setUser(user);
-        human.setEmail(user.getUsername());
-
-        humanRepo.save(human);
-
-        user.setPerson(human);
-        userService.setUserAvatar(user, avatar);
-        userRepo.save(user);
-    }
 
     public void saveDirectorOfOrganisation(Organisation organisation, String firstName, String secondName, String lastName, String position, String phone) {
         Human human = new Human();
@@ -106,5 +71,41 @@ public class HumanService {
         humanRepo.save(human);
 
         return human;
+    }
+
+    public void saveHumanFromForm(String username, String password, String lastName, String firstName, String secondName, String telephone, String passport,
+                                  String adress, String education, String dob, MultipartFile avatar, String passportDate, String passportOrgan, String index,
+                                  String citizenship, String speciality, String groupName) throws ParseException, IOException {
+        if (!userService.isPossibleToCreateAUser(username))
+            return;
+
+        User user = userService.createUser(username, password, false);
+
+        Calendar DOB = ServiceUtils.parseStringToCalendar(dob);
+        Calendar passDate = ServiceUtils.parseStringToCalendar(passportDate);
+
+        Human human = new Human();
+        human.setLastName(lastName);
+        human.setFirstName(firstName);
+        human.setSecondName(secondName);
+        human.setPhoneNumber(telephone);
+        human.setPassport(passport);
+        human.setRegistrationAdress(adress);
+        human.setEducation(education);
+        human.setDOB(DOB);
+        human.setUser(user);
+        human.setEmail(user.getUsername());
+        human.setPassportDate(passDate);
+        human.setPassportGivingOrgan(passportOrgan);
+        human.setIndex(index);
+        human.setCitizenship(citizenship);
+        human.setSpeciality(speciality);
+        human.setGroup(groupName);
+
+        humanRepo.save(human);
+
+        user.setPerson(human);
+        userService.setUserAvatar(user, avatar);
+        userRepo.save(user);
     }
 }
