@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.morpher.ws3.AccessDeniedException;
+import ru.morpher.ws3.ArgumentEmptyException;
+import ru.morpher.ws3.russian.ArgumentNotRussianException;
+import ru.morpher.ws3.russian.InvalidFlagsException;
+import ru.morpher.ws3.russian.NumeralsDeclensionNotSupportedException;
 import ru.mpei.requests.domain.requests.PhysicalRequest;
 import ru.mpei.requests.domain.requests.RequestState;
 import ru.mpei.requests.domain.users.User;
@@ -109,8 +114,10 @@ public class PhysicalRequestController {
         try {
             fileService.sendMessageWithFile(user, request);
         } catch (IOException e) {
-            return "redirect:/physical/request/" + id + "/";
+            return "redirect:/request/physical/" + id + "/";
+        } catch (ArgumentNotRussianException | InvalidFlagsException | ArgumentEmptyException | NumeralsDeclensionNotSupportedException | AccessDeniedException e) {
+            e.printStackTrace();
         }
-        return "redirect:/physical/request/" + id + "/";
+        return "redirect:/request/physical/" + id + "/";
     }
 }

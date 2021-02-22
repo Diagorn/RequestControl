@@ -1,11 +1,15 @@
 package ru.mpei.requests.service;
 
 import org.springframework.stereotype.Service;
+import ru.morpher.ws3.Client;
+import ru.morpher.ws3.ClientBuilder;
+import ru.morpher.ws3.russian.DeclensionResult;
 import ru.mpei.requests.domain.chats.Message;
 import ru.mpei.requests.domain.requests.OrganisationRequest;
 import ru.mpei.requests.domain.requests.PhysicalRequest;
 import ru.mpei.requests.domain.requests.Request;
 import ru.mpei.requests.domain.requests.RequestState;
+import ru.mpei.requests.domain.users.User;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,6 +39,11 @@ public class ServiceUtils {
 
     public static String getCalendarAsString(GregorianCalendar calendar) {
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        return format.format(calendar.getTime());
+    }
+
+    public static String getCalendarAsStringForFiles(GregorianCalendar calendar) {
+        SimpleDateFormat format = new SimpleDateFormat(("dd.MM.yyyy"));
         return format.format(calendar.getTime());
     }
 
@@ -181,5 +190,69 @@ public class ServiceUtils {
             }
         }
         return message;
+    }
+
+    public static String getInstitute(User user) {
+        String group = user.getPerson().getGroup();
+        if (group.contains("ИЭ")) {
+            return "ИнЭИ";
+        }
+        if (group.contains("А")) {
+            return "ИВТИ";
+        }
+        if (group.contains("ИГ")) {
+            return "ИГВИЭ";
+        }
+        if (group.contains("ЭР")) {
+            return "ИРЭ";
+        }
+        if (group.contains("ГП")) {
+            return "ГПИ";
+        }
+        if (group.contains("ТФ")) {
+            return "ИТАЭ";
+        }
+        if (group.contains("ЭЛ")) {
+            return "ИЭТЭ";
+        }
+        if (group.contains("С")) {
+            return "ЭнМИ";
+        }
+        if (group.contains("ФП")) {
+            return "ИЭВТ";
+        }
+        return "ИЭЭ";
+    }
+
+    public static String getDirector(User user) {
+        String group = user.getPerson().getGroup();
+        if (group.contains("ИЭ")) {
+            return "Невскому А.Ю.";
+        }
+        if (group.contains("А")) {
+            return "Вишнякову С.В.";
+        }
+        if (group.contains("ИГ")) {
+            return "Шестопаловой Т.А.";
+        }
+        if (group.contains("ЭР")) {
+            return "Мирошниковой И.Н.";
+        }
+        if (group.contains("ГП")) {
+            return "Родину А.Б.";
+        }
+        if (group.contains("ТФ")) {
+            return "Дедову А.В.";
+        }
+        if (group.contains("ЭЛ")) {
+            return "Погребисскому М.Я.";
+        }
+        if (group.contains("С")) {
+            return "Меркурьеву И.В.";
+        }
+        if (group.contains("ФП")) {
+            return "Захарову С.В.";
+        }
+        return "Тульскому В.Н.";
     }
 }
