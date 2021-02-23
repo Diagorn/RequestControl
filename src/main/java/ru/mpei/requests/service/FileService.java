@@ -80,7 +80,7 @@ public class FileService {
         //26.3: Дата подачи заявления
         XWPFParagraph paragraph;
         XWPFRun run;
-        Client client = new ClientBuilder().build();
+        Client client = new ClientBuilder().useToken("c497c341-6c6d-408b-b900-a97f7fc85499").build();
         DeclensionResult result;
         String genitiveCase;
 
@@ -98,7 +98,7 @@ public class FileService {
 
         paragraph = doc.getParagraphs().get(7); //Last name
         run = paragraph.getRuns().get(0);
-        result = client.russian().declension(request.getClient().getPerson().getLastName());
+        result = client.russian().declension(request.getClient().getPerson().getLastName()); //If it stopped working here, go to https://morpher.ru/My/Account.aspx and buy a subscription
         genitiveCase = result.genitive;
         run.setText(genitiveCase + getUnderlines(run.getText(0).length() - genitiveCase.length()), 0);
 

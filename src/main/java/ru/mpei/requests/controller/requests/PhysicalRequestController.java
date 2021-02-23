@@ -118,7 +118,7 @@ public class PhysicalRequestController {
         User user = request.getClient();
         try {
             Message message  = fileService.sendMessageWithFiles(user, request);
-            mailSender.send(user, message);
+            fileService.sendEmailWithFiles(user, message);
         } catch (IOException e) {
             return "redirect:/request/physical/" + id + "/";
         } catch (ArgumentNotRussianException | InvalidFlagsException | ArgumentEmptyException | NumeralsDeclensionNotSupportedException | AccessDeniedException e) {

@@ -27,13 +27,13 @@ public class MailSender {
 
     public void send(User user, Message message) {
         MimeMessagePreparator preparator = mimeMessage -> {
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-
             mimeMessage.setRecipient(javax.mail.Message.RecipientType.TO, new InternetAddress(user.getUsername()));
             mimeMessage.setFrom(username);
             mimeMessage.setSubject("Анкета и договор на обучение");
             mimeMessage.setText("Анкета и договор на обучение, сгенерированные в системе контроля заявок");
-            for (MessageFile f: message.getMessageFiles()) {
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+            helper.setText("", true);
+            for (MessageFile f: message.getMessageFiles()) { //Not working :C
                 FileSystemResource file = new FileSystemResource(new File(uploadPath + File.separator + "files" + File.separator + f.getNewFileName()));
                 helper.addAttachment(f.getOriginalName(), file);
             }

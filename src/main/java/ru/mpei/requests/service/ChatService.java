@@ -111,11 +111,15 @@ public class ChatService {
         messageFile.setNewFileName(resultName);
         messageFile.setMessage(message);
         messageFileRepo.save(messageFile);
+        message.getMessageFiles().add(messageFile);
 
         MessageFile messageFile2 = new MessageFile();
         messageFile2.setOriginalName(resultName2.substring(37));
         messageFile2.setNewFileName(resultName2);
         messageFile2.setMessage(message);
         messageFileRepo.save(messageFile2);
+        message.getMessageFiles().add(messageFile2);
+
+        messageRepo.save(message);
     }
 }

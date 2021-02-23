@@ -1,8 +1,6 @@
 package ru.mpei.requests.domain.chats;
 
 import org.hibernate.validator.constraints.Length;
-import org.springframework.web.multipart.MultipartFile;
-import ru.mpei.requests.domain.chats.Chat;
 import ru.mpei.requests.domain.users.User;
 
 import javax.persistence.*;
