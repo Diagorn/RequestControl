@@ -99,7 +99,7 @@ public class ChatService {
         }
     }
 
-    public void addFilesToMessage(Message message, String resultName) {
+    public void addFilesToMessage(Message message, String resultName, String resultName2) {
         File uploadDir = new File(uploadPath + File.separator + "files" + File.separator);
         if(!uploadDir.exists()) { //If the file directory does not exist
             uploadDir.mkdir(); //We make it
@@ -109,5 +109,11 @@ public class ChatService {
         messageFile.setNewFileName(resultName);
         messageFile.setMessage(message);
         messageFileRepo.save(messageFile);
+
+        MessageFile messageFile2 = new MessageFile();
+        messageFile2.setOriginalName(resultName2.substring(37));
+        messageFile2.setNewFileName(resultName2);
+        messageFile2.setMessage(message);
+        messageFileRepo.save(messageFile2);
     }
 }

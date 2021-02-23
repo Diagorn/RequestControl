@@ -42,7 +42,7 @@ public class ServiceUtils {
         return format.format(calendar.getTime());
     }
 
-    public static String getCalendarAsStringForFiles(GregorianCalendar calendar) {
+    public static String getCalendarAsStringForFiles(Calendar calendar) {
         SimpleDateFormat format = new SimpleDateFormat(("dd.MM.yyyy"));
         return format.format(calendar.getTime());
     }
