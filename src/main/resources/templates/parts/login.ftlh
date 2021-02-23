@@ -67,6 +67,21 @@
                                placeholder="Введите ваше отчество (необязательно)">
                     </div>
                     <div class="form-group">
+                        <label>Ваш пол</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="sex" id="male" value="male" checked>
+                            <label class="form-check-label" for="male">
+                                Мужской
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="sex" id="female" value="female">
+                            <label class="form-check-label" for="female">
+                                Женский
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="telephone-input">Номер телефона</label>
                         <input type="tel" id="telephone-input" class="form-control" name="telephone">
                     </div>

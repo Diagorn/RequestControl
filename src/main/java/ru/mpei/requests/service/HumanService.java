@@ -75,7 +75,7 @@ public class HumanService {
 
     public void saveHumanFromForm(String username, String password, String lastName, String firstName, String secondName, String telephone, String passport,
                                   String adress, String education, String dob, MultipartFile avatar, String passportDate, String passportOrgan, String index,
-                                  String citizenship, String speciality, String groupName) throws ParseException, IOException {
+                                  String citizenship, String speciality, String groupName, String sex) throws ParseException, IOException {
         if (!userService.isPossibleToCreateAUser(username))
             return;
 
@@ -101,6 +101,7 @@ public class HumanService {
         human.setCitizenship(citizenship);
         human.setSpeciality(speciality);
         human.setGroup(groupName);
+        human.setSex(sex.equals("male"));
 
         humanRepo.save(human);
 
