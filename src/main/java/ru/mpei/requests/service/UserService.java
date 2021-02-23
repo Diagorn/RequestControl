@@ -19,6 +19,7 @@ import ru.mpei.requests.repos.UserRepo;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -159,21 +160,7 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public void updateProfile(User user,
-                              String password,
-                              String firstName,
-                              String secondName,
-                              String lastName) { //updating the user profile
-//        if (!StringUtils.isEmpty(firstName) && !firstName.equals(user.getFirstName()))
-//            user.setFirstName(firstName);
-//        if (!StringUtils.isEmpty(secondName) && !secondName.equals(user.getSecondName()))
-//            user.setSecondName(secondName);
-//        if (!StringUtils.isEmpty(lastName) && !lastName.equals(user.getLastName()))
-//            user.setLastName(lastName);
-//        if (!StringUtils.isEmpty(password))
-//            user.setPassword(passwordEncoder.encode(password));
-        userRepo.save(user);
-    }
+
 
     public User findUserByQuery(String name) { //Getting one particular user by a string
         User user;
@@ -272,5 +259,42 @@ public class UserService implements UserDetailsService {
                 return user;
         }
         return null;
+    }
+
+    public void updateProfile(User user, String firstName, String secondName,
+                              String lastName, String telephone, String dob,
+                              String sex, String passport, String passportDate,
+                              String passportOrgan, String citizenship,
+                              String adress, String index, String education,
+                              String speciality, String groupName)  {
+        Human p = user.getPerson();
+        p.setFirstName(firstName);
+        p.setSecondName(secondName);
+        p.setLastName(lastName);
+        p.setPhoneNumber(telephone);
+        try {
+            if (!dob.equals("1"))
+                p.setDOB(ServiceUtils.parseStringToCalendar(dob));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        p.setSex(sex.equals("male"));
+        p.setPassport(passport);
+        try {
+            if (!passportDate.equals("1"))
+                p.setPassportDate(ServiceUtils.parseStringToCalendar(passportDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        p.setPassportGivingOrgan(passportOrgan);
+        p.setCitizenship(citizenship);
+        p.setRegistrationAdress(adress);
+        p.setIndex(index);
+        if (!education.equals("1"))
+            p.setEducation(education);
+        p.setSpeciality(speciality);
+        p.setGroup(groupName);
+        humanRepo.save(p);
+        userRepo.save(user);
     }
 }

@@ -76,10 +76,11 @@ public class HumanService {
     public void saveHumanFromForm(String username, String password, String lastName, String firstName, String secondName, String telephone, String passport,
                                   String adress, String education, String dob, MultipartFile avatar, String passportDate, String passportOrgan, String index,
                                   String citizenship, String speciality, String groupName, String sex) throws ParseException, IOException {
+        User user;
         if (!userService.isPossibleToCreateAUser(username))
-            return;
-
-        User user = userService.createUser(username, password, false);
+            user = userService.findUserByUsername(username);
+        else
+            user = userService.createUser(username, password, false);
 
         Calendar DOB = ServiceUtils.parseStringToCalendar(dob);
         Calendar passDate = ServiceUtils.parseStringToCalendar(passportDate);

@@ -37,7 +37,7 @@ public class User implements UserDetails, Serializable {
 
     private boolean isPhysical; //True if user is not an organisation
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Human person; //If it is a person
 
     @OneToOne

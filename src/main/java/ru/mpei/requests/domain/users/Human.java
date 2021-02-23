@@ -54,7 +54,7 @@ public class Human implements Serializable {
     @OneToOne(mappedBy = "director")
     private Organisation organisation;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private User user;
 
     @ManyToOne
