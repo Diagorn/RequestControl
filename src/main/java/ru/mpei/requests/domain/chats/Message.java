@@ -8,6 +8,7 @@ import ru.mpei.requests.domain.users.User;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity //Message in the chat
@@ -35,6 +36,7 @@ public class Message {
     private Set<MessageFile> messageFiles;
 
     public Message() {
+        messageFiles = new HashSet<>();
     }
 
     public String getText() {

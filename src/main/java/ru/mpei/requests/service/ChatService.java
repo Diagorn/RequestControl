@@ -95,6 +95,8 @@ public class ChatService {
                 messageFile.setNewFileName(resultFileName);
                 messageFile.setMessage(message);
                 messageFileRepo.save(messageFile);
+                message.getMessageFiles().add(messageFile);
+                messageRepo.save(message);
             }
         }
     }

@@ -13,10 +13,12 @@ import ru.morpher.ws3.ArgumentEmptyException;
 import ru.morpher.ws3.russian.ArgumentNotRussianException;
 import ru.morpher.ws3.russian.InvalidFlagsException;
 import ru.morpher.ws3.russian.NumeralsDeclensionNotSupportedException;
+import ru.mpei.requests.domain.chats.Message;
 import ru.mpei.requests.domain.requests.PhysicalRequest;
 import ru.mpei.requests.domain.requests.RequestState;
 import ru.mpei.requests.domain.users.User;
 import ru.mpei.requests.service.FileService;
+import ru.mpei.requests.service.MailSender;
 import ru.mpei.requests.service.RequestService;
 import ru.mpei.requests.service.UserService;
 
@@ -33,6 +35,9 @@ public class PhysicalRequestController {
 
     @Autowired
     private FileService fileService;
+
+    @Autowired
+    private MailSender mailSender;
 
     @GetMapping("/physical/request/{id}/set-executer") //Showing all the executers that can be set
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODER')")
@@ -112,12 +117,14 @@ public class PhysicalRequestController {
         PhysicalRequest request = requestService.getPhysicalRequestByID(id);
         User user = request.getClient();
         try {
-            fileService.sendMessageWithFiles(user, request);
+            Message message  = fileService.sendMessageWithFiles(user, request);
+            mailSender.send(user, message);
         } catch (IOException e) {
             return "redirect:/request/physical/" + id + "/";
         } catch (ArgumentNotRussianException | InvalidFlagsException | ArgumentEmptyException | NumeralsDeclensionNotSupportedException | AccessDeniedException e) {
             e.printStackTrace();
         }
+
         return "redirect:/request/physical/" + id + "/";
     }
 }

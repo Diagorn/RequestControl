@@ -46,6 +46,13 @@
             <artifactId>spring-boot-starter-freemarker</artifactId>
         </dependency>
 
+        <!--Sending E-mail-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+            <version>2.3.4.RELEASE</version>
+        </dependency>
+
         <!-- DataBase support -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -73,6 +80,8 @@
             <artifactId>spring-session-jdbc</artifactId>
         </dependency>
 
+        <!--Working with word files-->
+
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
@@ -83,12 +92,13 @@
             <artifactId>poi-scratchpad</artifactId>
             <version>3.7-beta3</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <version>3.7-beta3</version>
         </dependency>
+
+        <!--Noun cases-->
 
         <dependency>
             <groupId>ru.morpher</groupId>

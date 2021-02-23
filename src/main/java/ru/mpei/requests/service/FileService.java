@@ -39,6 +39,9 @@ public class FileService {
     @Autowired
     private ChatService chatService;
 
+    @Autowired
+    private MailSender mailSender;
+
     public String convertTextFileToString(String fileName) {
         try (Stream<String> stream
                      = Files.lines(Paths.get(ClassLoader.getSystemResource(fileName).toURI()))) {
@@ -286,11 +289,16 @@ public class FileService {
         String uniChar = "\u0082";
     }
 
-    public void sendMessageWithFiles(User user, PhysicalRequest request) throws IOException, InvalidFlagsException, AccessDeniedException, NumeralsDeclensionNotSupportedException, ArgumentNotRussianException, ArgumentEmptyException {
+    public Message sendMessageWithFiles(User user, PhysicalRequest request) throws IOException, InvalidFlagsException, AccessDeniedException, NumeralsDeclensionNotSupportedException, ArgumentNotRussianException, ArgumentEmptyException {
         String resultStatementName = generateFile(user, request, true);
         String resultWorksheetName = generateFile(user, request, false);
         Long messageID = chatService.fillMessage("Файлы сгенерированы:", user, request, request.getChat(), true, false, null);
         Message message = chatService.getMessageById(messageID);
         chatService.addFilesToMessage(message, resultStatementName, resultWorksheetName);
+        return message;
+    }
+
+    public void sendEmailWithFiles(User user, Message message) {
+        mailSender.send(user, message);
     }
 }
