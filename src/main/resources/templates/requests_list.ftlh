@@ -49,6 +49,7 @@
                                         ${request.theme}
                                     </a>
                                 </#if></p>
+                            <p>№ заявки: ${request.getId()}</p>
                             <p>Заявка от: ${request.getClient().getUsernameWithInitials()}</p>
                             <#if utils.getLastMessage(request)??>
                                 <p>Время последнего ответа: ${utils.getCalendarForMessage(utils.getLastMessage(request).timeOfSending)}</p>
@@ -66,6 +67,7 @@
                                         ${request.theme}
                                     </a>
                                 </#if></p>
+                            <p>№ заявки: ${request.getId()}</p>
                             <p>Исполнитель: <#if request.executer??>${request.executer.getUsernameWithInitials()}</#if></p>
                             <#if utils.getLastMessage(request)??>
                                 <p>Время последнего ответа: ${utils.getCalendarForMessage(utils.getLastMessage(request).timeOfSending)}</p>

@@ -33,7 +33,7 @@
                     <label for="secondName-input">Отчество</label>
                     <input name="secondName" type="text" class="form-control"
                            id="secondName-input" aria-describedby="emailHelp"
-                            placeholder="Иванович">
+                            placeholder="Иванович (необязательно)">
                 </div>
                 <div class="form-group">
                     <label for="telephone-input">Номер телефона</label>

@@ -20,7 +20,7 @@
             </#if>
             <form action="/request" method="post">
                 <div class="form-group">
-                    <label for="request-theme">Тема заявки</label>
+                    <label for="request-theme">Предмет/программа:</label>
                     <input type="text" name="theme" class="form-control" id="request-theme" placeholder="Тема">
                     <br>
                     <#if client??>

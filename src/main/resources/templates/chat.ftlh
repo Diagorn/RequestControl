@@ -48,7 +48,7 @@
     </form>
     <#if !isAdminChat>
         <form action="/physical/request/${request.getId()}/generate" method="post">
-            <button type="submit">Сгенерировать</button>
+            <button type="submit" class="btn btn-success">Сгенерировать</button>
             <input type="hidden" value="${request.getId()}">
             <input type="hidden" name="_csrf" value="${_csrf.token}">
         </form>
