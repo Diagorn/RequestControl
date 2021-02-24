@@ -11,10 +11,7 @@ import ru.mpei.requests.domain.users.Human;
 import ru.mpei.requests.domain.users.User;
 import ru.mpei.requests.repos.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class RequestService {
@@ -200,5 +197,93 @@ public class RequestService {
         Human employee = humanRepo.findById(ID).get();
         request.getEmployees().remove(employee);
         organisationRequestRepo.save(request);
+    }
+
+    public TreeSet<Request> sort(String sort, List<Request> requests) {
+        TreeSet<Request> sortedSet;
+        switch (sort) {
+            case "last_message":
+                sortedSet = new TreeSet<Request>(new Comparator<Request>() {
+                    @Override
+                    public int compare(Request request, Request t1) {
+                        if (request.getChat().getMessages().isEmpty() || t1.getChat().getMessages().isEmpty())
+                            return 0;
+                        return ServiceUtils.getLastMessage(request).toString().compareTo(ServiceUtils.getLastMessage(t1).toString());
+                    }
+                });
+                sortedSet.addAll(requests);
+                return sortedSet;
+            case "id":
+                sortedSet = new TreeSet<Request>(new Comparator<Request>() {
+                    @Override
+                    public int compare(Request request, Request t1) {
+                        if (request.isPhysical() && t1.isPhysical()) {
+                            PhysicalRequest r1 = (PhysicalRequest)request;
+                            PhysicalRequest r2 = (PhysicalRequest)t1;
+                            return r1.getId().toString().compareTo(r2.getId().toString());
+                        }
+                        if (!request.isPhysical() && !t1.isPhysical()) {
+                            OrganisationRequest r1 = (OrganisationRequest) request;
+                            OrganisationRequest r2 = (OrganisationRequest) t1;
+                            return r1.getId().toString().compareTo(r2.getId().toString());
+                        }
+                        if (!request.isPhysical() && t1.isPhysical()) {
+                            OrganisationRequest r1 = (OrganisationRequest) request;
+                            PhysicalRequest r2 = (PhysicalRequest)t1;
+                            return r1.getId().toString().compareTo(r2.getId().toString());
+                        }
+                        if (request.isPhysical() && !t1.isPhysical()) {
+                            PhysicalRequest r1 = (PhysicalRequest)request;
+                            OrganisationRequest r2 = (OrganisationRequest) t1;
+                            return r1.getId().toString().compareTo(r2.getId().toString());
+                        }
+                        return "a".compareTo("b");
+                    }
+                });
+                sortedSet.addAll(requests);
+                return sortedSet;
+            case "executer":
+                sortedSet = new TreeSet<Request>(new Comparator<Request>() {
+                    @Override
+                    public int compare(Request request, Request t1) {
+                        if (request.getExecuter() == null || t1.getExecuter() == null)
+                            return request.getTheme().compareTo(t1.getTheme());
+                        return request.getExecuter().toString().compareTo(t1.getExecuter().toString());
+                    }
+                });
+                sortedSet.addAll(requests);
+                return sortedSet;
+            case "client":
+                sortedSet = new TreeSet<Request>(new Comparator<Request>() {
+                    @Override
+                    public int compare(Request request, Request t1) {
+                        if (request.getClient() == null || t1.getClient() == null)
+                            return request.getTheme().compareTo(t1.getTheme());
+                        if (request.getClient().getId().equals(t1.getClient().getId()))
+                            return request.getTheme().compareTo(t1.getTheme());
+                        return request.getClient().toString().compareTo(t1.getClient().toString());
+                    }
+                });
+                sortedSet.addAll(requests);
+                return sortedSet;
+            case "theme":
+                sortedSet = new TreeSet<Request>(new Comparator<Request>() {
+                    @Override
+                    public int compare(Request request, Request t1) {
+                        return request.getTheme().compareTo(t1.getTheme());
+                    }
+                });
+                sortedSet.addAll(requests);
+                return sortedSet;
+            default:
+                sortedSet = new TreeSet<Request>(new Comparator<Request>() {
+                    @Override
+                    public int compare(Request request, Request t1) {
+                        return request.getChat().getId().compareTo(t1.getChat().getId());
+                    }
+                });
+                sortedSet.addAll(requests);
+                return sortedSet;
+        }
     }
 }

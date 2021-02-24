@@ -7,15 +7,23 @@
             <a href="/request-create" class="btn btn-primary mb-3">Создать новую заявку</a>
             <div class="list-group">
                 <a href="/request/" class="list-group-item list-group-item-action">Все</a>
-                <#if isAdmin || isModer><a href="/request?status=no_executer" class="list-group-item list-group-item-action">Без исполнителя</a></#if>
-                <a href="/request?status=in_process" class="list-group-item list-group-item-action">В процессе</a>
-                <a href="/request?status=frozen" class="list-group-item list-group-item-action">Замороженные</a>
-                <a href="/request?status=complete" class="list-group-item list-group-item-action">Закрытые</a>
-                <a href="/request?status=deleted" class="list-group-item list-group-item-action">Удалённые</a>
-                <#if !isPhysical || isAdmin || isModer><a href="/request?status=prototype" class="list-group-item list-group-item-action">Прототипы</a></#if>
+                <#if isAdmin || isModer><a href="/request?status=no_executer&sort=${sort}" class="list-group-item list-group-item-action">Без исполнителя</a></#if>
+                <a href="/request?status=in_process&sort=${sort}" class="list-group-item list-group-item-action">В процессе</a>
+                <a href="/request?status=frozen&sort=${sort}" class="list-group-item list-group-item-action">Замороженные</a>
+                <a href="/request?status=complete&sort=${sort}" class="list-group-item list-group-item-action">Закрытые</a>
+                <a href="/request?status=deleted&sort=${sort}" class="list-group-item list-group-item-action">Удалённые</a>
+                <#if !isPhysical || isAdmin || isModer><a href="/request?status=prototype&sort=${sort}" class="list-group-item list-group-item-action">Прототипы</a></#if>
             </div>
         </div>
         <div class="col-md-9 requests">
+            <h5>Сортировка</h5>
+            <div class="d-inline">
+                <button class="btn btn-link"><a href="/request?status=${status}&sort=last_message">По последнему сообщению</a></button>
+                <button class="btn btn-link"><a href="/request?status=${status}&sort=id">По порядку</a></button>
+                <button class="btn btn-link"><a href="/request?status=${status}&sort=executer">По исполнителю</a></button>
+                <button class="btn btn-link"><a href="/request?status=${status}&sort=theme">По предмету</a></button>
+                <button class="btn btn-link"><a href="/request?status=${status}&sort=client">По клиенту</a></button>
+            </div>
             <ul class="list-group">
                 <#list requests as request>
                     <#if request.client.equals(user)>

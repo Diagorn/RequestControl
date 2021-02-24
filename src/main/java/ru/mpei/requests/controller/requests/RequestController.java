@@ -14,6 +14,7 @@ import ru.mpei.requests.service.RequestService;
 import ru.mpei.requests.service.UserService;
 
 import java.util.List;
+import java.util.TreeSet;
 
 @Controller
 public class RequestController { //Handling the page containing requests
@@ -35,11 +36,14 @@ public class RequestController { //Handling the page containing requests
     public String getRequestsForUser( //Get-mapping to show just the requests for the authentificated user
             @AuthenticationPrincipal User user,
             @RequestParam(required = false, defaultValue = "") String status,
+            @RequestParam(required = false, defaultValue = "") String sort,
             Model model
     ) {
-        List<Request> requests = requestService.getRequestsByStatus(status, user);; //requestService.getRequestsByStatus(status, user);
-        model.addAttribute("requests", requests);
-        model.addAttribute("statuses", RequestState.values());
+        List<Request> requests = requestService.getRequestsByStatus(status, user);
+        TreeSet<Request> requests1 = requestService.sort(sort, requests);
+        model.addAttribute("requests", requests1);
+        model.addAttribute("status", status);
+        model.addAttribute("sort", sort);
         model.addAttribute("utils", serviceUtils);
         return "requests_list";
     }
