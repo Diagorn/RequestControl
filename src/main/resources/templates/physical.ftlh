@@ -12,7 +12,7 @@
                 <div class="form-group">
                     <label for="lastName-input">Фамилия</label>
                     <input name="lastName" type="text" class="form-control ${(lastNameError??)?string('is-invalid', '')}"
-                           id="lastName-input" aria-describedby="emailHelp" required>
+                           id="lastName-input" aria-describedby="emailHelp" placeholder="Иванов" required>
                     <#if lastNameError??>
                         <div class="invalid-feedback">
                             ${lastNameError}
@@ -22,7 +22,7 @@
                 <div class="form-group">
                     <label for="firstName-input">Имя</label>
                     <input name="firstName" type="text" class="form-control  ${(firstNameError??)?string('is-invalid', '')}"
-                           id="firstName-input" aria-describedby="emailHelp" required>
+                           id="firstName-input" aria-describedby="emailHelp" placeholder="Иван" required>
                     <#if firstNameError??>
                         <div class="invalid-feedback">
                             ${firstNameError}
@@ -32,7 +32,12 @@
                 <div class="form-group">
                     <label for="secondName-input">Отчество</label>
                     <input name="secondName" type="text" class="form-control"
-                           id="secondName-input" aria-describedby="emailHelp">
+                           id="secondName-input" aria-describedby="emailHelp"
+                            placeholder="Иванович">
+                </div>
+                <div class="form-group">
+                    <label for="telephone-input">Номер телефона</label>
+                    <input type="tel" id="telephone-input" required class="form-control" name="telephone" placeholder="+7-123-456-78-90">
                 </div>
                 <div class="form-group">
                     <label>Ваш пол</label>
