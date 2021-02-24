@@ -12,7 +12,7 @@
                 <div class="form-group">
                     <label for="lastName-input">Фамилия</label>
                     <input name="lastName" type="text" class="form-control ${(lastNameError??)?string('is-invalid', '')}"
-                           id="lastName-input" aria-describedby="emailHelp" required value="${user.getPerson().lastName}">
+                           id="lastName-input" aria-describedby="emailHelp" required>
                     <#if lastNameError??>
                         <div class="invalid-feedback">
                             ${lastNameError}
@@ -22,7 +22,7 @@
                 <div class="form-group">
                     <label for="firstName-input">Имя</label>
                     <input name="firstName" type="text" class="form-control  ${(firstNameError??)?string('is-invalid', '')}"
-                           id="firstName-input" aria-describedby="emailHelp" required value="${user.getPerson().getFirstName()}">
+                           id="firstName-input" aria-describedby="emailHelp" required>
                     <#if firstNameError??>
                         <div class="invalid-feedback">
                             ${firstNameError}
@@ -32,8 +32,7 @@
                 <div class="form-group">
                     <label for="secondName-input">Отчество</label>
                     <input name="secondName" type="text" class="form-control"
-                           id="secondName-input" aria-describedby="emailHelp"
-                           value="${user.getPerson().getSecondName()}">
+                           id="secondName-input" aria-describedby="emailHelp">
                 </div>
                 <div class="form-group">
                     <label>Ваш пол</label>
