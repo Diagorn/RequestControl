@@ -2,6 +2,7 @@
 <#include "parts/security.ftlh">
 
 <@c.page>
+    <div class="row">
     <div class="chat">
     <#list messages as message>
         <div class="chat-message mb-2 <#if message.authorName == name>right<#else>left</#if>"
@@ -22,9 +23,9 @@
                 </div>
             </div>
         </div>
-        </div>
     <#else>Здесь пока нет сообщений
     </#list>
+    </div>
     <div class="chat-footer">
     <form method="post" class="mb-n3" enctype="multipart/form-data">
         <input type="text" <#if status??><#if status=="FROZEN" || status=="COMPLETE" || status=="DELETED">disabled</#if></#if> name="text" class="form-control chat-input ${(textError??)?string('is-invalid', '')} <#if status??><#if !((status == "IN_PROCESS") || (status == "NO_EXECUTER" && user == request.getClient()))>mb-5</#if></#if>"
@@ -86,5 +87,6 @@
                 </form>
                 </#if>
                 </#if>
+    </div>
     </div>
 </@c.page>

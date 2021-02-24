@@ -36,9 +36,16 @@ a, a:hover {
 }
 
 .chat {
-    max-height: 710px;
+    max-height: 370px !important;
+    width: 100%;
+    overflow:auto;
 }
 
 .chat-input {
     max-width: 1600px;
+}
+
+.requests {
+    max-height: 700px;
+    overflow: auto;
 }

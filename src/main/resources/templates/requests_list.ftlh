@@ -15,7 +15,7 @@
                 <#if !isPhysical || isAdmin || isModer><a href="/request?status=prototype" class="list-group-item list-group-item-action">Прототипы</a></#if>
             </div>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-9 requests">
             <ul class="list-group">
                 <#list requests as request>
                     <#if request.client.equals(user)>

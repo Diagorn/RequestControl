@@ -4,6 +4,7 @@
 <@c.page>
     <#if user.isPhysical()>
 <h5>Редактирование профиля</h5>
+        <h6>Перезайдите в систему, чтобы увидеть изменения</h6>
 <div class="row">
     <div class="col-md-4"></div>
     <div class="col-md-4">
