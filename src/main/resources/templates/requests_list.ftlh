@@ -31,6 +31,7 @@
                             <a href="/request/physical/${request.id}">
                                 ${request.theme}
                             </a><br>
+                            <p>№ заявки: ${request.getId()}</p>
                             <p>Статус: ${utils.getRequestStateAsString(request.status)}</p>
                             <p>Исполнитель: <#if request.executer??>${request.executer.getUsernameWithInitials()}</#if></p>
                             <#if utils.getLastMessage(request)??>
