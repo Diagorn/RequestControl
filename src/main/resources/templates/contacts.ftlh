@@ -1,5 +1,4 @@
 <#import "parts/common.ftlh" as c>
-<#import "parts/contacts.ftlh" as con>
 <@c.page>
     <h3>Список администраторов и модераторов</h3>
     <div class="form-row">
