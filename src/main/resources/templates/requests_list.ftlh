@@ -22,7 +22,7 @@
                 <button class="btn btn-link"><a href="/request?status=${status}&sort=id">По порядку</a></button>
                 <button class="btn btn-link"><a href="/request?status=${status}&sort=executer">По исполнителю</a></button>
                 <button class="btn btn-link"><a href="/request?status=${status}&sort=theme">По предмету</a></button>
-                <button class="btn btn-link"><a href="/request?status=${status}&sort=client">По клиенту</a></button>
+                <#if !user.isClient()><button class="btn btn-link"><a href="/request?status=${status}&sort=client">По клиенту</a></button></#if>
             </div>
             <ul class="list-group">
                 <#list requests as request>

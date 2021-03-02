@@ -81,6 +81,7 @@ public class UserService implements UserDetailsService {
         user.setActive(true);
         user.setPhysical(!isOrganisation);
         user.setRoles(new HashSet<Role>());
+        user.getRoles().add(Role.CLIENT);
         user.getRoles().add(Role.USER);
         user.setActivationCode(UUID.randomUUID().toString());
         user.setPassword(passwordEncoder.encode(user.getPassword()));

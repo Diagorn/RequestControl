@@ -136,7 +136,7 @@
             <#if !isRegisterForm>
                 <br>
                 <a href="/registration/physical">Зарегистрироваться как физическое лицо...</a><br>
-                <a href="/registration/organisation">Зарегистрироваться как юридическое лицо...</a>
+<#--                <a href="/registration/organisation">Зарегистрироваться как юридическое лицо...</a>-->
             </#if>
         </div>
     </div>

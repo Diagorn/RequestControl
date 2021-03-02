@@ -33,7 +33,7 @@
                     <label for="secondName-input">Отчество</label>
                     <input name="secondName" type="text" class="form-control"
                            id="secondName-input" aria-describedby="emailHelp"
-                            placeholder="Иванович (необязательно)">
+                            placeholder="Иванович (если есть)">
                 </div>
                 <div class="form-group">
                     <label for="telephone-input">Номер телефона</label>
@@ -53,6 +53,10 @@
                             Женский
                         </label>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label for="dob-input">Дата рождения</label>
+                    <input type="date" id="dob-input" class="form-control" name="dob" required>
                 </div>
                 <div class="form-group">
                     <label for="passport-input">Серия и номер паспорта</label>
@@ -109,10 +113,7 @@
                     <input type="text" id="group-input" class="form-control" name="groupName"
                            placeholder="ЭР-11-20" required>
                 </div>
-                <div class="form-group">
-                    <label for="dob-input">Дата рождения</label>
-                    <input type="date" id="dob-input" class="form-control" name="dob" required>
-                </div>
+                <hr>
                 <div class="form-group">
                     <label for="avatar-input">Картинка профиля</label>
                     <input type="file" name="avatar">
