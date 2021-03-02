@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.mpei.requests.domain.requests.Request;
-import ru.mpei.requests.domain.requests.RequestState;
 import ru.mpei.requests.domain.users.User;
 import ru.mpei.requests.service.RequestService;
 import ru.mpei.requests.service.UserService;
@@ -60,6 +59,7 @@ public class RequestController { //Handling the page containing requests
         else {
             model.addAttribute("isClientRequest", false);
         }
+        model.addAttribute("programs", requestService.getAllPrograms());
         return "request_create";
     }
 
@@ -76,6 +76,7 @@ public class RequestController { //Handling the page containing requests
         }
         model.addAttribute("query", name);
         model.addAttribute("isClientRequest", false);
+        model.addAttribute("programs", requestService.getAllPrograms());
         return "request_create";
     }
 
