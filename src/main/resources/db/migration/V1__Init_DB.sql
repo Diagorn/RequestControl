@@ -98,3 +98,9 @@ create table message_file (
     original_name varchar(255),
     message_id int8, primary key (id)
 );
+
+create table learning_program (
+    id int8 not null,
+    title varchar(255),
+    primary key (id)
+)

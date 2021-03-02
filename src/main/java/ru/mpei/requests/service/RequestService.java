@@ -3,10 +3,7 @@ package ru.mpei.requests.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.mpei.requests.domain.chats.Chat;
-import ru.mpei.requests.domain.requests.OrganisationRequest;
-import ru.mpei.requests.domain.requests.PhysicalRequest;
-import ru.mpei.requests.domain.requests.Request;
-import ru.mpei.requests.domain.requests.RequestState;
+import ru.mpei.requests.domain.requests.*;
 import ru.mpei.requests.domain.users.Human;
 import ru.mpei.requests.domain.users.User;
 import ru.mpei.requests.repos.*;
@@ -32,10 +29,10 @@ public class RequestService {
     private HumanRepo humanRepo;
 
     @Autowired
-    private UserService userService;
+    private ChatRepo chatRepo;
 
     @Autowired
-    private ChatRepo chatRepo;
+    private LearningProgramRepo learningProgramRepo;
 
     public List<Request> getRequestsByStatus(String status, User user) {
         List<Request> requests;
@@ -285,5 +282,9 @@ public class RequestService {
                 sortedSet.addAll(requests);
                 return sortedSet;
         }
+    }
+
+    public List<LearningProgram> getAllPrograms() {
+        return learningProgramRepo.findAll();
     }
 }
