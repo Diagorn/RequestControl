@@ -151,14 +151,21 @@ public class RequestService {
     }
 
     public long createPhysicalRequest(User client, String theme) {
+        List<LearningProgram> learningPrograms = learningProgramRepo.findAll();
+
         PhysicalRequest request = new PhysicalRequest();
         request.setClient(client);
         request.setStatus(RequestState.NO_EXECUTER);
         request.setPhysical(true);
+        for (LearningProgram program: learningPrograms) {
+            if (program.getTitle().equals(theme))
+                request.setTheme(theme);
+        }
+        if (request.getTheme() == null)
+            return -1L;
         Chat chat = chatService.createChatForClient(client);
         chatRepo.save(chat);
         request.setChat(chat);
-        request.setTheme(theme);
         physicalRequestRepo.save(request);
         chatService.setPhysicalRequest(chat, request);
         return request.getId();
