@@ -1,0 +1,4 @@
+.idea/
+target/
+src/main/resources/db/migration/V2__add_default_admin.sql
+src/main/resources/db/migration/V8__Add_default_employees.sql
