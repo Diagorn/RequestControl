@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import ru.mpei.requests.domain.chats.Message;
 import ru.mpei.requests.domain.chats.MessageFile;
 import ru.mpei.requests.domain.users.User;
+import ru.mpei.requests.repos.MessageFileRepo;
 
 import javax.mail.internet.InternetAddress;
 import java.io.File;
@@ -18,6 +19,9 @@ import java.io.File;
 public class MailSender {
     @Autowired
     private JavaMailSender mailSender;
+
+    @Autowired
+    private MessageFileRepo messageFileRepo;
 
     @Value("${spring.mail.username}")
     private String username;
@@ -48,7 +52,7 @@ public class MailSender {
                     "<br>  <p>С уважением,</p><p>Служба поддержки слушателей</p>" +
                     "</body></html>";
             helper.setText(htmlText, true);
-            for (MessageFile f: message.getMessageFiles()) { //Not working :C
+            for (MessageFile f : message.getMessageFiles()) { //Not working :C
                 FileSystemResource file = new FileSystemResource(new File(uploadPath + File.separator + "files" + File.separator + f.getNewFileName()));
                 helper.addAttachment(f.getOriginalName(), file);
             }

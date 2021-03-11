@@ -15,9 +15,11 @@ import ru.morpher.ws3.russian.DeclensionResult;
 import ru.morpher.ws3.russian.InvalidFlagsException;
 import ru.morpher.ws3.russian.NumeralsDeclensionNotSupportedException;
 import ru.mpei.requests.domain.chats.Message;
+import ru.mpei.requests.domain.chats.MessageFile;
 import ru.mpei.requests.domain.requests.PhysicalRequest;
 import ru.mpei.requests.domain.requests.Request;
 import ru.mpei.requests.domain.users.User;
+import ru.mpei.requests.repos.MessageFileRepo;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,12 +29,16 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
 public class FileService {
+    @Autowired
+    private MessageFileRepo messageFileRepo;
+
     @Value("${upload.path}")
     private String uploadPath;
 
@@ -300,5 +306,18 @@ public class FileService {
 
     public void sendEmailWithFiles(User user, Message message) {
         mailSender.send(user, message);
+        deleteFilesForMessage(message);
+    }
+
+    private void deleteFilesForMessage(Message message) {
+        Iterator<MessageFile> iter = message.getMessageFiles().iterator();
+        while (iter.hasNext()) {
+            MessageFile f = iter.next();
+            File file = new File(uploadPath + File.separator + "files" + File.separator + f.getNewFileName());
+            if (file.delete()) {
+                iter.remove();
+                messageFileRepo.delete(f);
+            }
+        }
     }
 }

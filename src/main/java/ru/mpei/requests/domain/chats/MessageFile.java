@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 @Entity
 public class MessageFile {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
