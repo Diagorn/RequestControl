@@ -119,6 +119,11 @@
                     <input type="file" name="avatar">
                 </div>
                 <input type="hidden" name="_csrf" value="${_csrf.token}">
+                <div class="form-group">
+                    <input type="checkbox" class="form-check-input" name="agreed" id="agreed-input">
+                    <label for="agreed-input">Я согласен на хранение и обработку своих персональных данных</label>
+                </div>
+
                 <button type="submit" class="btn btn-primary">Отправить</button>
             </form>
         </div>
