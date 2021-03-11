@@ -20,8 +20,7 @@ public class User implements UserDetails, Serializable {
     private static final long serialVersionUID = 6855845368479688868L; //А Х У Е Т Ь
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "serial")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id; //Identifyer
 
     @NotBlank(message = "Пожалуйста, введите ваш e-mail")

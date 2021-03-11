@@ -298,7 +298,12 @@ public class FileService {
     public Message sendMessageWithFiles(User user, PhysicalRequest request) throws IOException, InvalidFlagsException, AccessDeniedException, NumeralsDeclensionNotSupportedException, ArgumentNotRussianException, ArgumentEmptyException {
         String resultStatementName = generateFile(user, request, true);
         String resultWorksheetName = generateFile(user, request, false);
-        Long messageID = chatService.fillMessage("Файлы сгенерированы:", user, request, request.getChat(), true, false, null);
+        String messageText = "Здравствуйте, " + user.getPerson().getFirstName() + " " + user.getPerson().getSecondName() +
+                "!\n" + "Анкета и заявление на обучение успешно сгенерированы и отправлены на электронную почту, указанную при регистрации. Их необходимо распечатать и подписать." +
+                "\nВАЖНО!!! Заявление должны подписать в дирекции Вашего института и преподаватель по дисциплине. Подписанные документы необходимо сдать в ауд. Ж-217 Климовой М.А." +
+                "\nЕсли Вы обнаружили неточности и хотите изменить данные по заявке, это можно сделать в Вашем личном кабинете." +
+                "\nМы рады, что Вы приняли решение пройти обучение у нас!";
+        Long messageID = chatService.fillMessage(messageText, user, request, request.getChat(), true, false, null);
         Message message = chatService.getMessageById(messageID);
         chatService.addFilesToMessage(message, resultStatementName, resultWorksheetName);
         return message;

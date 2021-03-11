@@ -117,14 +117,13 @@ public class PhysicalRequestController {
         PhysicalRequest request = requestService.getPhysicalRequestByID(id);
         User user = request.getClient();
         try {
-            Message message  = fileService.sendMessageWithFiles(user, request);
+            Message message = fileService.sendMessageWithFiles(user, request);
             fileService.sendEmailWithFiles(user, message);
         } catch (IOException e) {
             return "redirect:/request/physical/" + id + "/";
         } catch (ArgumentNotRussianException | InvalidFlagsException | ArgumentEmptyException | NumeralsDeclensionNotSupportedException | AccessDeniedException e) {
             e.printStackTrace();
         }
-
         return "redirect:/request/physical/" + id + "/";
     }
 }
